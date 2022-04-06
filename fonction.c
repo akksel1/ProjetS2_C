@@ -3,3 +3,8 @@
 //
 
 #include "fonction.h"
+
+
+BOOL verif(int , int S[][]{
+
+}
