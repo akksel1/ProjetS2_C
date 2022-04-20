@@ -1,5 +1,13 @@
 //
 // Created by louka on 06/04/2022.
+#include "fonction.h"
+
+int main_menu(){
+    printf("\t\t-- MENU --\n");
+    printf("1 - PARTIE I");
+    printf("2 - PARTIE II");
+    printf("3 - PARTIE III");
+}
 //
 
 #include "fonction.h"
@@ -65,4 +73,30 @@ void initialize_matrix(int TL,int**M){
         }
     }
 }
+BOOL compter_nombre_ligne(int TL,int**M)
+{
 
+    int cpt;
+    int un=0;
+    int zero=0;
+  for (int i=0;i<TL;i++)
+  {
+      for (int j=0;j<TL;j++)
+      {
+          cpt=M[i][j];
+          if (cpt==1)
+          {
+              un=un+1;
+          }
+          if (cpt==0);
+          {
+              zero=zero+1;
+          }
+      }
+  }
+  if (un==zero)
+  {
+      return TRUE;
+  }
+  return FALSE;
+}

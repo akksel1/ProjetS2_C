@@ -16,10 +16,12 @@ int main()
 */
 
     int ** M=NULL;
-
-    M = creer_matrice(16);
-    initialize_matrix(16,M);
-    print_matrix(M,16);
+    BOOL T;
+    M = creer_matrice(TL1);
+    initialize_matrix(TL1,M);
+    print_matrix(M,TL1);
+    T=compter_nombre_ligne(TL1,M);
+    printf("%d",T);
 
     return 0;
 
