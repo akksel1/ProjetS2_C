@@ -13,13 +13,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <windows.h>
+#include <conio.h>
 
 
 
 void Color_Text(int,int);
 void print_matrix(int**,int);
 void initialize_matrix(int,int**);
-int** creer_matrice(int);
+int** create_matrix(int);
+void menu1(char*);
+void menu1_1(char*);
+int menu1_2();
 BOOL compter_nombre_ligne(int,int**);
 
 
