@@ -5,6 +5,22 @@
 #include "fonction.h"
 #include<conio.h>
 #include<stdio.h>
+#define A 1
+#define B 2
+#define C 3
+#define D 4
+#define E 5
+#define F 6
+#define I 7
+#define J 8
+#define K 9
+#define L 10
+#define M 11
+#define N 12
+#define O 13
+#define P 14
+
+
 
 
 
@@ -12,34 +28,37 @@
 
 int** create_matrix(int size)
 {
-    int** M = (int**) malloc(size * sizeof(int*));
+    int** Z = (int**) malloc(size * sizeof(int*));
     for (int i = 0; i < size; i++)
     {
-        M[i] = malloc(size * sizeof (int));
+        Z[i] = malloc(size * sizeof (int));
     }
-    return M;
+    return Z;
 }
 
 void Color_Text(int Text_Color,int Back_color) // fonction d'affichage de couleurs trouvé sur OpenClassroom
 {
-    HANDLE P=GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(P,Back_color*16+Text_Color);
+    HANDLE X=GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(X,Back_color*16+Text_Color);
 }
 
-void print_matrix(int** M,int TL)
+void print_matrix(int** Z,int TL)
 {
     // Affichage d'une matrice 4x4
     if(TL==4) {
+        printf("     ");
         Color_Text(1, 8);
-        printf("  A  B  C  D\n");
+        printf("  A  B  C  D \n");
     }
     if(TL==8){
+        printf("     ");
         Color_Text(1, 8);
-        printf("  A  B  C  D  E  F  G  H\n");
+        printf("  A  B  C  D  E  F  G  H \n");
     }
     if(TL==16){
+        printf("     ");
         Color_Text(1, 8);
-        printf("       A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P\n");
+        printf("  A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P \n");
     }
     for (int i = 0; i < TL ; i++) {
         Color_Text(1, 8);
@@ -49,27 +68,27 @@ void print_matrix(int** M,int TL)
             printf("  ");
         }
         else{
-            printf("  %d ", i + 1);
+            printf(" %d  ", i + 1);
             Color_Text(15, 0);
             printf("  ");
         }
         for (int j = 0; j < TL; j++) {
-            printf("%d  ", M[i][j]);
+            printf("%d  ", Z[i][j]);
         }
         printf("\n");
     }
 
 }
 
-void initialize_matrix(int TL,int**M){
+void initialize_matrix(int TL,int**Z){
     for(int i=0;i<TL;i++){
         for(int j=0;j<TL;j++){
-            M[i][j]=0;
+            Z[i][j]=0;
         }
     }
 }
 
-BOOL compter_nombre_ligne(int TL,int**M)
+BOOL compter_nombre_ligne(int TL,int**Z)
 {
     int cpt;
     int un=0;
@@ -78,12 +97,12 @@ BOOL compter_nombre_ligne(int TL,int**M)
     {
         for (int j=0;j<TL;j++)
         {
-            cpt=M[i][j];
+            cpt=Z[i][j];
             if (cpt==1)
             {
                 un=un+1;
             }
-            if (cpt==0);
+            if (cpt==0)
             {
                 zero=zero+1;
             }
@@ -96,6 +115,21 @@ BOOL compter_nombre_ligne(int TL,int**M)
     return FALSE;
 
 }
+
+void Mask_input(int (**Z),int size){
+    int lig,col;
+    //On donne à la fonction une matrice initialisée à 1
+    print_matrix(Z,size);
+    printf("\nSaisir LIGNE/COLONNE pour cacher des valeurs:");
+    scanf("%d/%d",lig,col);
+    while((lig>(size-1) || lig<0)&&(lig>(size-1) || lig<0)){
+        printf("Indice incorrect. Resaisir:");
+        scanf("%d/%d",lig,col);
+    }
+
+}
+
+
 
 
 
@@ -134,7 +168,7 @@ void menu1(char* choice){       //MENU PRINCIPAL
 
 void menu1_1(char* choice){         //SOUS MENU 1_1
     int cpt=0;
-    int ** M=NULL;
+    int ** Z=NULL;
 
     printf("\t--  RESOUDRE MANUELEMENT GRILLE --\n");
     printf("1 - GRILLE 4x4\n");
@@ -158,19 +192,19 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
 
     // GRILLE 4X4
     if(*choice=='1'){
-        M=create_matrix(4);
-        menu1_2(4,choice,M);
+        Z=create_matrix(4);
+        menu1_2(4,choice,Z);
 
     }
     // GRILLE 8X8
     if(*choice=='2'){
-        M=create_matrix(8);
-        menu1_2(8,choice,M);
+        Z=create_matrix(8);
+        menu1_2(8,choice,Z);
     }
     // GRILLE 16X16
     if(*choice=='3'){
-        M=create_matrix(16);
-        menu1_2(16,choice,M);
+        Z=create_matrix(16);
+        menu1_2(16,choice,Z);
     }
 
     // RETOUR AU MENU1
@@ -179,7 +213,7 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
     }
 }
 
-int menu1_2(int dim,char* choice,int** M){       //SOUS MENU 1_2
+int menu1_2(int dim,char* choice,int** Z){       //SOUS MENU 1_2
     int cpt=0;
     printf("\t--  RESOUDRE MANUELEMENT GRILLE %dx%d  --\n",dim,dim);
     printf("1 - SAISIR MANUELEMENT UN MASQUE\n");
@@ -202,8 +236,8 @@ int menu1_2(int dim,char* choice,int** M){       //SOUS MENU 1_2
     }while(((*choice>'3') || (*choice<'1')) && (*choice!='R') && (*choice!='r'));
 
     // SAISIE MANUELLE MASQUE(print grille jeu et masque)
-    /*if(*choice=='1'){
-
+    /*
+    if(*choice=='1'){
     }
     // GENERER UN MASQUE AUTO(print grille jeu et masque)
     if(*choice=='2'){
