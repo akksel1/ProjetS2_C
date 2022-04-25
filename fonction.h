@@ -23,8 +23,11 @@ void initialize_matrix(int,int**);
 int** create_matrix(int);
 void menu1(char*);
 void menu1_1(char*);
-int menu1_2();
+void menu1_2(int, int**);
 BOOL compter_nombre_ligne(int,int**);
+void Mask_input(int**,int);
+void menu_mask_input(int**,int);
+
 
 
 #endif //PROJETS2_C_FONCTION_H

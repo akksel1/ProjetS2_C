@@ -83,7 +83,7 @@ void print_matrix(int** Z,int TL)
 void initialize_matrix(int TL,int**Z){
     for(int i=0;i<TL;i++){
         for(int j=0;j<TL;j++){
-            Z[i][j]=0;
+            Z[i][j]=1;
         }
     }
 }
@@ -117,17 +117,25 @@ BOOL compter_nombre_ligne(int TL,int**Z)
 }
 
 void Mask_input(int (**Z),int size){
-    int lig,col;
-    //On donne à la fonction une matrice initialisée à 1
-    print_matrix(Z,size);
-    printf("\nSaisir LIGNE/COLONNE pour cacher des valeurs:");
-    scanf("%d/%d",lig,col);
-    while((lig>(size-1) || lig<0)&&(lig>(size-1) || lig<0)){
-        printf("Indice incorrect. Resaisir:");
-        scanf("%d/%d",lig,col);
-    }
+    int lig=0,col=0;
+    //On donne à la fonction une grille jeu
+    printf("Sur le masque: \n * 1 -> valeurs visibles\n * 0 -> valeurs cachees\n\n");
+    //Cacher des indice
+    printf("Saisir LIGNE/COLONNE pour cacher des valeurs");
+    printf("\nSaisir -1/-1 pour arreter\n");
+    while((lig!=-1) || (col!=-1)) {
+        print_matrix(Z,size);
+        printf("Saisir:");
+        scanf("%d/%d",&lig,&col);
+        while ((lig > (size - 1) || lig < -1) && (col > (size - 1) || col < -1)) {
+            printf("Indice incorrect. Resaisir:");
+            scanf("%d/%d", lig, col);//ne fonctionne pas avec les cst ABC...
+        }
+        Z[lig][col] = 0;
 
+    }
 }
+
 
 
 
@@ -193,18 +201,18 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
     // GRILLE 4X4
     if(*choice=='1'){
         Z=create_matrix(4);
-        menu1_2(4,choice,Z);
+        menu1_2(4,Z);
 
     }
     // GRILLE 8X8
     if(*choice=='2'){
         Z=create_matrix(8);
-        menu1_2(8,choice,Z);
+        menu1_2(8,Z);
     }
     // GRILLE 16X16
     if(*choice=='3'){
         Z=create_matrix(16);
-        menu1_2(16,choice,Z);
+        menu1_2(16,Z);
     }
 
     // RETOUR AU MENU1
@@ -213,8 +221,9 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
     }
 }
 
-int menu1_2(int dim,char* choice,int** Z){       //SOUS MENU 1_2
+void menu1_2(int dim,int** Z){       //SOUS MENU 1_2
     int cpt=0;
+    char *choice;
     printf("\t--  RESOUDRE MANUELEMENT GRILLE %dx%d  --\n",dim,dim);
     printf("1 - SAISIR MANUELEMENT UN MASQUE\n");
     printf("2 - GENERER UN MASQUE\n");
@@ -254,6 +263,29 @@ int menu1_2(int dim,char* choice,int** Z){       //SOUS MENU 1_2
     }
 
 
+}
+
+void menu_mask_input(int (**Z),int size){
+    char choice;
+    fflush(stdin);
+    print_matrix(Z,size);
+    printf("\n  -- SAISIE MASQUE --\n\n");
+    printf("1 - Cacher des valeurs\n");
+    printf("R - Retour\n");
+    fflush(stdin);
+    printf("Saisir :");
+    scanf("%d",&choice);
+    while(choice!='1' && choice!='r' && choice!='R'){
+        fflush(stdin);
+        printf("Saisie incorrect. Resaisir :");
+        scanf("%c",&choice);
+    }
+    if(choice=='1'){
+        Mask_input(Z,size);
+    }
+    else{
+        menu1_2(size,Z);
+    }
 }
 
 // FIN FONCTIONS MENU
