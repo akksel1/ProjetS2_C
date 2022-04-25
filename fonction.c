@@ -81,14 +81,23 @@ void print_matrix(int** Z,int TL)
 }
 
 void initialize_matrix(int TL,int**Z){
-    for(int i=0;i<TL;i++){
-        for(int j=0;j<TL;j++){
-            Z[i][j]=0;
+    for(int i=0;i<TL;i++)
+    {
+        for(int j=0;j<TL;j++)
+        {
+            if (j%2==0)
+            {
+                Z[i][j]=0;
+            }
+            else
+            {
+                Z[i][j]=1;
+            }
         }
     }
 }
 
-BOOL compter_nombre_ligne(int TL,int**Z)
+BOOL counter_number_line(int TL,int**Z)
 {
     int cpt;
     int un=0;
@@ -107,6 +116,9 @@ BOOL compter_nombre_ligne(int TL,int**Z)
                 zero=zero+1;
             }
         }
+        printf("La ligne %d il y a %d nombre de 0 et %d nombre de 1 \n", i+1,zero,un);
+        un=0;
+        zero=0;
     }
     if (un==zero)
     {
@@ -115,6 +127,59 @@ BOOL compter_nombre_ligne(int TL,int**Z)
     return FALSE;
 
 }
+
+BOOL counter_number_column(int TL ,int**Z)
+{
+    int cpt;
+    int un=0;
+    int zero=0;
+    for (int j=0;j<TL;j++)
+    {
+        for (int i=0;i<TL;i++)
+        {
+            cpt=Z[i][j];
+            if (cpt==1)
+            {
+                un=un+1;
+            }
+            if (cpt==0)
+            {
+                zero=zero+1;
+            }
+        }
+        printf("La colonne %d il y a %d nombre de 0 et %d nombre de 1 \n", j+1,zero,un);
+        un=0;
+        zero=0;
+    }
+    if (un==zero)
+    {
+        return TRUE;
+    }
+    return FALSE;
+
+}
+
+
+BOOL compare_line(int TL ,int**Z)
+{
+    int* T = (int*) malloc(TL1 * sizeof(int*));
+
+    for (int i=0;i<TL;i++)
+    {
+        // T stock la premiere ligne du tableau
+        for (int j = 0; j < TL; j++)
+        {
+            T[i]= Z[i][j];
+        }
+    }
+
+
+
+
+
+
+
+
 
 void Mask_input(int (**Z),int size){
     int lig,col;
