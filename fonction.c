@@ -166,7 +166,7 @@ BOOL compare_line(int TL ,int**Z)
 
     for (int i=0;i<TL;i++)
     {
-        // T stock la premiere ligne du tableau
+        // T stock la premiere ligne du tableauf
         for (int j = 0; j < TL; j++)
         {
             T[i]= Z[i][j];
