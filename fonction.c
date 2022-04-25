@@ -99,7 +99,7 @@ BOOL compter_nombre_ligne(int TL,int**M)
 
 
 
-// FONCTIONS MENU
+/// FONCTIONS MENU
 
 void menu1(char* choice){       //MENU PRINCIPAL
     int cpt=0;
