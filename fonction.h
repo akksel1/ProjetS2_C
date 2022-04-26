@@ -18,18 +18,22 @@
 
 
 void Color_Text(int,int);
-void print_matrix(int**,int);
-void initialize_matrix(int,int**);
+void print_matrix(char**,int);
+void initialize_matrix(int,char**);
 int** create_matrix(int);
+BOOL counter_number_line(int,char**);
+BOOL counter_number_column(int,char**);
+BOOL compare_line(int,char**);
+void Mask_input(char**,int);
+void menu_mask_input(char**,int);
+int column_conversion(char);
+void Game_gridd(char**, char**,int);
+void copy_matrix(char**,char[4][4],int);
 void menu1(char*);
 void menu1_1(char*);
-BOOL counter_number_line(int,int**);
-BOOL counter_number_column(int,int**);
-BOOL compare_line(int,int**);
-void menu1_2(int, int**);
-void Mask_input(int**,int);
-void menu_mask_input(int**,int);
-int column_conversion(char);
+void menu1_2(int);
+void menu_1_2_1(int,char**);
+
 
 
 

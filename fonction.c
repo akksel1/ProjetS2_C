@@ -10,10 +10,10 @@
 
 int** create_matrix(int size)
 {
-    int** Z = (int**) malloc(size * sizeof(int*));
+    char (**Z) = (char**) malloc(size * sizeof(char*));
     for (int i = 0; i < size; i++)
     {
-        Z[i] = malloc(size * sizeof (int));
+        Z[i] = malloc(size * sizeof (char));
     }
     return Z;
 }
@@ -24,7 +24,7 @@ void Color_Text(int Text_Color,int Back_color) // fonction d'affichage de couleu
     SetConsoleTextAttribute(X,Back_color*16+Text_Color);
 }
 
-void print_matrix(int** Z,int TL)
+void print_matrix(char (**Z),int TL)
 {
     // Affichage d'une matrice 4x4
     if(TL==4) {
@@ -55,24 +55,24 @@ void print_matrix(int** Z,int TL)
             printf("  ");
         }
         for (int j = 0; j < TL; j++) {
-            printf("%d  ", Z[i][j]);
+            printf("%c  ", Z[i][j]);
         }
         printf("\n");
     }
 
 }
 
-void initialize_matrix(int TL,int**Z){
+void initialize_matrix(int TL,char**Z){
     for(int i=0;i<TL;i++){
         for(int j=0;j<TL;j++){
-            Z[i][j]=1;
+            Z[i][j]='1';
         }
     }
 }
 
-BOOL compter_nombre_ligne(int TL,int**Z)
+BOOL compter_nombre_ligne(int TL,char**Z)
 {
-    int cpt;
+    char cpt;
     int un=0;
     int zero=0;
     for (int i=0;i<TL;i++)
@@ -80,11 +80,11 @@ BOOL compter_nombre_ligne(int TL,int**Z)
         for (int j=0;j<TL;j++)
         {
             cpt=Z[i][j];
-            if (cpt==1)
+            if (cpt=='1')
             {
                 un=un+1;
             }
-            if (cpt==0)
+            if (cpt=='0')
             {
                 zero=zero+1;
             }
@@ -101,9 +101,9 @@ BOOL compter_nombre_ligne(int TL,int**Z)
 
 }
 
-BOOL counter_number_column(int TL ,int**Z)
+BOOL counter_number_column(int TL ,char**Z)
 {
-    int cpt;
+    char cpt;
     int un=0;
     int zero=0;
     for (int j=0;j<TL;j++)
@@ -111,11 +111,11 @@ BOOL counter_number_column(int TL ,int**Z)
         for (int i=0;i<TL;i++)
         {
             cpt=Z[i][j];
-            if (cpt==1)
+            if (cpt=='1')
             {
                 un=un+1;
             }
-            if (cpt==0)
+            if (cpt=='0')
             {
                 zero=zero+1;
             }
@@ -132,18 +132,18 @@ BOOL counter_number_column(int TL ,int**Z)
 
 }
 
-BOOL compare_line(int TL ,int**Z) {
-    int *T = (int *) malloc(TL1 * sizeof(int *));
+BOOL compare_line(int TL ,char**Z) {
+    char *T = (char *) malloc(TL1 * sizeof(char *));
 
     for (int i = 0; i < TL; i++) {
-        // T stock la premiere ligne du tableauf
+        // T stock la premiere ligne du tableau
         for (int j = 0; j < TL; j++) {
             T[i] = Z[i][j];
         }
     }
 }
 
-void Mask_input(int (**Z),int size){
+void Mask_input(char (**Z),int size){
     int lig=-1,cpt,col,verif;
     char col_char='A';
     //On donne à la fonction une grille jeu
@@ -214,9 +214,41 @@ void Mask_input(int (**Z),int size){
         //Conversion des colonnes en entier ( Ex: A <-> 1)
         if((lig!=0) && (col_char!='0')){
             col= column_conversion(col_char);
-            Z[lig-1][col] = 0;
+            Z[lig-1][col] = '0';
         }
 
+    }
+}
+
+void Game_gridd(char **masque, char **game_matrix,int dim){
+
+    //INITIALISATION DE LA GRILLE SOLUTION EN DUR
+    char solution[4][4]= {
+            {'1','0','0','1'},
+            {'1','0','1','0'},
+            {'0','1','1','0'},
+            {'0','1','0','1'}
+    };
+
+    copy_matrix(game_matrix,solution,dim);
+    for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            if(masque[i][j]=='0'){
+                Color_Text(5,0);
+                game_matrix[i][j]='_';
+                Color_Text(15,0);
+            }
+        }
+
+    }
+
+}
+
+void copy_matrix(char** game_matrix,char solution[4][4],int dim){
+    for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            game_matrix[i][j]=solution[i][j];
+        }
     }
 }
 
@@ -272,9 +304,6 @@ int column_conversion(char y){
     }
 
 }
-
-
-
 
 // FONCTIONS MENU
 
@@ -334,19 +363,16 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
 
     // GRILLE 4X4
     if(*choice=='1'){
-        Z=create_matrix(4);
-        menu1_2(4,Z);
+        menu1_2(4);
 
     }
     // GRILLE 8X8
     if(*choice=='2'){
-        Z=create_matrix(8);
-        menu1_2(8,Z);
+        menu1_2(8);
     }
     // GRILLE 16X16
     if(*choice=='3'){
-        Z=create_matrix(16);
-        menu1_2(16,Z);
+        menu1_2(16);
     }
 
     // RETOUR AU MENU1
@@ -355,7 +381,7 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
     }
 }
 
-void menu1_2(int dim,int** Z){       //SOUS MENU 1_2
+void menu1_2(int dim){       //SOUS MENU 1_2
     int cpt=0;
     char *choice;
     printf("\t--  RESOUDRE MANUELEMENT GRILLE %dx%d  --\n",dim,dim);
@@ -379,9 +405,15 @@ void menu1_2(int dim,int** Z){       //SOUS MENU 1_2
     }while(((*choice>'3') || (*choice<'1')) && (*choice!='R') && (*choice!='r'));
 
     // SAISIE MANUELLE MASQUE(print grille jeu et masque)
-    /*
+
     if(*choice=='1'){
+        char (**masque);
+        masque=create_matrix(dim);
+        initialize_matrix(dim,masque);
+        menu_1_2_1(dim,masque);
+
     }
+    /*
     // GENERER UN MASQUE AUTO(print grille jeu et masque)
     if(*choice=='2'){
 
@@ -399,7 +431,7 @@ void menu1_2(int dim,int** Z){       //SOUS MENU 1_2
 
 }
 
-void menu_mask_input(int (**Z),int size){
+void menu_mask_input(char (**Z),int size){
     char choice;
     print_matrix(Z,size);
     printf("\n  -- SAISIE MASQUE --\n\n");
@@ -417,7 +449,48 @@ void menu_mask_input(int (**Z),int size){
         Mask_input(Z,size);
     }
     else{
-        menu1_2(size,Z);
+        menu1_2(size);
+    }
+}
+
+void menu_1_2_1(int dim,char** masque){
+    char choice;
+    printf("\n  -- SAISIE MASQUE --\n\n");
+    printf("1 - Saisir/Modifier le masque\n");
+    printf("2 - Afficher le masque & la grille jeu\n");
+    printf("3 - Reinitialiser le masque & la grille jeu\n");
+    printf("R - Retour\n");
+    fflush(stdin);
+    printf("Saisir :");
+    scanf("%c",&choice);
+    while((choice<'1'||choice>'3') && choice!='r' && choice!='R'){
+        fflush(stdin);
+        printf("Saisie incorrect. Resaisir :");
+        scanf("%c", &choice);
+    }
+
+
+
+    if(choice == '1'){
+        menu_mask_input(masque,dim);
+        menu_1_2_1(dim,masque);
+    }
+    if(choice == '2'){
+        print_matrix(masque,dim);
+        char **game_matrix;
+        game_matrix=create_matrix(dim);
+        Game_gridd(masque,game_matrix,dim);
+        printf("\n");
+        print_matrix(game_matrix,dim);
+        menu_1_2_1(dim,masque);
+
+    }
+    if(choice == '3'){
+        initialize_matrix(dim,masque);
+        menu_1_2_1(dim,masque);
+    }
+    if(choice == 'R' || choice == 'r'){
+        menu1_2(dim);
     }
 }
 

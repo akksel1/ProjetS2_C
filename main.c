@@ -6,9 +6,7 @@ int main()
 {
     int ** M=NULL;
     char choice;
-    M= create_matrix(8);
-    initialize_matrix(8,M);
-    menu_mask_input(M,8);
+    menu1_2(4);
     //menu1(&choice);
     //if(((choice)!='Q')&& (choice!='q')) {
         /*M= create_matrix(16);
