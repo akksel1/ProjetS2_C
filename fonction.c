@@ -5,24 +5,6 @@
 #include "fonction.h"
 #include<conio.h>
 #include<stdio.h>
-#define A 1
-#define B 2
-#define C 3
-#define D 4
-#define E 5
-#define F 6
-#define I 7
-#define J 8
-#define K 9
-#define L 10
-#define M 11
-#define N 12
-#define O 13
-#define P 14
-
-
-
-
 
 //BOOL verif(int , int S[][]{
 
@@ -150,49 +132,146 @@ BOOL counter_number_column(int TL ,int**Z)
 
 }
 
+BOOL compare_line(int TL ,int**Z) {
+    int *T = (int *) malloc(TL1 * sizeof(int *));
 
-BOOL compare_line(int TL ,int**Z)
-{
-    int* T = (int*) malloc(TL1 * sizeof(int*));
-
-    for (int i=0;i<TL;i++)
-    {
+    for (int i = 0; i < TL; i++) {
         // T stock la premiere ligne du tableauf
-        for (int j = 0; j < TL; j++)
-        {
-            T[i]= Z[i][j];
+        for (int j = 0; j < TL; j++) {
+            T[i] = Z[i][j];
         }
     }
-
-
-
-
-
-
-
-
+}
 
 void Mask_input(int (**Z),int size){
-    int lig=0,col=0;
+    int lig=-1,cpt,col,verif;
+    char col_char='A';
     //On donne à la fonction une grille jeu
-    printf("Sur le masque: \n * 1 -> valeurs visibles\n * 0 -> valeurs cachees\n\n");
+    printf("\nSur le masque: \n * 1 -> valeurs visibles\n * 0 -> valeurs cachees\n\n");
+
     //Cacher des indice
-    printf("Saisir LIGNE/COLONNE pour cacher des valeurs");
-    printf("\nSaisir -1/-1 pour arreter\n");
-    while((lig!=-1) || (col!=-1)) {
+    printf("Saisir <LIGNE>/<COLONNE> pour cacher des valeurs");
+    printf("\nSaisir 0/0 pour arreter\n\n");
+    while((lig!=0) || (col_char!='0')) {
+        fflush(stdin);
         print_matrix(Z,size);
         printf("Saisir:");
-        scanf("%d/%d",&lig,&col);
-        while ((lig > (size - 1) || lig < -1) && (col > (size - 1) || col < -1)) {
-            printf("Indice incorrect. Resaisir:");
-            scanf("%d/%d", lig, col);//ne fonctionne pas avec les cst ABC...
+        verif=scanf("%d/%c",&lig,&col_char);
+
+        /* SAISIE SECURISEE
+        Verif --> vérifier si l'user saisi le bon type (char à la place d'un int par ex.
+         */
+
+        if(size==4){
+            cpt=0;
+            while (((lig > size)|| (lig < 1)) || (col_char > 'D' || col_char < 'A') || verif==0) {
+                if((lig==0)&&(col_char=='0')) //Exception à la saisie sécurisée
+                    break;
+                if(cpt%2==1){
+                    Color_Text(4,0);
+                    printf("\n----\nRAPPEL: Ligne (1 - ... - 4)\nET\nColonne (A - ... - D)\n----\n") ;
+                    Color_Text(15,0);
+                }
+                printf("Indice incorrect. Resaisir:");
+                fflush(stdin);
+                verif=scanf("%d/%c",&lig,&col_char);
+                cpt++;
+            }
         }
-        Z[lig][col] = 0;
+        if(size==8){
+            cpt=0;
+            while (((lig > size)|| (lig < 1)) || (col_char > 'H' || col_char < 'A') || verif==0) {
+                if((lig==0)&&(col_char=='0')) //Exception à la saisie sécurisée
+                    break;
+                if(cpt%2==1){
+                    Color_Text(4,0);
+                    printf("\n----\nRAPPEL: Ligne (1 - ... - 8)\nET\nColonne (A - ... - H)\n----\n") ;
+                    Color_Text(15,0);
+                }
+                printf("Indice incorrect. Resaisir:");
+                fflush(stdin);
+                verif=scanf("%d/%c",&lig,&col_char);
+                cpt++;
+            }
+        }
+        if(size==16){
+            cpt=0;
+            while (((lig > size)|| (lig < 1)) || (col_char > 'P' || col_char < 'A') || verif==0) {
+                if((lig==0)&&(col_char=='0')) //Exception à la saisie sécurisée
+                    break;
+                if(cpt%2==1){
+                    Color_Text(4,0);
+                    printf("\n----\nRAPPEL: Ligne (1 - ... - 16)\nET\nColonne (A - ... - P)\n----\n") ;
+                    Color_Text(15,0);
+                }
+                printf("Indice incorrect. Resaisir:");
+                fflush(stdin);
+                verif=scanf("%d/%c",&lig,&col_char);
+                cpt++;
+            }
+        }
+
+        //Conversion des colonnes en entier ( Ex: A <-> 1)
+        if((lig!=0) && (col_char!='0')){
+            col= column_conversion(col_char);
+            Z[lig-1][col] = 0;
+        }
 
     }
 }
 
+//Utilisé dans Mask_input
+int column_conversion(char y){
+    if(y=='A'){
+        return 0;
+    }
+    if(y=='B'){
+        return 1;
+    }
+    if(y=='C'){
+        return 2;
+    }
+    if(y=='D'){
+        return 3;
+    }
+    if(y=='E'){
+        return 4;
+    }
+    if(y=='F'){
+        return 5;
+    }
+    if(y=='G'){
+        return 6;
+    }
+    if(y=='H'){
+        return 7;
+    }
+    if(y=='I'){
+        return 8;
+    }
+    if(y=='J'){
+        return 9;
+    }
+    if(y=='K'){
+        return 10;
+    }
+    if(y=='L'){
+        return 11;
+    }
+    if(y=='M'){
+        return 12;
+    }
+    if(y=='N'){
+        return 13;
+    }
+    if(y=='O'){
+        return 14;
+    }
+    if(y=='P'){
+        return 15;
+    }
 
+}
 
 
 
@@ -228,7 +307,6 @@ void menu1(char* choice){       //MENU PRINCIPAL
     }
      */
 }
-
 
 void menu1_1(char* choice){         //SOUS MENU 1_1
     int cpt=0;
@@ -323,14 +401,13 @@ void menu1_2(int dim,int** Z){       //SOUS MENU 1_2
 
 void menu_mask_input(int (**Z),int size){
     char choice;
-    fflush(stdin);
     print_matrix(Z,size);
     printf("\n  -- SAISIE MASQUE --\n\n");
     printf("1 - Cacher des valeurs\n");
     printf("R - Retour\n");
     fflush(stdin);
     printf("Saisir :");
-    scanf("%d",&choice);
+    scanf("%c",&choice);
     while(choice!='1' && choice!='r' && choice!='R'){
         fflush(stdin);
         printf("Saisie incorrect. Resaisir :");

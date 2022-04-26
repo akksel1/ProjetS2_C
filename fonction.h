@@ -29,6 +29,7 @@ BOOL compare_line(int,int**);
 void menu1_2(int, int**);
 void Mask_input(int**,int);
 void menu_mask_input(int**,int);
+int column_conversion(char);
 
 
 
