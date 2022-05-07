@@ -34,6 +34,7 @@ void menu1(char*);
 void menu1_1(char*);
 void menu1_2(int);
 void menu_1_2_1(int,char**);
+BOOL compare_game_with_solution(int, char,char**,char**);
 
 
 

@@ -241,7 +241,16 @@ BOOL compare_column(int TL ,char**Z)
     }
 }
 
-
+BOOL compare_game_with_solution(int line, char column,char** G,char** S)
+{
+    int j;
+    j=column_conversion(column);
+    if (G[line][j]==S[line][j])
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
 
 void Mask_input(char (**Z),int size){
     int lig=-1,cpt,col,verif;
