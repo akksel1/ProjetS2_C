@@ -4,16 +4,13 @@
 
 int main()
 {
-    int ** M=NULL;
+    char ** M=NULL;
     char choice;
-    menu1_2(4);
-    //menu1(&choice);
-    //if(((choice)!='Q')&& (choice!='q')) {
-        /*M= create_matrix(16);
-        initialize_matrix(16, M);
-        print_matrix(M, 16);
-        getch(); //Pour ne pas arrêter le programme automatiquement (Conio.h)}
-         */
+    M= create_matrix(4);
+    initialize_matrix(4,M);
+    print_matrix(M,4);
+    compare_column(4,M);
+
 
     return 0;
 

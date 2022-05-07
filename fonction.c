@@ -8,7 +8,7 @@
 
 //BOOL verif(int , int S[][]{
 
-int** create_matrix(int size)
+char** create_matrix(int size)
 {
     char (**Z) = (char**) malloc(size * sizeof(char*));
     for (int i = 0; i < size; i++)
@@ -63,14 +63,25 @@ void print_matrix(char (**Z),int TL)
 }
 
 void initialize_matrix(int TL,char**Z){
-    for(int i=0;i<TL;i++){
-        for(int j=0;j<TL;j++){
+    for(int i=0;i<TL;i++)
+    {
+        for(int j=0;j<TL;j++)
+        {
             Z[i][j]='1';
         }
     }
+    Z[0][0] = '0';
+    Z[0][1] = '1';
+    Z[0][2] = '0';
+    Z[0][3] = '1';
+    Z[1][0] = '0';
+    Z[1][1] = '0';
+    Z[1][2] = '0';
+    Z[1][3] = '0';
+
 }
 
-BOOL compter_nombre_ligne(int TL,char**Z)
+BOOL counter_number_line(int TL,char**Z)
 {
     char cpt;
     int un=0;
@@ -132,16 +143,105 @@ BOOL counter_number_column(int TL ,char**Z)
 
 }
 
-BOOL compare_line(int TL ,char**Z) {
-    char *T = (char *) malloc(TL1 * sizeof(char *));
+BOOL compare_line(int TL ,char**Z)
+{
+    char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
 
-    for (int i = 0; i < TL; i++) {
-        // T stock la premiere ligne du tableau
-        for (int j = 0; j < TL; j++) {
-            T[i] = Z[i][j];
+
+    // T stock la premiere ligne du tableau
+    for (int i = 0; i < TL; i++)
+    {
+        for (int j = 0; j < TL; j++)
+        {
+            T[j] = Z[i][j];
+        }
+
+        // Verification ligne identique
+
+        BOOL verif=TRUE;
+        int x;
+        for (int t= 0; t<TL;t++)
+        {
+            if (i==t)
+            {
+                continue;
+            }
+            x=0;
+            verif=TRUE;
+            while (verif==TRUE && x<TL)
+            {
+                if (T[x]!=Z[t][x])
+                {
+                    verif=FALSE;
+                }
+                x++;
+
+            }
+
+            if (verif==TRUE)
+            {
+                printf("la ligne %d est identique \n",t+1);
+            }
+            else
+            {
+                printf("la ligne %d n'est pas identique \n ",t+1);
+            }
+
+
         }
     }
 }
+
+BOOL compare_column(int TL ,char**Z)
+{
+    char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
+
+
+    // T stock la premiere colonne du tableau
+    for (int j = 0; j < TL; j++)
+    {
+        for (int i = 0; i< TL; i++)
+        {
+            T[i] = Z[i][j];
+        }
+
+        // Verification colonne identique
+
+        BOOL verif=TRUE;
+        int t;
+        for (int x= 0; x<TL;x++)
+        {
+            if (j==x)
+            {
+                continue;
+            }
+            t=0;
+            verif=TRUE;
+            while (verif==TRUE && t<TL)
+            {
+                if (T[t]!=Z[t][x])
+                {
+                    verif=FALSE;
+                }
+                t++;
+
+            }
+
+            if (verif==TRUE)
+            {
+                printf("la colonne %d est identique \n",x+1);
+            }
+            else
+            {
+                printf("la colonne %d n'est pas identique \n ",x+1);
+            }
+
+
+        }
+    }
+}
+
+
 
 void Mask_input(char (**Z),int size){
     int lig=-1,cpt,col,verif;
