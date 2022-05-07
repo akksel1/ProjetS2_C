@@ -6,6 +6,7 @@
 #include<conio.h>
 #include<stdio.h>
 
+
 //BOOL verif(int , int S[][]{
 
 char** create_matrix(int size)
@@ -252,82 +253,108 @@ BOOL compare_game_with_solution(int line, char column,char** G,char** S)
     return FALSE;
 }
 
-void Mask_input(char (**Z),int size){
-    int lig=-1,cpt,col,verif;
+BOOL saisie_securisee(int size, char (**Z),int* lig_ptr,char* col_char_ptr){
+    int cpt,col,verif;
+    int lig=-1;        //INITIALISATION
     char col_char='A';
+
+    printf("Saisir 0/0 pour arreter\n\n");
+    fflush(stdin);
+    print_matrix(Z, size);
+    printf("Saisir:");
+    /*
+    SAISIE SECURISEE
+        Verif --> vérifier si l'user saisi le bon type (char à la place d'un int par ex.
+    */
+    verif = scanf("%d/%c", &lig, &col_char);
+
+
+
+    if (size == 4) {
+        cpt = 0;
+        while (((lig > size) || (lig < 1)) || (col_char > 'D' || col_char < 'A') || verif == 0) {
+            if(lig == 0 && col_char == '0'){
+                break;
+            }
+            if (cpt % 2 == 1) {
+                Color_Text(4, 0);
+                printf("\n----\nRAPPEL: Ligne (1 - ... - 4)\nET\nColonne (A - ... - D)\n----\n");
+                Color_Text(15, 0);
+            }
+            printf("Indice incorrect. Resaisir:");
+            fflush(stdin);
+            verif = scanf("%d/%c", &lig, &col_char);
+            cpt++;
+        }
+    }
+    if (size == 8) {
+        cpt = 0;
+        while (((lig > size) || (lig < 1)) || (col_char > 'H' || col_char < 'A') || verif == 0) {
+            if(lig == 0 && col_char == '0'){
+                break;
+            }
+            if (cpt % 2 == 1) {
+                Color_Text(4, 0);
+                printf("\n----\nRAPPEL: Ligne (1 - ... - 8)\nET\nColonne (A - ... - H)\n----\n");
+                Color_Text(15, 0);
+            }
+            printf("Indice incorrect. Resaisir:");
+            fflush(stdin);
+            verif = scanf("%d/%c", &lig, &col_char);
+            cpt++;
+        }
+    }
+    if (size == 16) {
+        cpt = 0;
+        while (((lig > size) || (lig < 1)) || (col_char > 'P' || col_char < 'A') || verif == 0) {
+            if(lig == 0 && col_char == '0'){
+                break;
+            }
+
+            if (cpt % 2 == 1) {
+                Color_Text(4, 0);
+                printf("\n----\nRAPPEL: Ligne (1 - ... - 16)\nET\nColonne (A - ... - P)\n----\n");
+                Color_Text(15, 0);
+            }
+            printf("Indice incorrect. Resaisir:");
+            fflush(stdin);
+            verif = scanf("%d/%c", &lig, &col_char);
+            cpt++;
+        }
+    }
+    if(lig == 0 && col_char == '0'){
+        return TRUE; // L'utilisateur arrête la saisie
+    }
+    (*lig_ptr)=lig;
+    (*col_char_ptr)=col_char;
+    return FALSE;
+
+}
+
+void Mask_input(char (**Z),int size){
+    int col;
+    char col_char;
+    int lig;
+    BOOL res = FALSE;
+
     //On donne à la fonction une grille jeu
     printf("\nSur le masque: \n * 1 -> valeurs visibles\n * 0 -> valeurs cachees\n\n");
+    printf("Saisir <LIGNE>/<COLONNE> pour cacher des valeurs\n");
 
-    //Cacher des indice
-    printf("Saisir <LIGNE>/<COLONNE> pour cacher des valeurs");
-    printf("\nSaisir 0/0 pour arreter\n\n");
-    while((lig!=0) || (col_char!='0')) {
-        fflush(stdin);
-        print_matrix(Z,size);
-        printf("Saisir:");
-        verif=scanf("%d/%c",&lig,&col_char);
+    //Saisie indice
+    while(res == FALSE) {
 
-        /* SAISIE SECURISEE
-        Verif --> vérifier si l'user saisi le bon type (char à la place d'un int par ex.
-         */
-
-        if(size==4){
-            cpt=0;
-            while (((lig > size)|| (lig < 1)) || (col_char > 'D' || col_char < 'A') || verif==0) {
-                if((lig==0)&&(col_char=='0')) //Exception à la saisie sécurisée
-                    break;
-                if(cpt%2==1){
-                    Color_Text(4,0);
-                    printf("\n----\nRAPPEL: Ligne (1 - ... - 4)\nET\nColonne (A - ... - D)\n----\n") ;
-                    Color_Text(15,0);
-                }
-                printf("Indice incorrect. Resaisir:");
-                fflush(stdin);
-                verif=scanf("%d/%c",&lig,&col_char);
-                cpt++;
-            }
-        }
-        if(size==8){
-            cpt=0;
-            while (((lig > size)|| (lig < 1)) || (col_char > 'H' || col_char < 'A') || verif==0) {
-                if((lig==0)&&(col_char=='0')) //Exception à la saisie sécurisée
-                    break;
-                if(cpt%2==1){
-                    Color_Text(4,0);
-                    printf("\n----\nRAPPEL: Ligne (1 - ... - 8)\nET\nColonne (A - ... - H)\n----\n") ;
-                    Color_Text(15,0);
-                }
-                printf("Indice incorrect. Resaisir:");
-                fflush(stdin);
-                verif=scanf("%d/%c",&lig,&col_char);
-                cpt++;
-            }
-        }
-        if(size==16){
-            cpt=0;
-            while (((lig > size)|| (lig < 1)) || (col_char > 'P' || col_char < 'A') || verif==0) {
-                if((lig==0)&&(col_char=='0')) //Exception à la saisie sécurisée
-                    break;
-                if(cpt%2==1){
-                    Color_Text(4,0);
-                    printf("\n----\nRAPPEL: Ligne (1 - ... - 16)\nET\nColonne (A - ... - P)\n----\n") ;
-                    Color_Text(15,0);
-                }
-                printf("Indice incorrect. Resaisir:");
-                fflush(stdin);
-                verif=scanf("%d/%c",&lig,&col_char);
-                cpt++;
-            }
-        }
+        res = saisie_securisee(size, Z, &lig, &col_char);
 
         //Conversion des colonnes en entier ( Ex: A <-> 1)
-        if((lig!=0) && (col_char!='0')){
-            col= column_conversion(col_char);
-            Z[lig-1][col] = '0';
+        if ((lig != 0) && (col_char != '0')) {
+            col = column_conversion(col_char);
+            Z[lig - 1][col] = '0';
         }
-
     }
+
 }
+
 
 void Game_gridd(char **masque, char **game_matrix,int dim){
 
@@ -540,6 +567,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
 
 }
 
+//FINI
 void menu_mask_input(char (**Z),int size){
     char choice;
     print_matrix(Z,size);
@@ -562,6 +590,7 @@ void menu_mask_input(char (**Z),int size){
     }
 }
 
+//FINI
 void menu_1_2_1(int dim,char** masque){
     char choice;
     printf("\n  -- SAISIE MASQUE --\n\n");
