@@ -63,7 +63,17 @@ void print_matrix(char (**Z),int TL)
 
 }
 
-void initialize_matrix(int TL,char**Z){
+void initialize_matrix0(int TL,char**Z){
+    for(int i=0;i<TL;i++)
+    {
+        for(int j=0;j<TL;j++)
+        {
+            Z[i][j]='0';
+        }
+    }
+}
+
+void initialize_matrix1(int TL,char**Z){
     for(int i=0;i<TL;i++)
     {
         for(int j=0;j<TL;j++)
@@ -346,6 +356,87 @@ void Mask_input(char (**Z),int size){
 
 }
 
+int Random_index(int size){
+    int nb, random;
+    srand(time(NULL));
+    random = rand();
+    nb = random % size;
+    return nb;
+
+}
+// On importe une matrice masque initialisé à 1, une taille, une matrice test qui nous permet de stocker les indices déjà cachés par le programme ET une difficulté
+void generate_matrix(char** masque, int size, char** test, int difficulte_choice){
+    int nb_case; // NB de case caché
+    int cpt=0; // Nb d'opération
+    int lig_random;
+    int col_random;
+    int random;
+
+    /*
+     * Difficulté 1 = 25% caché
+     * Difficulté 2 = 50% caché
+     * Difficulté 3 = 75% caché
+     */
+
+    if(difficulte_choice=='1'){
+        cpt=0;
+        nb_case = (25/100) * size;
+        while(cpt < nb_case){
+            lig_random = Random_index(size);
+            col_random = Random_index(size);
+            if(test[lig_random][col_random] == 0){
+                test[lig_random][col_random] = 1;
+                // On masque dans masque
+                masque[lig_random][col_random] = 0;
+                cpt++;
+            }
+            else{
+                break;
+            }
+        }
+    }
+
+    if(difficulte_choice=='2'){
+        cpt=0;
+        nb_case = (50/100) * size;
+        while(cpt < nb_case){
+            lig_random = Random_index(size);
+            col_random = Random_index(size);
+            if(test[lig_random][col_random] == 0){
+                test[lig_random][col_random] = 1;
+                // On masque dans masque
+                masque[lig_random][col_random] = 0;
+                cpt++;
+            }
+            else{
+                break;
+            }
+        }
+    }
+    if(difficulte_choice=='3'){
+        cpt=0;
+        nb_case = (75/100) * size;
+        while(cpt < nb_case){
+            lig_random = Random_index(size);
+            col_random = Random_index(size);
+            if(test[lig_random][col_random] == 0){
+                test[lig_random][col_random] = 1;
+                // On masque dans masque
+                masque[lig_random][col_random] = 0;
+                cpt++;
+            }
+            else{
+                break;
+            }
+        }
+    }
+}
+
+
+
+
+
+
 
 void Game_gridd(char **masque, char **game_matrix,int dim){
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
@@ -584,15 +675,25 @@ void menu1_2(int dim){       //SOUS MENU 1_2
     if(*choice=='1'){
         char (**masque);
         masque=create_matrix(dim);
-        initialize_matrix(dim,masque);
+        initialize_matrix1(dim,masque);
         menu_1_2_1(dim,masque);
 
     }
-    /*
+
     // GENERER UN MASQUE AUTO(print grille jeu et masque)
     if(*choice=='2'){
+        int difficulte;
+        char(**masque) = create_matrix(dim);
+        initialize_matrix1(dim,masque);
+        char(**test) = create_matrix(dim);
+        initialize_matrix0(dim,test);
+        difficulte=menu_difficulte();
+        generate_matrix(masque,dim,test,difficulte);
+        printf("\n -- MASQUE GENERE --\n");
+        print_matrix(masque,dim);
 
     }
+    /*
     // JOUER AVEC UN MASQUE AUTO
     if(*choice=='3'){
 
@@ -669,7 +770,7 @@ void menu_1_2_1(int dim,char** masque){
 
     }
     if(choice == '3'){
-        initialize_matrix(dim,masque);
+        initialize_matrix1(dim,masque);
         menu_1_2_1(dim,masque);
     }
     if(choice == 'R' || choice == 'r'){
@@ -677,4 +778,19 @@ void menu_1_2_1(int dim,char** masque){
     }
 }
 
+char menu_difficulte(){
+    char difficulty_choice;
+    printf("\n -- DIFFICULTE --\n\n");
+    printf("1 - DEBUTANT\n");
+    printf("2 - MOYEN\n");
+    printf("3 - EXPERT\n");
+    printf("Saisir :\n");
+    fflush(stdin);
+    scanf("%c",&difficulty_choice);
+    while(difficulty_choice<'1' || difficulty_choice>'3'){
+        printf("Saisie incorrect. Resaisir:\n");
+        scanf("%c",&difficulty_choice);
+    }
+    return difficulty_choice;
+}
 // FIN FONCTIONS MENU
