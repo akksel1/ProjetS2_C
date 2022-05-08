@@ -71,15 +71,6 @@ void initialize_matrix(int TL,char**Z){
             Z[i][j]='1';
         }
     }
-    Z[0][0] = '0';
-    Z[0][1] = '1';
-    Z[0][2] = '0';
-    Z[0][3] = '1';
-    Z[1][0] = '0';
-    Z[1][1] = '0';
-    Z[1][2] = '0';
-    Z[1][3] = '0';
-
 }
 
 BOOL counter_number_line(int TL,char**Z)
@@ -357,16 +348,50 @@ void Mask_input(char (**Z),int size){
 
 
 void Game_gridd(char **masque, char **game_matrix,int dim){
-
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
-    char solution[4][4]= {
-            {'1','0','0','1'},
-            {'1','0','1','0'},
-            {'0','1','1','0'},
-            {'0','1','0','1'}
-    };
-
-    copy_matrix(game_matrix,solution,dim);
+    if(dim==4) {
+        char solution[4][4] = {
+                {'1', '0', '0', '1'},
+                {'1', '0', '1', '0'},
+                {'0', '1', '1', '0'},
+                {'0', '1', '0', '1'}
+        };
+        copy_matrix4(game_matrix,solution,dim);
+    }
+    if(dim==8) {
+        char solution2[8][8] = {
+                {'1', '0', '0', '1','1', '0', '0', '1'},
+                {'1', '0', '1', '0','1', '0', '1', '0'},
+                {'0', '1', '1', '0','0', '1', '1', '0'},
+                {'0', '1', '0', '1','0', '1', '0', '1'},
+                {'1', '0', '0', '1','1', '0', '0', '1'},
+                {'1', '0', '1', '0','1', '0', '1', '0'},
+                {'0', '1', '1', '0','0', '1', '1', '0'},
+                {'0', '1', '0', '1','0', '1', '0', '1'}
+        };
+        copy_matrix8(game_matrix,solution2,dim);
+    }
+    if(dim==16) {
+        char solution1[16][16] = {
+                {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
+                {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
+                {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
+                {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
+                {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
+                {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
+                {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
+                {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
+                {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
+                {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
+                {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
+                {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
+                {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
+                {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
+                {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
+                {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'}
+        };
+        copy_matrix16(game_matrix,solution1,dim);
+    }
     for(int i=0;i<dim;i++){
         for(int j=0;j<dim;j++){
             if(masque[i][j]=='0'){
@@ -380,7 +405,21 @@ void Game_gridd(char **masque, char **game_matrix,int dim){
 
 }
 
-void copy_matrix(char** game_matrix,char solution[4][4],int dim){
+void copy_matrix4(char** game_matrix,char solution[4][4],int dim){
+    for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            game_matrix[i][j]=solution[i][j];
+        }
+    }
+}
+void copy_matrix8(char** game_matrix,char solution[8][8],int dim){
+    for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            game_matrix[i][j]=solution[i][j];
+        }
+    }
+}
+void copy_matrix16(char** game_matrix,char solution[16][16],int dim){
     for(int i=0;i<dim;i++){
         for(int j=0;j<dim;j++){
             game_matrix[i][j]=solution[i][j];
@@ -614,11 +653,17 @@ void menu_1_2_1(int dim,char** masque){
         menu_1_2_1(dim,masque);
     }
     if(choice == '2'){
+        Color_Text(5,0);
+        printf("\n   -- MASQUE --\n");
+        Color_Text(15,0);
         print_matrix(masque,dim);
         char **game_matrix;
         game_matrix=create_matrix(dim);
         Game_gridd(masque,game_matrix,dim);
         printf("\n");
+        Color_Text(5,0);
+        printf("   -- GRILLE JEU --\n");
+        Color_Text(15,0);
         print_matrix(game_matrix,dim);
         menu_1_2_1(dim,masque);
 
