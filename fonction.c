@@ -5,7 +5,7 @@
 #include "fonction.h"
 #include<conio.h>
 #include<stdio.h>
-
+#include <time.h>
 
 //BOOL verif(int , int S[][]{
 
@@ -19,7 +19,8 @@ char** create_matrix(int size)
     return Z;
 }
 
-void Color_Text(int Text_Color,int Back_color) // fonction d'affichage de couleurs trouvé sur OpenClassroom
+// Fonction d'affichage de couleurs trouvé sur OpenClassroom
+void Color_Text(int Text_Color,int Back_color)
 {
     HANDLE X=GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(X,Back_color*16+Text_Color);
@@ -437,7 +438,6 @@ void generate_matrix(char** masque, int size, char** test, int difficulte_choice
 
 
 
-
 void Game_gridd(char **masque, char **game_matrix,int dim){
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
     if(dim==4) {
@@ -503,6 +503,7 @@ void copy_matrix4(char** game_matrix,char solution[4][4],int dim){
         }
     }
 }
+
 void copy_matrix8(char** game_matrix,char solution[8][8],int dim){
     for(int i=0;i<dim;i++){
         for(int j=0;j<dim;j++){
@@ -510,6 +511,7 @@ void copy_matrix8(char** game_matrix,char solution[8][8],int dim){
         }
     }
 }
+
 void copy_matrix16(char** game_matrix,char solution[16][16],int dim){
     for(int i=0;i<dim;i++){
         for(int j=0;j<dim;j++){
@@ -517,7 +519,6 @@ void copy_matrix16(char** game_matrix,char solution[16][16],int dim){
         }
     }
 }
-
 //Utilisé dans Mask_input
 int column_conversion(char y){
     if(y=='A'){
@@ -706,7 +707,6 @@ void menu1_2(int dim){       //SOUS MENU 1_2
 
 
 }
-
 //FINI
 void menu_mask_input(char (**Z),int size){
     char choice;
@@ -729,7 +729,6 @@ void menu_mask_input(char (**Z),int size){
         menu1_2(size);
     }
 }
-
 //FINI
 void menu_1_2_1(int dim,char** masque){
     char choice;
@@ -794,3 +793,4 @@ char menu_difficulte(){
     return difficulty_choice;
 }
 // FIN FONCTIONS MENU
+

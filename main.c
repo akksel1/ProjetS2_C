@@ -6,7 +6,8 @@ int main()
 {
     char ** M=NULL;
     char choice;
-    menu1(&choice);
+    menu1_2(DIM);
+
 
     return 0;
 
