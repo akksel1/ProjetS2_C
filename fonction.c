@@ -186,30 +186,22 @@ BOOL counter_number_column(int TL ,char**Z,int col)
     char cpt;
     int un=0;
     int zero=0;
-    for (int j=0;j<TL;j++)
-    {
-        for (int i=0;i<TL;i++)
-        {
-            cpt=Z[i][j];
-            if (cpt=='1')
-            {
-                un=un+1;
-            }
-            if (cpt=='0')
-            {
-                zero=zero+1;
-            }
-        }
-        printf("La colonne %d il y a %d nombre de 0 et %d nombre de 1 \n", j+1,zero,un);
-        un=0;
-        zero=0;
-    }
-    if (un==zero)
-    {
-        return TRUE;
-    }
-    return FALSE;
 
+    for(int i=0;i<TL;i++){
+        cpt=Z[i][col];
+        if (cpt=='1')
+        {
+            un=un+1;
+        }
+        if (cpt=='0')
+        {
+            zero=zero+1;
+        }
+    }
+    if(zero!=un) {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 BOOL compare_line(int TL ,char**Z)
@@ -249,11 +241,13 @@ BOOL compare_line(int TL ,char**Z)
 
             if (verif==TRUE)
             {
-                printf("la ligne %d est identique \n",t+1);
+                //printf("la ligne %d est identique \n",t+1);
+                return FALSE;
             }
             else
             {
-                printf("la ligne %d n'est pas identique \n ",t+1);
+                //printf("la ligne %d n'est pas identique \n ",t+1);
+                return TRUE;
             }
 
 
@@ -298,11 +292,13 @@ BOOL compare_column(int TL ,char**Z)
 
             if (verif==TRUE)
             {
-                printf("la colonne %d est identique \n",x+1);
+                //printf("la colonne %d est identique \n",x+1);
+                return FALSE;
             }
             else
             {
-                printf("la colonne %d n'est pas identique \n ",x+1);
+                //printf("la colonne %d n'est pas identique \n ",x+1);
+                return TRUE;
             }
 
 
@@ -316,20 +312,34 @@ BOOL compare_indice_suivant_ligne(int TL,char**Z)
     char p;
     for (int i=0;i<TL;i++)
     {
-        for (int j=0;j<TL-2;j++)
+        for (int j=2;j<TL-2;j++)
         {
             p=conversion_column(j);
             if (Z[i][j]=='0' && Z[i][j+1]=='0' && Z[i][j+2]=='0')
             {
-                printf(" Il y a 3 zero d'affiler dans la meme ligne : ");
-                printf("case[%d] [%c] \n",i+1,p);
+                //printf(" Il y a 3 zero d'affiler dans la meme ligne : ");
+                //printf("case[%d] [%c] \n",i+1,p);
+                return FALSE;
+            }
+
+            if (Z[i][j]=='0' && Z[i][j-1]=='0' && Z[i][j-2]=='0')
+            {
+                //printf(" Il y a 3 zero d'affiler dans la meme ligne : ");
+                //printf("case[%d] [%c] \n",i+1,p);
                 return FALSE;
             }
 
             if (Z[i][j]=='1' && Z[i][j+1]=='1' && Z[i][j+2]=='1')
             {
-                printf(" Il y a 3 un d'affiler dans la meme ligne : ");
-                printf("case [%d] [%c] \n",i+1,p);
+                //printf(" Il y a 3 un d'affiler dans la meme ligne : ");
+                //printf("case [%d] [%c] \n",i+1,p);
+                return FALSE;
+            }
+
+            if (Z[i][j]=='1' && Z[i][j-1]=='1' && Z[i][j-2]=='1')
+            {
+                //printf(" Il y a 3 un d'affiler dans la meme ligne : ");
+                //printf("case [%d] [%c] \n",i+1,p);
                 return FALSE;
             }
         }
@@ -340,23 +350,39 @@ BOOL compare_indice_suivant_ligne(int TL,char**Z)
 BOOL compare_indice_suivant_colonne(int TL,char**Z)
 {
     char p;
-    for (int i=0;i<TL-2;i++)
+    for (int i=2;i<TL-2;i++)
     {
         for (int j=0;j<TL;j++)
         {
             p=conversion_column(j);
             if (Z[i][j]=='0' && Z[i+1][j]=='0' && Z[i+2][j]=='0')
             {
-                printf(" Il y a 3 zero d'affiler dans la meme colonne : ");
-                printf("indice [%d] [%c]  \n",i+1,p);
+                //printf(" Il y a 3 zero d'affiler dans la meme colonne : ");
+                //printf("indice [%d] [%c]  \n",i+1,p);
                 return FALSE;
             }
+
+            if (Z[i][j]=='0' && Z[i-1][j]=='0' && Z[i-2][j]=='0')
+            {
+                //printf(" Il y a 3 zero d'affiler dans la meme colonne : ");
+                //printf("indice [%d] [%c]  \n",i+1,p);
+                return FALSE;
+            }
+
             if (Z[i][j]=='1' && Z[i+1][j]=='1' && Z[i+2][j]=='1')
-            {+
-                printf(" Il y a 3 un d'affiler dans la meme colonne : \n");
-                printf("case [%d] [%c] \n",i+1,p);
+            {
+                //printf(" Il y a 3 un d'affiler dans la meme colonne : \n");
+                //printf("case [%d] [%c] \n",i+1,p);
                 return FALSE;
             }
+
+            if (Z[i][j]=='1' && Z[i-1][j]=='1' && Z[i-2][j]=='1')
+            {
+                //printf(" Il y a 3 un d'affiler dans la meme colonne : \n");
+                //printf("case [%d] [%c] \n",i+1,p);
+                return FALSE;
+            }
+
         }
     }
     return TRUE;
@@ -945,7 +971,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
 
 
 
-        }while((correct==FALSE)||(trois_indice == FALSE)&&(comp == FALSE) &&(egal==FALSE));
+        }while(egal==FALSE);
 
 
 
