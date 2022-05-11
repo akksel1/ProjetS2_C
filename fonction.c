@@ -508,10 +508,13 @@ void generate_matrix(char** masque, int size, char** test, int difficulte_choice
     if(difficulte_choice=='1'){
         cpt=0;
         nb_case=(0.25)*(size*size);
+        lig_random = Random_index(size);
+        col_random = Random_index(size);
         while(cpt < nb_case){
-
-            lig_random = Random_index(size);
-            col_random = Random_index(size);
+            lig_random += clock();
+            lig_random = lig_random %size;
+            col_random += clock();
+            col_random = col_random %size;
             if(test[lig_random][col_random] == '0'){
                 test[lig_random][col_random] = '1';
                 // On masque dans masque
@@ -529,10 +532,14 @@ void generate_matrix(char** masque, int size, char** test, int difficulte_choice
     if(difficulte_choice=='2'){
         cpt=0;
         nb_case = (0.5) * (size*size);
+        lig_random = Random_index(size);
+        col_random = Random_index(size);
         while(cpt < nb_case){
-            lig_random = Random_index(size);
-            col_random = Random_index(size);
 
+            lig_random += clock();
+            lig_random = lig_random %size;
+            col_random += clock();
+            col_random = col_random %size;
             if(test[lig_random][col_random] == '0'){
                 test[lig_random][col_random] = '1';
                 // On masque dans masque
@@ -794,6 +801,8 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
 void menu1_2(int dim){       //SOUS MENU 1_2
     int cpt=0;
     char *choice;
+    char **game_matrix;
+
     printf("\t--  RESOUDRE MANUELEMENT GRILLE %dx%d  --\n",dim,dim);
     printf("1 - SAISIR MANUELEMENT UN MASQUE\n");
     printf("2 - GENERER UN MASQUE\n");
@@ -835,6 +844,15 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         generate_matrix(masque,dim,test,difficulte);
         printf("\n -- MASQUE GENERE --\n");
         print_mask(masque,dim);
+        printf("\n");
+        game_matrix=create_matrix(dim);
+        Game_gridd(masque,game_matrix,dim);
+        Color_Text(5,0);
+        printf("   -- GRILLE JEU --\n");
+        Color_Text(15,0);
+        print_matrix(game_matrix,dim);
+        printf("\n");
+
 
     }
     /*
@@ -900,10 +918,10 @@ void menu_1_2_1(int dim,char** masque){
         printf("\n   -- MASQUE --\n");
         Color_Text(15,0);
         print_matrix(masque,dim);
+        printf("\n");
         char **game_matrix;
         game_matrix=create_matrix(dim);
         Game_gridd(masque,game_matrix,dim);
-        printf("\n");
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);

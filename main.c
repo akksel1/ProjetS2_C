@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "fonction.h"
-#define DIM 8
+#define DIM 4
 
 int main()
 {
