@@ -42,4 +42,11 @@ BOOL saisie_securisee(int,char**,int*,char*);
 BOOL compare_game_with_solution(int, char,char**,char**);
 void generate_matrix(char** , int , char** , int);
 int Random_index(int);
+BOOL compare_indice_suivant_ligne(int,char**);
+BOOL compare_indice_suivant_colonne(int,char**);
+void initialize_matrix_personnaliser(int,char**);
+char conversion_column(int);
+
+
+
 #endif //PROJETS2_C_FONCTION_H

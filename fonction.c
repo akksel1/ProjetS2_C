@@ -74,6 +74,29 @@ void initialize_matrix0(int TL,char**Z){
     }
 }
 
+void initialize_matrix_personnaliser(int TL,char**Z)
+{
+    Z[0][0]='1';
+    Z[0][1]='1';
+    Z[0][2]='0';
+    Z[0][3]='0';
+
+    Z[1][0]='0';
+    Z[1][1]='0';
+    Z[1][2]='1';
+    Z[1][3]='0';
+
+    Z[2][0]='0';
+    Z[2][1]='0';
+    Z[2][2]='1';
+    Z[2][3]='0';
+
+    Z[3][0]='0';
+    Z[3][1]='0';
+    Z[3][2]='0';
+    Z[3][3]='1';
+}
+
 void initialize_matrix1(int TL,char**Z){
     for(int i=0;i<TL;i++)
     {
@@ -243,6 +266,64 @@ BOOL compare_column(int TL ,char**Z)
         }
     }
 }
+
+
+BOOL compare_indice_suivant_ligne(int TL,char**Z)
+{
+    char p;
+    for (int i=0;i<TL;i++)
+    {
+        for (int j=0;j<TL-2;j++)
+        {
+            p=conversion_column(j);
+            if (Z[i][j]=='0' && Z[i][j+1]=='0' && Z[i][j+2]=='0')
+            {
+                printf(" Il y a 3 zero d'affiler dans la meme ligne : ");
+                printf("case[%d] [%c] \n",i+1,p);
+                return FALSE;
+            }
+
+            if (Z[i][j]=='1' && Z[i][j+1]=='1' && Z[i][j+2]=='1')
+            {
+                printf(" Il y a 3 un d'affiler dans la meme ligne : ");
+                printf("case [%d] [%c] \n",i+1,p);
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
+
+BOOL compare_indice_suivant_colonne(int TL,char**Z)
+{
+    char p;
+    for (int i=0;i<TL-2;i++)
+    {
+        for (int j=0;j<TL;j++)
+        {
+            p=conversion_column(j);
+            if (Z[i][j]=='0' && Z[i+1][j]=='0' && Z[i+2][j]=='0')
+            {
+                printf(" Il y a 3 zero d'affiler dans la meme colonne : ");
+                printf("indice [%d] [%c]  \n",i+1,p);
+                return FALSE;
+            }
+            if (Z[i][j]=='1' && Z[i+1][j]=='1' && Z[i+2][j]=='1')
+            {+
+                printf(" Il y a 3 un d'affiler dans la meme colonne : \n");
+                printf("case [%d] [%c] \n",i+1,p);
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
+
+
+
+
+
+
 
 BOOL compare_game_with_solution(int line, char column,char** G,char** S)
 {
@@ -520,7 +601,8 @@ void copy_matrix16(char** game_matrix,char solution[16][16],int dim){
     }
 }
 //Utilisé dans Mask_input
-int column_conversion(char y){
+int column_conversion(char y)
+{
     if(y=='A'){
         return 0;
     }
@@ -569,8 +651,16 @@ int column_conversion(char y){
     if(y=='P'){
         return 15;
     }
-
 }
+
+char conversion_column(int y)
+{
+    return y+65;
+}
+
+
+
+
 
 /// FONCTIONS MENU
 
