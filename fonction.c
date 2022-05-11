@@ -252,12 +252,10 @@ BOOL compare_line(int TL ,char**Z)
             if (verif==TRUE)
             {
                 printf("la ligne %d est identique \n",t+1);
-                return FALSE;
             }
             else
             {
                 printf("la ligne %d n'est pas identique \n ",t+1);
-                return TRUE;
             }
 
 
@@ -303,12 +301,10 @@ BOOL compare_column(int TL ,char**Z)
             if (verif==TRUE)
             {
                 printf("la colonne %d est identique \n",x+1);
-                return FALSE;
             }
             else
             {
                 printf("la colonne %d n'est pas identique \n ",x+1);
-                return TRUE;
             }
 
 
@@ -583,7 +579,7 @@ void generate_mask(char** masque, int size, char** test, int difficulte_choice){
 
 
 
-void Game_gridd(char **masque, char **game_matrix,int dim){
+void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
     if(dim==4) {
         char solution[4][4] = {
@@ -628,15 +624,17 @@ void Game_gridd(char **masque, char **game_matrix,int dim){
         };
         copy_matrix16(game_matrix,solution1,dim);
     }
-    for(int i=0;i<dim;i++){
-        for(int j=0;j<dim;j++){
-            if(masque[i][j]=='0'){
-                Color_Text(5,0);
-                game_matrix[i][j]='_';
-                Color_Text(15,0);
+    if(choice==1) {
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                if (masque[i][j] == '0') {
+                    Color_Text(5, 0);
+                    game_matrix[i][j] = '_';
+                    Color_Text(15, 0);
+                }
             }
-        }
 
+        }
     }
 
 }
@@ -804,7 +802,7 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
 
 void menu1_2(int dim){       //SOUS MENU 1_2
     int cpt=0;
-    char *choice;
+    char (*choice);
     char **game_matrix;
     char(**masque);
     char(**test);
@@ -832,6 +830,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
             fflush(stdin);
             printf("Saisie incorrect. Resaisir:\n");
         }
+        printf("OUI");
         scanf("%c",choice);
     }while(((*choice>'3') || (*choice<'1')) && (*choice!='R') && (*choice!='r'));
 
@@ -857,7 +856,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         print_mask(masque,dim);
         printf("\n");
         game_matrix=create_matrix(dim);
-        Game_gridd(masque,game_matrix,dim);
+        Game_gridd(masque,game_matrix,dim,1);
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
@@ -995,7 +994,7 @@ void menu_1_2_1(int dim,char** masque){
         printf("\n");
         char **game_matrix;
         game_matrix=create_matrix(dim);
-        Game_gridd(masque,game_matrix,dim);
+        Game_gridd(masque,game_matrix,dim,1);
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
