@@ -49,4 +49,5 @@ char conversion_column(int);
 
 
 
+void print_mask(char**, int);
 #endif //PROJETS2_C_FONCTION_H

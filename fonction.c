@@ -64,6 +64,51 @@ void print_matrix(char (**Z),int TL)
 
 }
 
+void print_mask(char (**Z),int TL)
+{
+    // Affichage d'une matrice 4x4
+    if(TL==4) {
+        printf("     ");
+        Color_Text(1, 8);
+        printf("  A  B  C  D \n");
+    }
+    if(TL==8){
+        printf("     ");
+        Color_Text(1, 8);
+        printf("  A  B  C  D  E  F  G  H \n");
+    }
+    if(TL==16){
+        printf("     ");
+        Color_Text(1, 8);
+        printf("  A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P \n");
+    }
+    for (int i = 0; i < TL ; i++) {
+        Color_Text(1, 8);
+        if(i<9) {
+            printf("  %d  ", i + 1);
+            Color_Text(15, 0);
+            printf("  ");
+        }
+        else{
+            printf(" %d  ", i + 1);
+            Color_Text(15, 0);
+            printf("  ");
+        }
+        for (int j = 0; j < TL; j++) {
+            if(Z[i][j]=='0'){
+                Color_Text(4,0);
+            }
+            printf("%c  ", Z[i][j]);
+            Color_Text(15,0);
+
+
+        }
+        printf("\n");
+    }
+
+}
+
+
 void initialize_matrix0(int TL,char**Z){
     for(int i=0;i<TL;i++)
     {
@@ -440,7 +485,7 @@ void Mask_input(char (**Z),int size){
 
 int Random_index(int size){
     int nb, random;
-    srand(time(NULL));
+    srand(clock());
     random = rand();
     nb = random % size;
     return nb;
@@ -448,8 +493,8 @@ int Random_index(int size){
 }
 // On importe une matrice masque initialisé à 1, une taille, une matrice test qui nous permet de stocker les indices déjà cachés par le programme ET une difficulté
 void generate_matrix(char** masque, int size, char** test, int difficulte_choice){
-    int nb_case; // NB de case caché
-    int cpt=0; // Nb d'opération
+    float nb_case; // NB de case caché
+    float cpt; // Nb d'opération
     int lig_random;
     int col_random;
     int random;
@@ -462,53 +507,61 @@ void generate_matrix(char** masque, int size, char** test, int difficulte_choice
 
     if(difficulte_choice=='1'){
         cpt=0;
-        nb_case = (25/100) * size;
+        nb_case=(0.25)*(size*size);
         while(cpt < nb_case){
+
             lig_random = Random_index(size);
             col_random = Random_index(size);
-            if(test[lig_random][col_random] == 0){
-                test[lig_random][col_random] = 1;
+            if(test[lig_random][col_random] == '0'){
+                test[lig_random][col_random] = '1';
                 // On masque dans masque
-                masque[lig_random][col_random] = 0;
+                masque[lig_random][col_random] = '0';
                 cpt++;
             }
             else{
-                break;
+                continue;
             }
+
+
         }
     }
 
     if(difficulte_choice=='2'){
         cpt=0;
-        nb_case = (50/100) * size;
+        nb_case = (0.5) * (size*size);
         while(cpt < nb_case){
             lig_random = Random_index(size);
             col_random = Random_index(size);
-            if(test[lig_random][col_random] == 0){
-                test[lig_random][col_random] = 1;
+
+            if(test[lig_random][col_random] == '0'){
+                test[lig_random][col_random] = '1';
                 // On masque dans masque
-                masque[lig_random][col_random] = 0;
+                masque[lig_random][col_random] = '0';
                 cpt++;
             }
             else{
-                break;
+                continue;
             }
         }
     }
     if(difficulte_choice=='3'){
         cpt=0;
-        nb_case = (75/100) * size;
+        nb_case = (0.75) * (size*size);
+        lig_random = Random_index(size);
+        col_random = Random_index(size);
         while(cpt < nb_case){
-            lig_random = Random_index(size);
-            col_random = Random_index(size);
-            if(test[lig_random][col_random] == 0){
-                test[lig_random][col_random] = 1;
+            lig_random += clock();
+            lig_random = lig_random %size;
+            col_random += clock();
+            col_random = col_random %size;
+            if(test[lig_random][col_random] == '0'){
+                test[lig_random][col_random] = '1';
                 // On masque dans masque
-                masque[lig_random][col_random] = 0;
+                masque[lig_random][col_random] = '0';
                 cpt++;
             }
             else{
-                break;
+                continue;
             }
         }
     }
@@ -781,7 +834,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         difficulte=menu_difficulte();
         generate_matrix(masque,dim,test,difficulte);
         printf("\n -- MASQUE GENERE --\n");
-        print_matrix(masque,dim);
+        print_mask(masque,dim);
 
     }
     /*
@@ -872,7 +925,7 @@ char menu_difficulte(){
     printf("\n -- DIFFICULTE --\n\n");
     printf("1 - DEBUTANT\n");
     printf("2 - MOYEN\n");
-    printf("3 - EXPERT\n");
+    printf("3 - EXPERT (veuillez prevoir 5min)\n");
     printf("Saisir :\n");
     fflush(stdin);
     scanf("%c",&difficulty_choice);
