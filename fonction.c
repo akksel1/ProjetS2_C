@@ -726,7 +726,8 @@ char conversion_column(int y)
 
 /// FONCTIONS MENU
 
-void menu1(char* choice){       //MENU PRINCIPAL
+void menu1(){//MENU PRINCIPAL
+    char choice;
     int cpt=0;
     printf("\n\t--  MENU PRINCIPAL --\n\n");
     printf("1 - Resoudre manuelement une grille\n");
@@ -744,19 +745,20 @@ void menu1(char* choice){       //MENU PRINCIPAL
             fflush(stdin);
             printf("Saisie incorrect. Resaisir:\n");
         }
-        scanf("%c",choice);
-    }while(((*choice>'2') || (*choice<'1')) && (*choice!='q') && (*choice!='Q'));
+        scanf("%c",&choice);
+    }while((choice>'2') || (choice<'1') && (choice!='q') && (choice!='Q'));
 
     //
-    if(*choice=='1'){
-        menu1_1(choice);
+    if(choice=='1'){
+        menu1_1();
     }
     /*if(*choice=='2'){
     }
      */
 }
 
-void menu1_1(char* choice){         //SOUS MENU 1_1
+void menu1_1(){ //SOUS MENU 1_1
+    char choice;
     int cpt=0;
     int ** Z=NULL;
 
@@ -777,32 +779,32 @@ void menu1_1(char* choice){         //SOUS MENU 1_1
             fflush(stdin);
             printf("Saisie incorrect. Resaisir:\n");
         }
-        scanf("%c",choice);
-    }while(((*choice>'3') || (*choice<'1')) && (*choice!='R') && (*choice!='r'));
+        scanf("%c",&choice);
+    }while((choice>'3') || (choice<'1') && (choice!='R') && (choice!='r'));
 
     // GRILLE 4X4
-    if(*choice=='1'){
+    if(choice=='1'){
         menu1_2(4);
 
     }
     // GRILLE 8X8
-    if(*choice=='2'){
+    if(choice=='2'){
         menu1_2(8);
     }
     // GRILLE 16X16
-    if(*choice=='3'){
+    if(choice=='3'){
         menu1_2(16);
     }
 
     // RETOUR AU MENU1
-    if((*choice=='r')||(*choice=='R')){
-        menu1(choice);
+    if((choice=='r')||(choice=='R')){
+        menu1();
     }
 }
 
 void menu1_2(int dim){       //SOUS MENU 1_2
     int cpt=0;
-    char (*choice);
+    char choice;
     char **game_matrix;
     char(**masque);
     char(**test);
@@ -830,13 +832,11 @@ void menu1_2(int dim){       //SOUS MENU 1_2
             fflush(stdin);
             printf("Saisie incorrect. Resaisir:\n");
         }
-        printf("OUI");
-        scanf("%c",choice);
-    }while(((*choice>'3') || (*choice<'1')) && (*choice!='R') && (*choice!='r'));
+        scanf("%c",&choice);
+    }while((choice>'3') || (choice<'1') && (choice!='R') && (choice!='r'));
 
     // SAISIE MANUELLE MASQUE(print grille jeu et masque)
-
-    if(*choice=='1'){
+    if(choice=='1'){
         char (**masque);
         masque=create_matrix(dim);
         initialize_matrix1(dim,masque);
@@ -845,7 +845,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
     }
 
     // GENERER UN MASQUE AUTO(print grille jeu et masque)
-    if(*choice=='2'){
+    if(choice=='2'){
         masque = create_matrix(dim);
         initialize_matrix1(dim,masque);
         test = create_matrix(dim);
@@ -868,7 +868,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
     }
 
     // JOUER AVEC UN MASQUE AUTO
-    if(*choice=='3'){
+    if(choice=='3'){
         printf("ffff");
         masque = create_matrix(dim);
         initialize_matrix1(dim,masque);
@@ -935,8 +935,8 @@ void menu1_2(int dim){       //SOUS MENU 1_2
     }
 
     // RETOUR AU MENU1_1
-    if((*choice=='r')||(*choice=='R')){
-        menu1_1(choice);
+    if((choice=='r')||(choice=='R')){
+        menu1_1();
     }
 
 
