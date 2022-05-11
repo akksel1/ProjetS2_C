@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "fonction.h"
 
-//
+
 int main()
 {
     int ** M=NULL;

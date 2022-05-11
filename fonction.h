@@ -5,7 +5,7 @@
 #ifndef PROJETS2_C_FONCTION_H
 #define PROJETS2_C_FONCTION_H
 #define BOOL int
-#define TL1 16
+#define TL1 4
 
 #define TRUE 1
 #define FALSE 0
@@ -18,13 +18,28 @@
 
 
 void Color_Text(int,int);
-void print_matrix(int**,int);
-void initialize_matrix(int,int**);
-int** create_matrix(int);
+void print_matrix(char**,int);
+void initialize_matrix0(int,char**);
+void initialize_matrix1(int,char**);
+char** create_matrix(int);
+BOOL counter_number_line(int,char**);
+BOOL counter_number_column(int,char**);
+BOOL compare_line(int,char**);
+BOOL compare_column(int,char**);
+void Mask_input(char**,int);
+void menu_mask_input(char**,int);
+int column_conversion(char);
+void Game_gridd(char**, char**,int);
+void copy_matrix4(char**,char[4][4],int);
+void copy_matrix8(char**,char[8][8],int);
+void copy_matrix16(char**,char[16][16],int);
 void menu1(char*);
 void menu1_1(char*);
-int menu1_2();
-BOOL compter_nombre_ligne(int,int**);
-
-
+void menu1_2(int);
+void menu_1_2_1(int,char**);
+char menu_difficulte();
+BOOL saisie_securisee(int,char**,int*,char*);
+BOOL compare_game_with_solution(int, char,char**,char**);
+void generate_matrix(char** , int , char** , int);
+int Random_index(int);
 #endif //PROJETS2_C_FONCTION_H
