@@ -24,8 +24,8 @@ void initialize_matrix1(int,char**);
 char** create_matrix(int);
 
 
-BOOL counter_number_line(int,char**);
-BOOL counter_number_column(int,char**);
+BOOL counter_number_line(int,char**,int);
+BOOL counter_number_column(int,char**,int);
 
 BOOL compare_line(int,char**);
 BOOL compare_column(int,char**);

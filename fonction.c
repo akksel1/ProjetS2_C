@@ -152,38 +152,36 @@ void initialize_matrix1(int TL,char**Z){
     }
 }
 
-BOOL counter_number_line(int TL,char**Z)
+BOOL counter_number_line(int TL,char**Z,int lig)
 {
     char cpt;
     int un=0;
     int zero=0;
-    for (int i=0;i<TL;i++)
-    {
-        for (int j=0;j<TL;j++)
+
+    for(int j=0;j<TL;j++){
+        cpt=Z[lig][j];
+        if (cpt=='1')
         {
-            cpt=Z[i][j];
-            if (cpt=='1')
-            {
-                un=un+1;
-            }
-            if (cpt=='0')
-            {
-                zero=zero+1;
-            }
+            un=un+1;
         }
-        printf("La ligne %d il y a %d nombre de 0 et %d nombre de 1 \n", i+1,zero,un);
-        un=0;
-        zero=0;
+        if (cpt=='0')
+        {
+            zero=zero+1;
+        }
     }
-    if (un==zero)
-    {
-        return TRUE;
+    if(zero!=un) {
+        return FALSE;
     }
-    return FALSE;
+    return TRUE;
+
+
+
+
+    return TRUE;
 
 }
 
-BOOL counter_number_column(int TL ,char**Z)
+BOOL counter_number_column(int TL ,char**Z,int col)
 {
     char cpt;
     int un=0;
@@ -381,7 +379,7 @@ BOOL compare_game_with_solution(int line, char column,char** G,char** S)
     return FALSE;
 }
 
-BOOL saisie_securisee(int size, char (**Z),int* lig_ptr,char* col_char_ptr){
+BOOL saisie_securisee(int size, char (**Z),int *lig_ptr,char *col_char_ptr){
     int cpt,col,verif;
     int lig=-1;        //INITIALISATION
     char col_char='A';
@@ -804,14 +802,14 @@ void menu1_1(){ //SOUS MENU 1_1
 
 void menu1_2(int dim){       //SOUS MENU 1_2
     int cpt=0;
-    char choice;
+    char choice,val;
     char **game_matrix;
     char(**masque);
     char(**test);
 
     int difficulte;
-    int *lig_ptr;
-    char *col_char_ptr;
+    int lig_ptr;
+    char col_char_ptr;
     char **solution;
     BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col,correct,trois_indice,egal,comp;
 
@@ -869,7 +867,6 @@ void menu1_2(int dim){       //SOUS MENU 1_2
 
     // JOUER AVEC UN MASQUE AUTO
     if(choice=='3'){
-        printf("ffff");
         masque = create_matrix(dim);
         initialize_matrix1(dim,masque);
         test = create_matrix(dim);
@@ -881,32 +878,49 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
-        print_matrix(game_matrix,dim);
         solution = create_matrix(dim);
         Game_gridd(masque,solution,dim,2); // On crée la matrice Solution
         printf("\n");
         do {
-            saisie_securisee(dim,game_matrix, lig_ptr,col_char_ptr);
+            cpt=0;
+            saisie_securisee(dim,game_matrix, &lig_ptr,&col_char_ptr);
+            printf("Saisir 1 ou 0:");
+            fflush(stdin);
+            scanf("%c",&val);
+            while(val<'0' || val>'1'){
+                fflush(stdin);
+                printf("Erreur. Resaisir:");
+                scanf("%c",&val);
+            }
 
+            game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = val;
 
-            egal_lig=counter_number_line(dim,game_matrix);
-            egal_col=counter_number_column(dim,game_matrix);
+            egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1);
+            egal_col=counter_number_column(dim,game_matrix,column_conversion(col_char_ptr));
 
 
             if(egal_lig == FALSE || egal_col == FALSE)
             {
                 // - 1 vie
+                printf("Dans la ligne il n'y pas le meme nombre de 1 et de 0  \n");
+                cpt++;
                 egal = FALSE;
+                game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
             }
+
+            /*
 
 
             comp_lig=compare_line(dim,game_matrix);
             comp_col=compare_column(dim,game_matrix);
 
-            if(comp_lig == FALSE || comp_col == FALSE)
+            if(comp_lig == FALSE || comp_col == FALSE && cpt==0)
             {
                 // - 1 vie
+                printf("Il y a plusieurs ligne ou plusieurs colonne identiques\n");
+                cpt++;
                 comp = FALSE;
+                game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
             }
 
 
@@ -916,15 +930,18 @@ void menu1_2(int dim){       //SOUS MENU 1_2
             if(trois_indice_lig == FALSE ||  trois_indice_col== FALSE)
             {
                 // - 1 vie
+                printf("Il y a plusieurs %d d'affilés",val);
                 trois_indice = FALSE;
+                game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
             }
 
 
-            correct=compare_game_with_solution((*lig_ptr),(*col_char_ptr),game_matrix,solution);
+            correct=compare_game_with_solution(lig_ptr,col_char_ptr,game_matrix,solution);
             if(correct == FALSE){
                 printf("Coup valide mais incorrect...\n");
                 printf("Re-essayer\n");
             }
+             */
 
 
 
