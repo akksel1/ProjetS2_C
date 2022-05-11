@@ -7,7 +7,7 @@ int main()
     printf("Bienvenu %c\n",1);
     char ** M=NULL;
     char choice;
-    menu1_2(DIM);
+    menu1(&choice);
 
 
     return 0;

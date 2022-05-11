@@ -252,10 +252,12 @@ BOOL compare_line(int TL ,char**Z)
             if (verif==TRUE)
             {
                 printf("la ligne %d est identique \n",t+1);
+                return FALSE;
             }
             else
             {
                 printf("la ligne %d n'est pas identique \n ",t+1);
+                return TRUE;
             }
 
 
@@ -301,10 +303,12 @@ BOOL compare_column(int TL ,char**Z)
             if (verif==TRUE)
             {
                 printf("la colonne %d est identique \n",x+1);
+                return FALSE;
             }
             else
             {
                 printf("la colonne %d n'est pas identique \n ",x+1);
+                return TRUE;
             }
 
 
@@ -492,7 +496,7 @@ int Random_index(int size){
 
 }
 // On importe une matrice masque initialisé à 1, une taille, une matrice test qui nous permet de stocker les indices déjà cachés par le programme ET une difficulté
-void generate_matrix(char** masque, int size, char** test, int difficulte_choice){
+void generate_mask(char** masque, int size, char** test, int difficulte_choice){
     float nb_case; // NB de case caché
     float cpt; // Nb d'opération
     int lig_random;
@@ -802,6 +806,14 @@ void menu1_2(int dim){       //SOUS MENU 1_2
     int cpt=0;
     char *choice;
     char **game_matrix;
+    char(**masque);
+    char(**test);
+
+    int difficulte;
+    int *lig_ptr;
+    char *col_char_ptr;
+    char **solution;
+    BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col,correct,trois_indice,egal,comp;
 
     printf("\t--  RESOUDRE MANUELEMENT GRILLE %dx%d  --\n",dim,dim);
     printf("1 - SAISIR MANUELEMENT UN MASQUE\n");
@@ -835,13 +847,12 @@ void menu1_2(int dim){       //SOUS MENU 1_2
 
     // GENERER UN MASQUE AUTO(print grille jeu et masque)
     if(*choice=='2'){
-        int difficulte;
-        char(**masque) = create_matrix(dim);
+        masque = create_matrix(dim);
         initialize_matrix1(dim,masque);
-        char(**test) = create_matrix(dim);
+        test = create_matrix(dim);
         initialize_matrix0(dim,test);
         difficulte=menu_difficulte();
-        generate_matrix(masque,dim,test,difficulte);
+        generate_mask(masque,dim,test,difficulte);
         printf("\n -- MASQUE GENERE --\n");
         print_mask(masque,dim);
         printf("\n");
@@ -854,12 +865,75 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         printf("\n");
 
 
+
     }
-    /*
+
     // JOUER AVEC UN MASQUE AUTO
     if(*choice=='3'){
+        printf("ffff");
+        masque = create_matrix(dim);
+        initialize_matrix1(dim,masque);
+        test = create_matrix(dim);
+        initialize_matrix0(dim,test);
+        difficulte=menu_difficulte();
+        generate_mask(masque,dim,test,difficulte);
+        game_matrix=create_matrix(dim);
+        Game_gridd(masque,game_matrix,dim,1);
+        Color_Text(5,0);
+        printf("   -- GRILLE JEU --\n");
+        Color_Text(15,0);
+        print_matrix(game_matrix,dim);
+        solution = create_matrix(dim);
+        Game_gridd(masque,solution,dim,2); // On crée la matrice Solution
+        printf("\n");
+        do {
+            saisie_securisee(dim,game_matrix, lig_ptr,col_char_ptr);
 
-    }*/
+
+            egal_lig=counter_number_line(dim,game_matrix);
+            egal_col=counter_number_column(dim,game_matrix);
+
+
+            if(egal_lig == FALSE || egal_col == FALSE)
+            {
+                // - 1 vie
+                egal = FALSE;
+            }
+
+
+            comp_lig=compare_line(dim,game_matrix);
+            comp_col=compare_column(dim,game_matrix);
+
+            if(comp_lig == FALSE || comp_col == FALSE)
+            {
+                // - 1 vie
+                comp = FALSE;
+            }
+
+
+            trois_indice_lig=compare_indice_suivant_ligne(dim,game_matrix);
+            trois_indice_col=compare_indice_suivant_colonne(dim,game_matrix);
+
+            if(trois_indice_lig == FALSE ||  trois_indice_col== FALSE)
+            {
+                // - 1 vie
+                trois_indice = FALSE;
+            }
+
+
+            correct=compare_game_with_solution((*lig_ptr),(*col_char_ptr),game_matrix,solution);
+            if(correct == FALSE){
+                printf("Coup valide mais incorrect...\n");
+                printf("Re-essayer\n");
+            }
+
+
+
+        }while((correct==FALSE)||(trois_indice == FALSE)&&(comp == FALSE) &&(egal==FALSE));
+
+
+
+    }
 
     // RETOUR AU MENU1_1
     if((*choice=='r')||(*choice=='R')){

@@ -22,10 +22,21 @@ void print_matrix(char**,int);
 void initialize_matrix0(int,char**);
 void initialize_matrix1(int,char**);
 char** create_matrix(int);
+
+
 BOOL counter_number_line(int,char**);
 BOOL counter_number_column(int,char**);
+
 BOOL compare_line(int,char**);
 BOOL compare_column(int,char**);
+
+BOOL compare_indice_suivant_ligne(int,char**);
+BOOL compare_indice_suivant_colonne(int,char**);
+
+
+
+BOOL compare_game_with_solution(int, char,char**,char**);
+
 void Mask_input(char**,int);
 void menu_mask_input(char**,int);
 int column_conversion(char);
@@ -39,11 +50,8 @@ void menu1_2(int);
 void menu_1_2_1(int,char**);
 char menu_difficulte();
 BOOL saisie_securisee(int,char**,int*,char*);
-BOOL compare_game_with_solution(int, char,char**,char**);
-void generate_matrix(char** , int , char** , int);
+void generate_mask(char** , int , char** , int);
 int Random_index(int);
-BOOL compare_indice_suivant_ligne(int,char**);
-BOOL compare_indice_suivant_colonne(int,char**);
 void initialize_matrix_personnaliser(int,char**);
 char conversion_column(int);
 
