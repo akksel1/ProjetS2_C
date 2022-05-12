@@ -152,7 +152,7 @@ void initialize_matrix1(int TL,char**Z){
     }
 }
 
-BOOL counter_number_line(int TL,char**Z,int lig)
+BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test)
 {
     char cpt;
     int un=0;
@@ -169,20 +169,29 @@ BOOL counter_number_line(int TL,char**Z,int lig)
             zero=zero+1;
         }
     }
-    if(zero!=un) {
+    if((zero!=un) && (ligne_remplie(lig,Z,TL)==TRUE))
+    {
+        printf("\nLA LIGNE %d NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n",lig+1);
+        reset_lig(Z,test,lig,TL);
         return FALSE;
     }
-    return TRUE;
-
-
-
-
-    return TRUE;
+    if(zero==un && ligne_remplie(lig,Z,TL)==TRUE)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
 
 }
 
-BOOL counter_number_column(int TL ,char**Z,int col)
+BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test)
 {
+    /*
+     * MATRICE TEST => COPIE DU MASQUE
+    */
+
     char cpt;
     int un=0;
     int zero=0;
@@ -198,10 +207,20 @@ BOOL counter_number_column(int TL ,char**Z,int col)
             zero=zero+1;
         }
     }
-    if(zero!=un) {
+    if((zero!=un) && (colonne_remplie(col,Z,TL)==TRUE))
+    {
+        printf("LA COLONNE %c NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n", conversion_column(col));
+        reset_col(Z,test,col,TL);
         return FALSE;
     }
-    return TRUE;
+    if(zero==un && colonne_remplie(col,Z,TL)==TRUE)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
 }
 
 BOOL compare_line(int TL ,char**Z)
@@ -306,7 +325,6 @@ BOOL compare_column(int TL ,char**Z)
     }
 }
 
-
 BOOL compare_indice_suivant_ligne(int TL,char**Z)
 {
     char p;
@@ -388,12 +406,6 @@ BOOL compare_indice_suivant_colonne(int TL,char**Z)
     return TRUE;
 }
 
-
-
-
-
-
-
 BOOL compare_game_with_solution(int line, char column,char** G,char** S)
 {
     int j;
@@ -407,8 +419,8 @@ BOOL compare_game_with_solution(int line, char column,char** G,char** S)
 
 BOOL saisie_securisee(int size, char (**Z),int *lig_ptr,char *col_char_ptr){
     int cpt,col,verif;
-    int lig=-1;        //INITIALISATION
-    char col_char='A';
+    int lig;
+    char col_char;
 
     printf("Saisir 0/0 pour arreter\n\n");
     fflush(stdin);
@@ -483,6 +495,117 @@ BOOL saisie_securisee(int size, char (**Z),int *lig_ptr,char *col_char_ptr){
 
 }
 
+void saisie_securisee_jouer(int size, char** game_matrix,int *lig_ptr,char *col_char_ptr, char ** test) {
+    int cpt, col, verif;
+    int lig;
+    char col_char;
+    BOOL cache = FALSE;
+
+    fflush(stdin);
+    print_matrix(game_matrix, size);
+    printf("Saisir l'indice:");
+    /*
+    SAISIE SECURISEE
+        Verif --> vérifier si l'user saisi le bon type (char à la place d'un int par ex.
+    */
+    verif = scanf("%d/%c", &lig, &col_char);
+
+
+    /*
+        * On vérifie d'abord que l'indice existe dans le matrice
+        * Enfin on vérifie si l'indice est bien caché
+    */
+
+    if (size == 4) {
+        cpt = 0;
+        cache = FALSE;
+        while (cache == FALSE) {
+            while (((lig > size) || (lig < 1)) || (col_char > 'D' || col_char < 'A') || verif == 0) {
+                if (cpt % 2 == 1) {
+                    Color_Text(4, 0);
+                    printf("\n----\nRAPPEL: Ligne (1 - ... - 4)\nET\nColonne (A - ... - D)\n----\n");
+                    Color_Text(15, 0);
+                }
+                printf("Indice incorrect. Resaisir:");
+                fflush(stdin);
+                verif = scanf("%d/%c", &lig, &col_char);
+                cpt++;
+            }
+            if (test[lig - 1][column_conversion(col_char)] == '0') {
+                cache = TRUE;
+            } else {
+                cache = FALSE;
+                Color_Text(4, 0);
+                printf("LES INDICES NON CACHES NE SONT PAS MODIFIABLES\n");
+                Color_Text(15, 0);
+                printf("Resaisir:");
+                verif = scanf("%d/%c", &lig, &col_char);
+            }
+
+        }
+    }
+    if (size == 8) {
+        cpt = 0;
+        cache = FALSE;
+        while (cache == FALSE) {
+            while (((lig > size) || (lig < 1)) || (col_char > 'H' || col_char < 'A') || verif == 0) {
+                if (cpt % 2 == 1) {
+                    Color_Text(4, 0);
+                    printf("\n----\nRAPPEL: Ligne (1 - ... - 8)\nET\nColonne (A - ... - H)\n----\n");
+                    Color_Text(15, 0);
+                }
+                printf("Indice incorrect. Resaisir:");
+                fflush(stdin);
+                verif = scanf("%d/%c", &lig, &col_char);
+                cpt++;
+            }
+            if (test[lig - 1][column_conversion(col_char)] == '0') {
+                cache = TRUE;
+            } else {
+                cache = FALSE;
+                Color_Text(4, 0);
+                printf("LES INDICES NON CACHES NE SONT PAS MODIFIABLES\n");
+                Color_Text(15, 0);
+                printf("Resaisir:");
+                verif = scanf("%d/%c", &lig, &col_char);
+            }
+        }
+    }
+    if (size == 16) {
+        cpt = 0;
+        cache = FALSE;
+        while (cache == FALSE) {
+            while (((lig > size) || (lig < 1)) || (col_char > 'P' || col_char < 'A') || verif == 0) {
+                if (cpt % 2 == 1) {
+                    Color_Text(4, 0);
+                    printf("\n----\nRAPPEL: Ligne (1 - ... - 16)\nET\nColonne (A - ... - P)\n----\n");
+                    Color_Text(15, 0);
+                }
+                printf("Indice incorrect. Resaisir:");
+                fflush(stdin);
+                verif = scanf("%d/%c", &lig, &col_char);
+                cpt++;
+            }
+            if (test[lig - 1][column_conversion(col_char)] == '0') {
+                cache = TRUE;
+            } else {
+                cache = FALSE;
+                Color_Text(4, 0);
+                printf("LES INDICES NON CACHES NE SONT PAS MODIFIABLES\n");
+                Color_Text(15, 0);
+                printf("Resaisir:");
+                verif = scanf("%d/%c", &lig, &col_char);
+            }
+        }
+
+
+
+    }
+    (*lig_ptr) = lig;
+    (*col_char_ptr) = col_char;
+
+}
+
 void Mask_input(char (**Z),int size){
     int col;
     char col_char;
@@ -515,10 +638,12 @@ int Random_index(int size){
     return nb;
 
 }
+
 // On importe une matrice masque initialisé à 1, une taille, une matrice test qui nous permet de stocker les indices déjà cachés par le programme ET une difficulté
-void generate_mask(char** masque, int size, char** test, int difficulte_choice){
+void generate_mask(char(**masque), int size, char** test, char difficulte_choice){
     float nb_case; // NB de case caché
     float cpt; // Nb d'opération
+    int cpt2;
     int lig_random;
     int col_random;
     int random;
@@ -531,19 +656,29 @@ void generate_mask(char** masque, int size, char** test, int difficulte_choice){
 
     if(difficulte_choice=='1'){
         cpt=0;
+        cpt2=0;
         nb_case=(0.25)*(size*size);
         lig_random = Random_index(size);
         col_random = Random_index(size);
         while(cpt < nb_case){
-            lig_random += clock();
-            lig_random = lig_random %size;
-            col_random += clock();
-            col_random = col_random %size;
+            if(cpt2%2==0) {
+                lig_random += clock();
+                lig_random = lig_random % size;
+                col_random += time(NULL);
+                col_random = col_random % size;
+            }
+            if(cpt2%2==1){
+                lig_random += clock();
+                lig_random = lig_random % size;
+                col_random += time(NULL);
+                col_random = col_random % size;
+            }
             if(test[lig_random][col_random] == '0'){
                 test[lig_random][col_random] = '1';
                 // On masque dans masque
                 masque[lig_random][col_random] = '0';
                 cpt++;
+                cpt2++;
             }
             else{
                 continue;
@@ -598,10 +733,35 @@ void generate_mask(char** masque, int size, char** test, int difficulte_choice){
     }
 }
 
+BOOL ligne_complete(char** Z,int dim, int lig)
+{
+    BOOL complet = TRUE;
+    int j=0;
+    while(complet==TRUE && j<dim)
+    {
+        if(Z[lig][j]=='_')
+        {
+            complet=FALSE;
+        }
+        j++;
+    }
+    return complet;
+}
 
-
-
-
+BOOL colonne_complete(char** Z,int dim, int col)
+{
+    BOOL complet = TRUE;
+    int i=0;
+    while(complet==TRUE && i<dim)
+    {
+        if(Z[i][col]=='_')
+        {
+            complet=FALSE;
+        }
+        i++;
+    }
+    return complet;
+}
 
 void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
@@ -652,9 +812,7 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
                 if (masque[i][j] == '0') {
-                    Color_Text(5, 0);
                     game_matrix[i][j] = '_';
-                    Color_Text(15, 0);
                 }
             }
 
@@ -744,11 +902,95 @@ char conversion_column(int y)
     return y+65;
 }
 
+// Fonction qui permet de voir si une ligne de la grille jeu est remplie entièrement afin de lancer les vérifications
+BOOL ligne_remplie(int lig,char** game_matrix,int dim)
+{
+    int cpt=0;
+
+    for(int j=0; j<dim; j++)
+    {
+        if(game_matrix[lig][j]=='_')
+        {
+            cpt++;
+        }
+    }
+
+    if(cpt==0)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+// Fonction qui permet de voir si une colonne de la grille jeu est remplie entièrement afin de lancer les vérifications
+BOOL colonne_remplie(int col,char** game_matrix,int dim)
+{
+    int cpt=0;
+
+    for(int i=0; i<dim; i++)
+    {
+        if(game_matrix[i][col]=='_')
+        {
+            cpt++;
+        }
+    }
+
+    if(cpt==0)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+// Fonction qui permet de remettre à 0 une ligne de la grille jeu
+void reset_lig(char** Z,char** test,int lig,int dim)
+{
+    for(int j=0;j<dim;j++)
+    {
+        if(test[lig][j]=='0')
+        {
+            Z[lig][j]='_';
+        }
+    }
+}
+
+// Fonction qui permet de remettre à 0 une colonne de la grille jeu
+void reset_col(char** Z,char** test,int col,int dim)
+{
+    for(int i=0;i<dim;i++)
+    {
+        if(test[i][col]=='0')
+        {
+            Z[i][col]='_';
+        }
+    }
+}
+
+// Fonction qui permet de regarder si une grille jeu est pleine
+BOOL matrice_pleine(char** Z,int TL)
+{
+    for(int i=0; i<TL ; i++)
+    {
+        for(int j=0; j<TL ; j++)
+        {
+            if(Z[i][j]=='_')
+            {
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
 
 
+/// -- FONCTIONS MENU --
 
-
-/// FONCTIONS MENU
 
 void menu1(){//MENU PRINCIPAL
     char choice;
@@ -770,7 +1012,7 @@ void menu1(){//MENU PRINCIPAL
             printf("Saisie incorrect. Resaisir:\n");
         }
         scanf("%c",&choice);
-    }while((choice>'2') || (choice<'1') && (choice!='q') && (choice!='Q'));
+    }while( ((choice>'2') || (choice<'1') ) && (choice!='q') && (choice!='Q'));
 
     //
     if(choice=='1'){
@@ -804,7 +1046,7 @@ void menu1_1(){ //SOUS MENU 1_1
             printf("Saisie incorrect. Resaisir:\n");
         }
         scanf("%c",&choice);
-    }while((choice>'3') || (choice<'1') && (choice!='R') && (choice!='r'));
+    }while( ((choice>'3') || (choice<'1') ) && (choice!='r') && (choice!='R'));
 
     // GRILLE 4X4
     if(choice=='1'){
@@ -830,10 +1072,10 @@ void menu1_2(int dim){       //SOUS MENU 1_2
     int cpt=0;
     char choice,val;
     char **game_matrix;
-    char(**masque);
+    char **masque;
     char(**test);
-
-    int difficulte;
+    char (**hidden_index_matrix);
+    char difficulte;
     int lig_ptr;
     char col_char_ptr;
     char **solution;
@@ -857,11 +1099,10 @@ void menu1_2(int dim){       //SOUS MENU 1_2
             printf("Saisie incorrect. Resaisir:\n");
         }
         scanf("%c",&choice);
-    }while((choice>'3') || (choice<'1') && (choice!='R') && (choice!='r'));
+    }while(((choice>'3') || (choice<'1') ) && (choice!='r') && (choice!='R'));
 
     // SAISIE MANUELLE MASQUE(print grille jeu et masque)
     if(choice=='1'){
-        char (**masque);
         masque=create_matrix(dim);
         initialize_matrix1(dim,masque);
         menu_1_2_1(dim,masque);
@@ -886,92 +1127,101 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         Color_Text(15,0);
         print_matrix(game_matrix,dim);
         printf("\n");
-
-
+        menu1_2(dim);
 
     }
 
     // JOUER AVEC UN MASQUE AUTO
     if(choice=='3'){
-        masque = create_matrix(dim);
-        initialize_matrix1(dim,masque);
+        difficulte=menu_difficulte();
+
         test = create_matrix(dim);
         initialize_matrix0(dim,test);
-        difficulte=menu_difficulte();
+
+        masque = create_matrix(dim);
+        initialize_matrix1(dim,masque);
         generate_mask(masque,dim,test,difficulte);
+
+
         game_matrix=create_matrix(dim);
         Game_gridd(masque,game_matrix,dim,1);
+
+        solution = create_matrix(dim);
+        Game_gridd(masque,solution,dim,2); // On crée la matrice Solution
+
+        hidden_index_matrix=masque; // Matrice où indices cachés sont représenté par un '0' <=> masque
+
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
-        solution = create_matrix(dim);
-        Game_gridd(masque,solution,dim,2); // On crée la matrice Solution
         printf("\n");
-        do {
-            cpt=0;
-            saisie_securisee(dim,game_matrix, &lig_ptr,&col_char_ptr);
+
+        do{
+            cpt = 0;
+            saisie_securisee_jouer(dim, game_matrix, &lig_ptr, &col_char_ptr,hidden_index_matrix);
             printf("Saisir 1 ou 0:");
             fflush(stdin);
-            scanf("%c",&val);
-            while(val<'0' || val>'1'){
+            scanf("%c", &val);
+            while (val < '0' || val > '1') {
                 fflush(stdin);
                 printf("Erreur. Resaisir:");
-                scanf("%c",&val);
+                scanf("%c", &val);
             }
-
+            // Affectation à la grille jeu
             game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = val;
 
-            egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1);
-            egal_col=counter_number_column(dim,game_matrix,column_conversion(col_char_ptr));
-
+            //VERIFICATIONS
+            egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+            egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
 
             if(egal_lig == FALSE || egal_col == FALSE)
             {
                 // - 1 vie
-                printf("Dans la ligne il n'y pas le meme nombre de 1 et de 0  \n");
-                cpt++;
                 egal = FALSE;
-                game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
             }
+            if(egal_lig == TRUE && egal_col == TRUE)
+            {
+                // - 1 vie
+                egal = TRUE;
+            }
+
 
             /*
+           comp_lig=compare_line(dim,game_matrix);
+           comp_col=compare_column(dim,game_matrix);
+
+           if(comp_lig == FALSE || comp_col == FALSE && cpt==0)
+           {
+               // - 1 vie
+               printf("Il y a plusieurs ligne ou plusieurs colonne identiques\n");
+               cpt++;
+               comp = FALSE;
+               game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
+           }
 
 
-            comp_lig=compare_line(dim,game_matrix);
-            comp_col=compare_column(dim,game_matrix);
+           trois_indice_lig=compare_indice_suivant_ligne(dim,game_matrix);
+           trois_indice_col=compare_indice_suivant_colonne(dim,game_matrix);
 
-            if(comp_lig == FALSE || comp_col == FALSE && cpt==0)
-            {
-                // - 1 vie
-                printf("Il y a plusieurs ligne ou plusieurs colonne identiques\n");
-                cpt++;
-                comp = FALSE;
-                game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
-            }
-
-
-            trois_indice_lig=compare_indice_suivant_ligne(dim,game_matrix);
-            trois_indice_col=compare_indice_suivant_colonne(dim,game_matrix);
-
-            if(trois_indice_lig == FALSE ||  trois_indice_col== FALSE)
-            {
-                // - 1 vie
-                printf("Il y a plusieurs %d d'affilés",val);
-                trois_indice = FALSE;
-                game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
-            }
+           if(trois_indice_lig == FALSE ||  trois_indice_col== FALSE)
+           {
+               // - 1 vie
+               printf("Il y a plusieurs %d d'affilés",val);
+               trois_indice = FALSE;
+               game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
+           }
 
 
-            correct=compare_game_with_solution(lig_ptr,col_char_ptr,game_matrix,solution);
-            if(correct == FALSE){
-                printf("Coup valide mais incorrect...\n");
-                printf("Re-essayer\n");
-            }
-             */
+           correct=compare_game_with_solution(lig_ptr,col_char_ptr,game_matrix,solution);
+           if(correct == FALSE){
+               printf("Coup valide mais incorrect...\n");
+               printf("Re-essayer\n");
+           }
+            */
 
-
-
-        }while(egal==FALSE);
+        }while((egal==FALSE) || (matrice_pleine(game_matrix,dim) == FALSE));
+        printf("\nBravo\n");
+        menu1_2(dim);
 
 
 
@@ -1060,11 +1310,11 @@ char menu_difficulte(){
     printf("1 - DEBUTANT\n");
     printf("2 - MOYEN\n");
     printf("3 - EXPERT (veuillez prevoir 5min)\n");
-    printf("Saisir :\n");
+    printf("Saisir :");
     fflush(stdin);
     scanf("%c",&difficulty_choice);
     while(difficulty_choice<'1' || difficulty_choice>'3'){
-        printf("Saisie incorrect. Resaisir:\n");
+        printf("Saisie incorrect. Resaisir:");
         scanf("%c",&difficulty_choice);
     }
     return difficulty_choice;
