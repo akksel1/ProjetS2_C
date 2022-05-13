@@ -328,86 +328,168 @@ BOOL compare_column(int TL ,char**Z,int lig,int col,char** test)
 
 }
 
-BOOL compare_indice_suivant_ligne(int TL,char**Z)
+BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col)
 {
-    char p;
-    for (int i=0;i<TL;i++)
+    BOOL verif1=FALSE,verif2=FALSE,verif3=FALSE;
+    int cpt=0;
+    /*
+     * TRUE => Identique
+     * FALSE => Pas identique
+     */
+
+
+    if(col<TL-2)
     {
-        for (int j=2;j<TL-2;j++)
-        {
-            p=conversion_column(j);
-            if (Z[i][j]=='0' && Z[i][j+1]=='0' && Z[i][j+2]=='0')
-            {
-                //printf(" Il y a 3 zero d'affiler dans la meme ligne : ");
-                //printf("case[%d] [%c] \n",i+1,p);
-                return FALSE;
-            }
+        // 2 INDICES A DROITE
+        if((Z[lig][col] == Z[lig][col+1])&&(Z[lig][col+1] == Z[lig][col+2])){
+            verif1 = TRUE;
+            printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n",lig+1,Z[lig][col]);
 
-            if (Z[i][j]=='0' && Z[i][j-1]=='0' && Z[i][j-2]=='0')
+            // RESET
+            Z[lig][col]='_';
+            if(test[lig][col+1]=='0')
             {
-                //printf(" Il y a 3 zero d'affiler dans la meme ligne : ");
-                //printf("case[%d] [%c] \n",i+1,p);
-                return FALSE;
+                Z[lig][col+1]='_';
             }
-
-            if (Z[i][j]=='1' && Z[i][j+1]=='1' && Z[i][j+2]=='1')
+            if(test[lig][col+2]=='0')
             {
-                //printf(" Il y a 3 un d'affiler dans la meme ligne : ");
-                //printf("case [%d] [%c] \n",i+1,p);
-                return FALSE;
-            }
-
-            if (Z[i][j]=='1' && Z[i][j-1]=='1' && Z[i][j-2]=='1')
-            {
-                //printf(" Il y a 3 un d'affiler dans la meme ligne : ");
-                //printf("case [%d] [%c] \n",i+1,p);
-                return FALSE;
+                Z[lig][col+2]='_';
             }
         }
     }
-    return TRUE;
-}
 
-BOOL compare_indice_suivant_colonne(int TL,char**Z)
-{
-    char p;
-    for (int i=2;i<TL-2;i++)
+    if(col>1)
     {
-        for (int j=0;j<TL;j++)
-        {
-            p=conversion_column(j);
-            if (Z[i][j]=='0' && Z[i+1][j]=='0' && Z[i+2][j]=='0')
-            {
-                //printf(" Il y a 3 zero d'affiler dans la meme colonne : ");
-                //printf("indice [%d] [%c]  \n",i+1,p);
-                return FALSE;
-            }
+        // 2 INDICES A GAUCHE
+        if((Z[lig][col] == Z[lig][col-1])&&(Z[lig][col-1] == Z[lig][col-2])){
+            verif2 = TRUE;
+            printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n",lig+1,Z[lig][col]);
 
-            if (Z[i][j]=='0' && Z[i-1][j]=='0' && Z[i-2][j]=='0')
+            // RESET
+            Z[lig][col]='_';
+            if(test[lig][col-1]=='0')
             {
-                //printf(" Il y a 3 zero d'affiler dans la meme colonne : ");
-                //printf("indice [%d] [%c]  \n",i+1,p);
-                return FALSE;
+                Z[lig][col-1]='_';
             }
-
-            if (Z[i][j]=='1' && Z[i+1][j]=='1' && Z[i+2][j]=='1')
+            if(test[lig][col-2]=='0')
             {
-                //printf(" Il y a 3 un d'affiler dans la meme colonne : \n");
-                //printf("case [%d] [%c] \n",i+1,p);
-                return FALSE;
+                Z[lig][col-2]='_';
             }
+            cpt++;
+        }
 
-            if (Z[i][j]=='1' && Z[i-1][j]=='1' && Z[i-2][j]=='1')
+    }
+
+    if((col>0) && (col<TL-1))
+    {
+        // 1 INDICE A DROITE ET UN INDICE A GAUCHE
+        if((Z[lig][col] == Z[lig][col-1])&&(Z[lig][col] == Z[lig][col+1])){
+            verif3 = TRUE;
+            printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n",lig+1,Z[lig][col]);
+
+            // RESET
+            Z[lig][col]='_';
+            if(test[lig][col-1]=='0')
             {
-                //printf(" Il y a 3 un d'affiler dans la meme colonne : \n");
-                //printf("case [%d] [%c] \n",i+1,p);
-                return FALSE;
+                Z[lig][col-1]='_';
             }
-
+            if(test[lig][col+1]=='0')
+            {
+                Z[lig][col+1]='_';
+            }
+            cpt++;
         }
     }
-    return TRUE;
+
+    if((verif1==TRUE) || (verif2==TRUE) ||(verif3==TRUE))
+    {
+        return TRUE;
+    }
+    return FALSE;
 }
+
+BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col)
+{
+    BOOL verif1=FALSE,verif2=FALSE,verif3=FALSE;
+    int cpt=0;
+    /*
+     * TRUE => Identique
+     * FALSE => Pas identique
+     */
+
+
+    if(lig<TL-2)
+    {
+        // 2 EN DESSOUS
+        if((Z[lig][col] == Z[lig+1][col])&&(Z[lig+1][col] == Z[lig+2][col])){
+            verif1 = TRUE;
+            printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col),Z[lig][col]);
+
+            // RESET
+            Z[lig][col]='_';
+            if(test[lig+1][col]=='0')
+            {
+                Z[lig+1][col]='_';
+            }
+            if(test[lig+2][col]=='0')
+            {
+                Z[lig+2][col]='_';
+            }
+            cpt++;
+        }
+    }
+
+    if(lig>1)
+    {
+        // 2 INDICES EN HAUT
+        if((Z[lig][col] == Z[lig-1][col])&&(Z[lig-1][col] == Z[lig-2][col])){
+            verif2 = TRUE;
+            printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col),Z[lig][col]);
+
+            // RESET
+            Z[lig][col]='_';
+            if(test[lig-1][col]=='0')
+            {
+                Z[lig-1][col]='_';
+            }
+            if(test[lig-2][col]=='0')
+            {
+                Z[lig-2][col]='_';
+            }
+            cpt++;
+        }
+
+    }
+
+        if((lig>0) && (lig<TL-1))
+        {
+        // 1 INDICE A DROITE ET UN INDICE A GAUCHE
+        if((Z[lig][col] == Z[lig-1][col])&&(Z[lig][col] == Z[lig+1][col])){
+            verif3 = TRUE;
+            printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col),Z[lig][col]);
+
+            // RESET
+            Z[lig][col]='_';
+            print_matrix(test,TL);
+            if(test[lig-1][col]=='0')
+            {
+                Z[lig-1][col]='_';
+            }
+            if(test[lig+1][col]=='0')
+            {
+                Z[lig+1][col]='_';
+            }
+        }
+    }
+
+    if((verif1==TRUE) || (verif2==TRUE) ||(verif3==TRUE))
+    {
+        return TRUE;
+    }
+
+    return FALSE;
+}
+
 
 BOOL compare_game_with_solution(int line, char column,char** G,char** S)
 {
@@ -1161,6 +1243,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
 
         do{
             cpt = 0;
+            printf("Saisir LIGNE/COLONNE\n");
             saisie_securisee_jouer(dim, game_matrix, &lig_ptr, &col_char_ptr,hidden_index_matrix);
             printf("Saisir 1 ou 0:");
             fflush(stdin);
@@ -1173,11 +1256,10 @@ void menu1_2(int dim){       //SOUS MENU 1_2
             // Affectation à la grille jeu
             game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = val;
 
-            /*
             //VERIFICATIONS
+            /*
             egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
             egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-
 
             if(egal_lig == FALSE || egal_col == FALSE)
             {
@@ -1189,10 +1271,9 @@ void menu1_2(int dim){       //SOUS MENU 1_2
                 // - 1 vie
                 egal = TRUE;
             }
-             */
 
 
-
+            /*
            comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
            comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
 
@@ -1208,29 +1289,35 @@ void menu1_2(int dim){       //SOUS MENU 1_2
                 // - 1 vie
                 comp = TRUE;
             }
-
-            /*
-
-           trois_indice_lig=compare_indice_suivant_ligne(dim,game_matrix);
-           trois_indice_col=compare_indice_suivant_colonne(dim,game_matrix);
-
-           if(trois_indice_lig == FALSE ||  trois_indice_col== FALSE)
+           if(comp_lig == FALSE || comp_col == FALSE && cpt==0)
            {
                // - 1 vie
-               printf("Il y a plusieurs %d d'affilés",val);
-               trois_indice = FALSE;
+               printf("Il y a plusieurs ligne ou plusieurs colonne identiques\n");
+               cpt++;
+               comp = FALSE;
                game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
+           }
+            */
+
+           trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
+           trois_indice_col=compare_indice_suivant_col(dim,game_matrix);
+
+           if(trois_indice_lig == TRUE || trois_indice_col == TRUE)
+           {
+               // - 1 vie
+               trois_indice = TRUE;
            }
 
 
-           correct=compare_game_with_solution(lig_ptr,col_char_ptr,game_matrix,solution);
+
+           /*correct=compare_game_with_solution(lig_ptr,col_char_ptr,game_matrix,solution);
            if(correct == FALSE){
                printf("Coup valide mais incorrect...\n");
                printf("Re-essayer\n");
            }
             */
 
-        }while((comp==FALSE) || (matrice_pleine(game_matrix,dim) == FALSE));
+        }while((matrice_pleine(game_matrix,dim) == FALSE));
         printf("\nBravo\n");
         menu1_2(dim);
 
@@ -1315,8 +1402,7 @@ void menu_1_2_1(int dim,char** masque){
     }
 }
 
-char menu_difficulte()
-{
+char menu_difficulte(){
     char difficulty_choice;
     printf("\n -- DIFFICULTE --\n\n");
     printf("1 - DEBUTANT\n");
