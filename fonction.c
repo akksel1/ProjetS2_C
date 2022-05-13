@@ -207,6 +207,8 @@ BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test)
             zero=zero+1;
         }
     }
+
+
     if((zero!=un) && (colonne_remplie(col,Z,TL)==TRUE))
     {
         printf("LA COLONNE %c NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n", conversion_column(col));
@@ -263,7 +265,7 @@ BOOL compare_line(int TL ,char**Z,int lig,int col,char** test)
             if((verif==TRUE) && (ligne_remplie(lig,Z,TL)==TRUE))
             {
                 printf("LA LIGNE %d EST IDENTIQUE \n",t+1);
-                reset_col(Z,test,col,TL);
+                reset_lig(Z,test,lig,TL);
                 return FALSE;
             }
             if(verif==FALSE && ligne_remplie(lig,Z,TL)==TRUE)
@@ -282,10 +284,6 @@ BOOL compare_column(int TL ,char**Z,int lig,int col,char** test)
 {
     char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
 
-
-
-    BOOL colonne_remplie(int,char**,int);
-    BOOL ligne_remplie(int,char**,int);
 
 
     // T stock la premiere colonne du tableau
