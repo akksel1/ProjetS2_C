@@ -223,18 +223,18 @@ BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test)
     }
 }
 
-BOOL compare_line(int TL ,char**Z)
+BOOL compare_line(int TL ,char**Z,int lig,int col,char** test)
 {
     char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
 
 
-    // T stock la premiere ligne du tableau
-    for (int i = 0; i < TL; i++)
-    {
+    // T stock la ligne du tableau
+
         for (int j = 0; j < TL; j++)
         {
-            T[j] = Z[i][j];
+            T[j] = Z[lig][j];
         }
+
 
         // Verification ligne identique
 
@@ -242,7 +242,7 @@ BOOL compare_line(int TL ,char**Z)
         int x;
         for (int t= 0; t<TL;t++)
         {
-            if (i==t)
+            if (lig==t)
             {
                 continue;
             }
@@ -258,33 +258,40 @@ BOOL compare_line(int TL ,char**Z)
 
             }
 
-            if (verif==TRUE)
+
+            // SI LIGNE REMPLIE
+            if((verif==TRUE) && (ligne_remplie(lig,Z,TL)==TRUE))
             {
-                //printf("la ligne %d est identique \n",t+1);
+                printf("LA LIGNE %d EST IDENTIQUE \n",t+1);
+                reset_col(Z,test,col,TL);
                 return FALSE;
+            }
+            if(verif==FALSE && ligne_remplie(lig,Z,TL)==TRUE)
+            {
+                return TRUE;
             }
             else
             {
-                //printf("la ligne %d n'est pas identique \n ",t+1);
-                return TRUE;
+                return FALSE;
             }
-
-
         }
-    }
+
 }
 
-BOOL compare_column(int TL ,char**Z)
+BOOL compare_column(int TL ,char**Z,int lig,int col,char** test)
 {
     char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
 
 
+
+    BOOL colonne_remplie(int,char**,int);
+    BOOL ligne_remplie(int,char**,int);
+
+
     // T stock la premiere colonne du tableau
-    for (int j = 0; j < TL; j++)
-    {
         for (int i = 0; i< TL; i++)
         {
-            T[i] = Z[i][j];
+            T[i] = Z[i][col];
         }
 
         // Verification colonne identique
@@ -293,7 +300,7 @@ BOOL compare_column(int TL ,char**Z)
         int t;
         for (int x= 0; x<TL;x++)
         {
-            if (j==x)
+            if (col==x)
             {
                 continue;
             }
@@ -309,20 +316,27 @@ BOOL compare_column(int TL ,char**Z)
 
             }
 
-            if (verif==TRUE)
+
+
+            // SI LIGNE REMPLIE
+            if((verif==TRUE) && (colonne_remplie(col,Z,TL)==TRUE))
             {
-                //printf("la colonne %d est identique \n",x+1);
+                printf("LA COLONNE %d EST IDENTIQUE \n",x+1);
+                reset_col(Z,test,col,TL);
                 return FALSE;
+            }
+            if(verif==FALSE && (colonne_remplie(col,Z,TL)==TRUE))
+            {
+                return TRUE;
             }
             else
             {
-                //printf("la colonne %d n'est pas identique \n ",x+1);
-                return TRUE;
+                return FALSE;
             }
 
 
         }
-    }
+
 }
 
 BOOL compare_indice_suivant_ligne(int TL,char**Z)
@@ -1170,9 +1184,11 @@ void menu1_2(int dim){       //SOUS MENU 1_2
             // Affectation à la grille jeu
             game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = val;
 
+            /*
             //VERIFICATIONS
             egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
             egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+
 
             if(egal_lig == FALSE || egal_col == FALSE)
             {
@@ -1184,21 +1200,27 @@ void menu1_2(int dim){       //SOUS MENU 1_2
                 // - 1 vie
                 egal = TRUE;
             }
+             */
 
+
+
+           comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+           comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+
+
+            if(comp_lig == FALSE || comp_col == FALSE)
+            {
+
+                // - 1 vie
+                comp = FALSE;
+            }
+            if(comp_lig == TRUE || comp_col == TRUE)
+            {
+                // - 1 vie
+                comp = TRUE;
+            }
 
             /*
-           comp_lig=compare_line(dim,game_matrix);
-           comp_col=compare_column(dim,game_matrix);
-
-           if(comp_lig == FALSE || comp_col == FALSE && cpt==0)
-           {
-               // - 1 vie
-               printf("Il y a plusieurs ligne ou plusieurs colonne identiques\n");
-               cpt++;
-               comp = FALSE;
-               game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
-           }
-
 
            trois_indice_lig=compare_indice_suivant_ligne(dim,game_matrix);
            trois_indice_col=compare_indice_suivant_colonne(dim,game_matrix);
@@ -1219,7 +1241,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
            }
             */
 
-        }while((egal==FALSE) || (matrice_pleine(game_matrix,dim) == FALSE));
+        }while((comp==FALSE)|| (egal==FALSE) || (matrice_pleine(game_matrix,dim) == FALSE));
         printf("\nBravo\n");
         menu1_2(dim);
 

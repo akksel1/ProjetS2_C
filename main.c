@@ -6,9 +6,7 @@ int main()
 {
     printf("Bienvenu %c\n",1);
     char ** M=NULL;
-    char choice;
-    menu1(&choice);
-
+    menu1_2(4);
 
     return 0;
 
