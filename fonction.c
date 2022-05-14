@@ -8,7 +8,6 @@
 #include <time.h>
 
 //BOOL verif(int , int S[][]{
-
 char** create_matrix(int size)
 {
     char (**Z) = (char**) malloc(size * sizeof(char*));
@@ -26,6 +25,7 @@ void Color_Text(int Text_Color,int Back_color)
     SetConsoleTextAttribute(X,Back_color*16+Text_Color);
 }
 
+// Permet d'afficher la grille jeux
 void print_matrix(char (**Z),int TL)
 {
     // Affichage d'une matrice 4x4
@@ -64,6 +64,7 @@ void print_matrix(char (**Z),int TL)
 
 }
 
+// Permet d'afficher la grille mask
 void print_mask(char (**Z),int TL)
 {
     // Affichage d'une matrice 4x4
@@ -108,7 +109,7 @@ void print_mask(char (**Z),int TL)
 
 }
 
-
+// Permet initialiser la matrice a 0
 void initialize_matrix0(int TL,char**Z){
     for(int i=0;i<TL;i++)
     {
@@ -119,6 +120,7 @@ void initialize_matrix0(int TL,char**Z){
     }
 }
 
+// Permet initialiser la matrice en dur
 void initialize_matrix_personnaliser(int TL,char**Z)
 {
     Z[0][0]='1';
@@ -142,6 +144,7 @@ void initialize_matrix_personnaliser(int TL,char**Z)
     Z[3][3]='1';
 }
 
+// Permet initialiser la matrice a 1
 void initialize_matrix1(int TL,char**Z){
     for(int i=0;i<TL;i++)
     {
@@ -152,7 +155,9 @@ void initialize_matrix1(int TL,char**Z){
     }
 }
 
-BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test)
+
+// Permet de comparer le nombre de 0 et de 1 sur la meme ligne
+BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test,int partie)
 {
     char cpt;
     int un=0;
@@ -175,18 +180,20 @@ BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test)
         }
     }
 
-
     if (zero >= taillesur2 || un >= taillesur2)
     {
-        printf("\nLA LIGNE %d NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n",lig+1);
+        if (partie==1)
+        {
+        printf("\n -1 PT : LA LIGNE %d NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n",lig+1);
         reset_lig(Z,test,lig,TL);
+        }
         return FALSE; // Ne respecte pas la regle
     }
     return TRUE;
 }
 
-
-BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test)
+// Permet de comparer le nombre de 0 et de 1 sur la meme colonne
+BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test, int partie)
 {
     char cpt;
     int un=0;
@@ -212,8 +219,11 @@ BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test)
 
     if (zero >= taillesur2 || un >= taillesur2)
     {
-        printf("LA COLONNE %c NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n", conversion_column(col));
+        if (partie==1)
+        {
+        printf("\n-1 PT :LA COLONNE %c NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n", conversion_column(col));
         reset_col(Z,test,col,TL);
+        }
         return FALSE; // Ne respecte pas la regle
     }
     return TRUE; // respecte la regle
@@ -258,8 +268,11 @@ BOOL compare_line(int TL ,char**Z,int lig,int col,char** test,int partie)
 
             // SI LIGNE REMPLIE
             if (verif == TRUE) {
-                printf("LA LIGNE %d EST IDENTIQUE \n", t + 1);
+                if (partie==1)
+                {
+                printf("\n-1 PT : LA LIGNE %d EST IDENTIQUE \n", t + 1);
                 reset_lig(Z, test, lig, TL);
+                }
                 return FALSE;
             }
             if (verif == FALSE) {
@@ -269,7 +282,7 @@ BOOL compare_line(int TL ,char**Z,int lig,int col,char** test,int partie)
         return TRUE;
 }
 
-BOOL compare_column(int TL ,char**Z,int lig,int col,char** test)
+BOOL compare_column(int TL ,char**Z,int lig,int col,char** test,int partie)
 {
     char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
     int t;
@@ -309,8 +322,11 @@ BOOL compare_column(int TL ,char**Z,int lig,int col,char** test)
             // SI COLONNE REMPLIE
             if (verif == TRUE)
             {
-                printf("LA COLONNE %d EST IDENTIQUE \n", t + 1);
-                reset_col(Z, test, col, TL);
+                if (partie==1)
+                {
+                    printf("\n-1 PT :LA COLONNE %d EST IDENTIQUE \n", t + 1);
+                    reset_col(Z, test, col, TL);
+                }
                 return FALSE;
             }
             if (verif == FALSE)
@@ -322,7 +338,7 @@ BOOL compare_column(int TL ,char**Z,int lig,int col,char** test)
 
 }
 
-BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col)
+BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int partie)
 {
     BOOL verif1=FALSE,verif2=FALSE,verif3=FALSE;
     int cpt=0;
@@ -334,9 +350,10 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col)
     if(Z[lig][col]!='_') {
         if (col < TL - 2) {
             // 2 INDICES A DROITE
-            if ((Z[lig][col] == Z[lig][col + 1]) && (Z[lig][col + 1] == Z[lig][col + 2])) {
+            if ((Z[lig][col] == Z[lig][col + 1]) && (Z[lig][col + 1] == Z[lig][col + 2]))
+            {
                 verif1 = TRUE;
-                printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
 
                 // RESET
                 Z[lig][col] = '_';
@@ -353,7 +370,7 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col)
             // 2 INDICES A GAUCHE
             if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col - 1] == Z[lig][col - 2])) {
                 verif2 = TRUE;
-                printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
 
                 // RESET
                 Z[lig][col] = '_';
@@ -372,7 +389,7 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col)
             // 1 INDICE A DROITE ET UN INDICE A GAUCHE
             if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col] == Z[lig][col + 1])) {
                 verif3 = TRUE;
-                printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
 
                 // RESET
                 Z[lig][col] = '_';
@@ -402,10 +419,13 @@ BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col,int p
      * FALSE => Pas identique
      */
 
-    if(Z[lig][col]!='_') {
-        if (lig < TL - 2) {
+    if(Z[lig][col]!='_')
+    {
+        if (lig < TL - 2)
+        {
             // 2 EN DESSOUS
-            if ((Z[lig][col] == Z[lig + 1][col]) && (Z[lig + 1][col] == Z[lig + 2][col])) {
+            if ((Z[lig][col] == Z[lig + 1][col]) && (Z[lig + 1][col] == Z[lig + 2][col]))
+            {
                 verif1 = TRUE;
                 if(partie==1)
                 {
@@ -558,7 +578,6 @@ BOOL saisie_securisee(int size, char (**Z),int *lig_ptr,char *col_char_ptr){
     (*lig_ptr)=lig;
     (*col_char_ptr)=col_char;
     return FALSE;
-
 }
 
 void saisie_securisee_jouer(int size, char** game_matrix,int *lig_ptr,char *col_char_ptr, char ** test) {
@@ -696,7 +715,8 @@ void Mask_input(char (**Z),int size){
 
 }
 
-int Random_index(int size){
+int Random_index(int size)
+{
     int nb, random;
     srand(clock());
     random = rand();
@@ -1086,9 +1106,18 @@ void menu1(){//MENU PRINCIPAL
     if(choice=='1'){
         menu_dimension();
     }
-    /*if(*choice=='2'){
+
+    ///PARTIE II
+    if(choice=='2')
+    {
+
     }
-     */
+
+    /*
+    if(choice=='3'){
+
+    }*/
+
 }
 
 // MENU POUR CHOISIR LA DIMENSION
@@ -1349,8 +1378,8 @@ void menu1_2(int dim){       //SOUS MENU 1_2
                     vie=vie-1;
                 }
 
-                comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-                comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+                comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
+                comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
 
                 if ((comp_lig==FALSE) || (comp_col==FALSE))
                 {
@@ -1364,10 +1393,10 @@ void menu1_2(int dim){       //SOUS MENU 1_2
 
 
         if(vie>0){
-            printf("\nBRAVO ! %d\n",1);
+            printf("\n BRAVO VOUS AVEZ REUSSI ! %d\n",1);
         }
         else{
-            printf("\nPERDU !\n");
+            printf("PERDU\n");
         }
         menu1_2(dim);
     }
