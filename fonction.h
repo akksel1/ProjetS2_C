@@ -25,7 +25,7 @@ BOOL compare_column(int ,char**,int ,int ,char**);
 BOOL compare_line(int ,char**,int ,int ,char**);
 BOOL compare_indice_suivant_lig(int,char**,char**,int,int);
 BOOL compare_indice_suivant_col(int,char**,char**,int,int);
-BOOL compare_game_with_solution(int, char,char**,char**);
+BOOL compare_game_with_solution(int,int,char**,char**);
 void Mask_input(char**,int);
 void menu_mask_input(char**,int);
 int column_conversion(char);
@@ -50,8 +50,7 @@ BOOL ligne_remplie(int,char**,int);
 void reset_lig(char**,char**,int,int);
 void reset_col(char**,char**,int,int);
 BOOL matrice_pleine(char**,int);
-void reset_3lig_avant(char**,char**,int,int);
-void reset_3lig_avant(char**,char**,int,int);
+
 
 
 

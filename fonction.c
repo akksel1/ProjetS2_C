@@ -337,70 +337,61 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col)
      * FALSE => Pas identique
      */
 
+    if(Z[lig][col]!='_') {
+        if (col < TL - 2) {
+            // 2 INDICES A DROITE
+            if ((Z[lig][col] == Z[lig][col + 1]) && (Z[lig][col + 1] == Z[lig][col + 2])) {
+                verif1 = TRUE;
+                printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
 
-    if(col<TL-2)
-    {
-        // 2 INDICES A DROITE
-        if((Z[lig][col] == Z[lig][col+1])&&(Z[lig][col+1] == Z[lig][col+2])){
-            verif1 = TRUE;
-            printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n",lig+1,Z[lig][col]);
-
-            // RESET
-            Z[lig][col]='_';
-            if(test[lig][col+1]=='0')
-            {
-                Z[lig][col+1]='_';
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig][col + 1] == '0') {
+                    Z[lig][col + 1] = '_';
+                }
+                if (test[lig][col + 2] == '0') {
+                    Z[lig][col + 2] = '_';
+                }
             }
-            if(test[lig][col+2]=='0')
-            {
-                Z[lig][col+2]='_';
+        }
+
+        if (col > 1) {
+            // 2 INDICES A GAUCHE
+            if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col - 1] == Z[lig][col - 2])) {
+                verif2 = TRUE;
+                printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig][col - 1] == '0') {
+                    Z[lig][col - 1] = '_';
+                }
+                if (test[lig][col - 2] == '0') {
+                    Z[lig][col - 2] = '_';
+                }
+                cpt++;
+            }
+
+        }
+
+        if ((col > 0) && (col < TL - 1)) {
+            // 1 INDICE A DROITE ET UN INDICE A GAUCHE
+            if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col] == Z[lig][col + 1])) {
+                verif3 = TRUE;
+                printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig][col - 1] == '0') {
+                    Z[lig][col - 1] = '_';
+                }
+                if (test[lig][col + 1] == '0') {
+                    Z[lig][col + 1] = '_';
+                }
+                cpt++;
             }
         }
     }
-
-    if(col>1)
-    {
-        // 2 INDICES A GAUCHE
-        if((Z[lig][col] == Z[lig][col-1])&&(Z[lig][col-1] == Z[lig][col-2])){
-            verif2 = TRUE;
-            printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n",lig+1,Z[lig][col]);
-
-            // RESET
-            Z[lig][col]='_';
-            if(test[lig][col-1]=='0')
-            {
-                Z[lig][col-1]='_';
-            }
-            if(test[lig][col-2]=='0')
-            {
-                Z[lig][col-2]='_';
-            }
-            cpt++;
-        }
-
-    }
-
-    if((col>0) && (col<TL-1))
-    {
-        // 1 INDICE A DROITE ET UN INDICE A GAUCHE
-        if((Z[lig][col] == Z[lig][col-1])&&(Z[lig][col] == Z[lig][col+1])){
-            verif3 = TRUE;
-            printf("-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n",lig+1,Z[lig][col]);
-
-            // RESET
-            Z[lig][col]='_';
-            if(test[lig][col-1]=='0')
-            {
-                Z[lig][col-1]='_';
-            }
-            if(test[lig][col+1]=='0')
-            {
-                Z[lig][col+1]='_';
-            }
-            cpt++;
-        }
-    }
-
     if((verif1==TRUE) || (verif2==TRUE) ||(verif3==TRUE))
     {
         return TRUE;
@@ -417,68 +408,61 @@ BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col)
      * FALSE => Pas identique
      */
 
+    if(Z[lig][col]!='_') {
+        if (lig < TL - 2) {
+            // 2 EN DESSOUS
+            if ((Z[lig][col] == Z[lig + 1][col]) && (Z[lig + 1][col] == Z[lig + 2][col])) {
+                verif1 = TRUE;
+                printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
 
-    if(lig<TL-2)
-    {
-        // 2 EN DESSOUS
-        if((Z[lig][col] == Z[lig+1][col])&&(Z[lig+1][col] == Z[lig+2][col])){
-            verif1 = TRUE;
-            printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col),Z[lig][col]);
-
-            // RESET
-            Z[lig][col]='_';
-            if(test[lig+1][col]=='0')
-            {
-                Z[lig+1][col]='_';
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig + 1][col] == '0') {
+                    Z[lig + 1][col] = '_';
+                }
+                if (test[lig + 2][col] == '0') {
+                    Z[lig + 2][col] = '_';
+                }
+                cpt++;
             }
-            if(test[lig+2][col]=='0')
-            {
-                Z[lig+2][col]='_';
-            }
-            cpt++;
-        }
-    }
-
-    if(lig>1)
-    {
-        // 2 INDICES EN HAUT
-        if((Z[lig][col] == Z[lig-1][col])&&(Z[lig-1][col] == Z[lig-2][col])){
-            verif2 = TRUE;
-            printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col),Z[lig][col]);
-
-            // RESET
-            Z[lig][col]='_';
-            if(test[lig-1][col]=='0')
-            {
-                Z[lig-1][col]='_';
-            }
-            if(test[lig-2][col]=='0')
-            {
-                Z[lig-2][col]='_';
-            }
-            cpt++;
         }
 
-    }
+        if (lig > 1) {
+            // 2 INDICES EN HAUT
+            if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig - 1][col] == Z[lig - 2][col])) {
+                verif2 = TRUE;
+                printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
 
-        if((lig>0) && (lig<TL-1))
-        {
-        // 1 INDICE A DROITE ET UN INDICE A GAUCHE
-        if((Z[lig][col] == Z[lig-1][col])&&(Z[lig][col] == Z[lig+1][col])){
-            verif3 = TRUE;
-            printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col),Z[lig][col]);
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig - 1][col] == '0') {
+                    Z[lig - 1][col] = '_';
+                }
+                if (test[lig - 2][col] == '0') {
+                    Z[lig - 2][col] = '_';
+                }
+                cpt++;
+            }
 
-            // RESET
-            Z[lig][col]='_';
-            print_matrix(test,TL);
-            if(test[lig-1][col]=='0')
-            {
-                Z[lig-1][col]='_';
+        }
+
+        if ((lig > 0) && (lig < TL - 1)) {
+            // 1 INDICE A DROITE ET UN INDICE A GAUCHE
+            if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig][col] == Z[lig + 1][col])) {
+                verif3 = TRUE;
+                printf("-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
+
+                // RESET
+                Z[lig][col] = '_';
+                print_matrix(test, TL);
+                if (test[lig - 1][col] == '0') {
+                    Z[lig - 1][col] = '_';
+                }
+                if (test[lig + 1][col] == '0') {
+                    Z[lig + 1][col] = '_';
+                }
             }
-            if(test[lig+1][col]=='0')
-            {
-                Z[lig+1][col]='_';
-            }
+
         }
     }
 
@@ -491,10 +475,8 @@ BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col)
 }
 
 
-BOOL compare_game_with_solution(int line, char column,char** G,char** S)
+BOOL compare_game_with_solution(int line,int j,char** G,char** S)
 {
-    int j;
-    j=column_conversion(column);
     if (G[line][j]==S[line][j])
     {
         return TRUE;
@@ -873,6 +855,7 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
         copy_matrix8(game_matrix,solution2,dim);
     }
     if(dim==16) {
+        // /!\ CETTE GRILLE SOLUTION N'EST (potentiellement) NON VALIDE ! Veuillez changer celle-ci pour jouer avec ! Bon jeu ;) /!
         char solution1[16][16] = {
                 {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
                 {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
@@ -1154,7 +1137,7 @@ void menu1_1(){ //SOUS MENU 1_1
 }
 
 void menu1_2(int dim){       //SOUS MENU 1_2
-    int cpt=0;
+    int cpt=0,vie=3;
     char choice,val;
     char **game_matrix;
     char **masque;
@@ -1241,9 +1224,31 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         Color_Text(15,0);
         printf("\n");
 
+
         do{
-            cpt = 0;
             printf("Saisir LIGNE/COLONNE\n");
+            if(vie==3)
+            {
+                printf("%41cVIE\n",' ');
+                Color_Text(2,0);
+                printf("%40c* * *\n",' ');
+                Color_Text(15,0);
+            }
+            if(vie==2)
+            {
+                printf("%40cVIE\n",' ');
+                Color_Text(14,0);
+                printf("%40c* *\n",' ');
+                Color_Text(15,0);
+            }
+            if(vie==1)
+            {
+                printf("%39cVIE\n",' ');
+                Color_Text(4,0);
+                printf("%40c*\n",' ');
+                Color_Text(15,0);
+            }
+            cpt = 0;
             saisie_securisee_jouer(dim, game_matrix, &lig_ptr, &col_char_ptr,hidden_index_matrix);
             printf("Saisir 1 ou 0:");
             fflush(stdin);
@@ -1256,69 +1261,113 @@ void menu1_2(int dim){       //SOUS MENU 1_2
             // Affectation à la grille jeu
             game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = val;
 
-            //VERIFICATIONS
-            /*
-            egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-            egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+            correct=compare_game_with_solution(lig_ptr-1, column_conversion(col_char_ptr),game_matrix,solution);
 
-            if(egal_lig == FALSE || egal_col == FALSE)
-            {
-                // - 1 vie
-                egal = FALSE;
-            }
-            if(egal_lig == TRUE && egal_col == TRUE)
-            {
-                // - 1 vie
-                egal = TRUE;
-            }
-
-
-            /*
-           comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-           comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-
-
-            if(comp_col == FALSE || comp_lig == FALSE)
+            if(correct == FALSE) //Pas égal a la grille solution mais teste de la validite du coup
             {
 
-                // - 1 vie
-                comp = FALSE;
+                egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+                egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+                if((egal_lig == TRUE) && (egal_col == TRUE))
+                {
+                    egal = TRUE; // NB 0 == NB 1 donc ok
+                }
+
+                if((egal_lig == FALSE) || (egal_col == FALSE))
+                {
+                    egal = FALSE;
+                    vie=vie-1;
+                }
+
+
+                trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
+                trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
+                // FALSE => il n'y a pas trois fois de 1 ou de 0 de suite
+                if(trois_indice_lig == FALSE && trois_indice_col == FALSE)
+                {
+                    // - 1 vie
+                    trois_indice = FALSE;
+                }
+
+                if(trois_indice_lig == TRUE || trois_indice_col == TRUE)
+                {
+                    // - 1 vie
+                    trois_indice = TRUE;
+                    vie--;
+                }
+
+                if((egal==TRUE) && (trois_indice == FALSE)) // 2 règles sont respectées
+                {
+                    if(ligne_remplie(lig_ptr-1,game_matrix,dim) == FALSE)
+                    {
+                        printf("Coup valide mais incorrect...\n");
+                        game_matrix[lig_ptr-1][column_conversion(col_char_ptr)]='_';
+                    }
+                    else
+                    {
+                        comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+                        comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+
+                        // TRUE => Tout est bon
+                        if(comp_col == TRUE && comp_lig == TRUE)
+                        {
+                            // - 1 vie
+                            comp = TRUE;
+                        }
+                        if(comp_col == FALSE || comp_lig == FALSE)
+                        {
+                            // - 1 vie
+                            comp = FALSE;
+                        }
+
+                        if(comp==TRUE)
+                        {
+                            printf("Coup valide mais incorrect...\n");
+                            game_matrix[lig_ptr-1][column_conversion(col_char_ptr)]='_';
+                        }
+                    }
+                }
+
             }
-            if(comp_col == TRUE && comp_lig == TRUE)
+            else// Respecte peut être les règles mais respecte la matrice solution
             {
-                // - 1 vie
-                comp = TRUE;
+                egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+                egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+
+                if ((egal_col==FALSE) || (egal_lig==FALSE))
+                {
+                    vie=vie-1;
+                }
+
+
+                trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
+                trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
+
+                if ((trois_indice_col==TRUE) || (trois_indice_lig==TRUE))
+                {
+                    vie=vie-1;
+                }
+
+                comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+                comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+
+                if ((comp_lig==FALSE) || (comp_col==FALSE))
+                {
+                    vie=vie-1;
+                }
+
+
             }
-           if(comp_lig == FALSE || comp_col == FALSE && cpt==0)
-           {
-               // - 1 vie
-               printf("Il y a plusieurs ligne ou plusieurs colonne identiques\n");
-               cpt++;
-               comp = FALSE;
-               game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = '_';
-           }
-            */
 
-           trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
-           trois_indice_col=compare_indice_suivant_col(dim,game_matrix);
-
-           if(trois_indice_lig == TRUE || trois_indice_col == TRUE)
-           {
-               // - 1 vie
-               trois_indice = TRUE;
-           }
+        }while((matrice_pleine(game_matrix,dim) == FALSE) && (vie>0));
 
 
-
-           /*correct=compare_game_with_solution(lig_ptr,col_char_ptr,game_matrix,solution);
-           if(correct == FALSE){
-               printf("Coup valide mais incorrect...\n");
-               printf("Re-essayer\n");
-           }
-            */
-
-        }while((matrice_pleine(game_matrix,dim) == FALSE));
-        printf("\nBravo\n");
+        if(vie>0){
+            printf("\nBRAVO ! %d\n",1);
+        }
+        else{
+            printf("\nPERDU !\n");
+        }
         menu1_2(dim);
 
 
@@ -1332,6 +1381,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
 
 
 }
+
 //FINI
 void menu_mask_input(char (**Z),int size){
     char choice;
