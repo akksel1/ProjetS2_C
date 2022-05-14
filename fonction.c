@@ -157,8 +157,13 @@ BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test)
     char cpt;
     int un=0;
     int zero=0;
+    int taillesur2;
 
-    for(int j=0;j<TL;j++){
+    taillesur2 = (TL/2)+1;
+
+
+    for(int j=0;j<TL;j++)
+    {
         cpt=Z[lig][j];
         if (cpt=='1')
         {
@@ -169,34 +174,30 @@ BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test)
             zero=zero+1;
         }
     }
-    if((zero!=un) && (ligne_remplie(lig,Z,TL)==TRUE))
+
+
+    if (zero >= taillesur2 || un >= taillesur2)
     {
         printf("\nLA LIGNE %d NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n",lig+1);
         reset_lig(Z,test,lig,TL);
-        return FALSE;
+        return FALSE; // Ne respecte pas la regle
     }
-    if(zero==un && ligne_remplie(lig,Z,TL)==TRUE)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
-
+    return TRUE;
 }
+
 
 BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test)
 {
-    /*
-     * MATRICE TEST => COPIE DU MASQUE
-    */
-
     char cpt;
     int un=0;
     int zero=0;
+    int taillesur2;
 
-    for(int i=0;i<TL;i++){
+    taillesur2 = (TL/2)+1;
+
+
+    for(int i=0;i<TL;i++)
+    {
         cpt=Z[i][col];
         if (cpt=='1')
         {
@@ -209,21 +210,16 @@ BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test)
     }
 
 
-    if((zero!=un) && (colonne_remplie(col,Z,TL)==TRUE))
+    if (zero >= taillesur2 || un >= taillesur2)
     {
         printf("LA COLONNE %c NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n", conversion_column(col));
         reset_col(Z,test,col,TL);
-        return FALSE;
+        return FALSE; // Ne respecte pas la regle
     }
-    if(zero==un && colonne_remplie(col,Z,TL)==TRUE)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+    return TRUE; // respecte la regle
 }
+
+
 
 BOOL compare_line(int TL ,char**Z,int lig,int col,char** test)
 {
@@ -843,14 +839,14 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
     }
     if(dim==8) {
         char solution2[8][8] = {
-                {'1', '0', '0', '1','1', '0', '0', '1'},
-                {'1', '0', '1', '0','1', '0', '1', '0'},
+                {'1', '1', '0', '1','0', '1', '0', '0'},
+                {'1', '0', '1', '0','1', '0', '0', '1'},
+                {'0', '1', '0', '1','0', '0', '1', '1'},
                 {'0', '1', '1', '0','0', '1', '1', '0'},
-                {'0', '1', '0', '1','0', '1', '0', '1'},
+                {'1', '0', '1', '0','1', '1', '0', '0'},
                 {'1', '0', '0', '1','1', '0', '0', '1'},
-                {'1', '0', '1', '0','1', '0', '1', '0'},
-                {'0', '1', '1', '0','0', '1', '1', '0'},
-                {'0', '1', '0', '1','0', '1', '0', '1'}
+                {'0', '1', '0', '1','0', '1', '1', '0'},
+                {'0', '0', '1', '0','1', '0', '1', '1'}
         };
         copy_matrix8(game_matrix,solution2,dim);
     }
