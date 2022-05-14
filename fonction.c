@@ -1,13 +1,14 @@
 //
 // Created by louka on 06/04/2022.
 //
-
 #include "fonction.h"
-#include<conio.h>
-#include<stdio.h>
+#include <conio.h>
+#include <stdio.h>
 #include <time.h>
 
-//BOOL verif(int , int S[][]{
+/// -- FONCTION UTILITE --
+
+// Fonction qui permet de créer une matrice dynamique
 char** create_matrix(int size)
 {
     char (**Z) = (char**) malloc(size * sizeof(char*));
@@ -155,431 +156,7 @@ void initialize_matrix1(int TL,char**Z){
     }
 }
 
-
-// Permet de comparer le nombre de 0 et de 1 sur la meme ligne
-BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test,int partie)
-{
-    char cpt;
-    int un=0;
-    int zero=0;
-    int taillesur2;
-
-    taillesur2 = (TL/2)+1;
-
-
-    for(int j=0;j<TL;j++)
-    {
-        cpt=Z[lig][j];
-        if (cpt=='1')
-        {
-            un=un+1;
-        }
-        if (cpt=='0')
-        {
-            zero=zero+1;
-        }
-    }
-
-    if (zero >= taillesur2 || un >= taillesur2)
-    {
-        if (partie==1)
-        {
-        printf("\n -1 PT : LA LIGNE %d NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n",lig+1);
-        reset_lig(Z,test,lig,TL);
-        }
-        return FALSE; // Ne respecte pas la regle
-    }
-    return TRUE;
-}
-
-// Permet de comparer le nombre de 0 et de 1 sur la meme colonne
-BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test, int partie)
-{
-    char cpt;
-    int un=0;
-    int zero=0;
-    int taillesur2;
-
-    taillesur2 = (TL/2)+1;
-
-
-    for(int i=0;i<TL;i++)
-    {
-        cpt=Z[i][col];
-        if (cpt=='1')
-        {
-            un=un+1;
-        }
-        if (cpt=='0')
-        {
-            zero=zero+1;
-        }
-    }
-
-
-    if (zero >= taillesur2 || un >= taillesur2)
-    {
-        if (partie==1)
-        {
-        printf("\n-1 PT :LA COLONNE %c NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n", conversion_column(col));
-        reset_col(Z,test,col,TL);
-        }
-        return FALSE; // Ne respecte pas la regle
-    }
-    return TRUE; // respecte la regle
-}
-
-// Permet de comparer la ligne
-BOOL compare_line(int TL ,char**Z,int lig,int col,char** test,int partie)
-{
-    char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
-    int x;
-    int t;
-    BOOL verif=FALSE;
-
-
-    // T stock la ligne du tableau
-        if(ligne_remplie(lig,Z,TL)) {
-            for (int j=0; j < TL; j++)
-            {
-                T[j] = Z[lig][j];
-            }
-
-            // Verification ligne identique
-            t=0;
-            while (verif == FALSE && t < TL)
-            {
-                if (lig != t)
-                {
-                    x = 0;
-                    verif = TRUE;
-                    while ((verif == TRUE) && (x < TL))
-                    {
-                        if (T[x] != Z[t][x])
-                        {
-                            verif = FALSE;
-                        }
-                        x++;
-                    }
-
-                }
-                t++;
-            }
-
-            // SI LIGNE REMPLIE
-            if (verif == TRUE) {
-                if (partie==1)
-                {
-                printf("\n-1 PT : LA LIGNE %d EST IDENTIQUE \n", t + 1);
-                reset_lig(Z, test, lig, TL);
-                }
-                return FALSE;
-            }
-            if (verif == FALSE) {
-                return TRUE;
-            }
-        }
-        return TRUE;
-}
-
-BOOL compare_column(int TL ,char**Z,int lig,int col,char** test,int partie)
-{
-    char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
-    int t;
-    int x;
-    BOOL verif=FALSE;
-
-
-        // Verification colonne identique
-
-        if(colonne_remplie(col,Z,TL)) {
-            for (int i=0; i< TL; i++)
-            {
-                T[i] = Z[i][col];
-            }
-
-            // Verification ligne identique
-            x=0;
-            while (verif == FALSE && x < TL)
-            {
-                if (col != x)
-                {
-                    t = 0;
-                    verif = TRUE;
-                    while ((verif == TRUE) && (t < TL))
-                    {
-                        if (T[t] != Z[t][x])
-                        {
-                            verif = FALSE;
-                        }
-                        t++;
-                    }
-
-                }
-                x++;
-            }
-
-            // SI COLONNE REMPLIE
-            if (verif == TRUE)
-            {
-                if (partie==1)
-                {
-                    printf("\n-1 PT :LA COLONNE %d EST IDENTIQUE \n", t + 1);
-                    reset_col(Z, test, col, TL);
-                }
-                return FALSE;
-            }
-            if (verif == FALSE)
-            {
-                return TRUE;
-            }
-    }
-    return TRUE;
-
-}
-
-BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int partie)
-{
-    BOOL verif1=FALSE,verif2=FALSE,verif3=FALSE;
-    int cpt=0;
-    /*
-     * TRUE => Identique
-     * FALSE => Pas identique
-     */
-
-    if(Z[lig][col]!='_') {
-        if (col < TL - 2) {
-            // 2 INDICES A DROITE
-            if ((Z[lig][col] == Z[lig][col + 1]) && (Z[lig][col + 1] == Z[lig][col + 2]))
-            {
-                verif1 = TRUE;
-                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
-
-                // RESET
-                Z[lig][col] = '_';
-                if (test[lig][col + 1] == '0') {
-                    Z[lig][col + 1] = '_';
-                }
-                if (test[lig][col + 2] == '0') {
-                    Z[lig][col + 2] = '_';
-                }
-            }
-        }
-
-        if (col > 1) {
-            // 2 INDICES A GAUCHE
-            if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col - 1] == Z[lig][col - 2])) {
-                verif2 = TRUE;
-                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
-
-                // RESET
-                Z[lig][col] = '_';
-                if (test[lig][col - 1] == '0') {
-                    Z[lig][col - 1] = '_';
-                }
-                if (test[lig][col - 2] == '0') {
-                    Z[lig][col - 2] = '_';
-                }
-                cpt++;
-            }
-
-        }
-
-        if ((col > 0) && (col < TL - 1)) {
-            // 1 INDICE A DROITE ET UN INDICE A GAUCHE
-            if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col] == Z[lig][col + 1])) {
-                verif3 = TRUE;
-                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
-
-                // RESET
-                Z[lig][col] = '_';
-                if (test[lig][col - 1] == '0') {
-                    Z[lig][col - 1] = '_';
-                }
-                if (test[lig][col + 1] == '0') {
-                    Z[lig][col + 1] = '_';
-                }
-                cpt++;
-            }
-        }
-    }
-    if((verif1==TRUE) || (verif2==TRUE) ||(verif3==TRUE))
-    {
-        return TRUE;
-    }
-    return FALSE;
-}
-
-BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col,int partie)
-{
-    BOOL verif1=FALSE,verif2=FALSE,verif3=FALSE;
-    int cpt=0;
-    /*
-     * TRUE => Identique
-     * FALSE => Pas identique
-     */
-
-    if(Z[lig][col]!='_')
-    {
-        if (lig < TL - 2)
-        {
-            // 2 EN DESSOUS
-            if ((Z[lig][col] == Z[lig + 1][col]) && (Z[lig + 1][col] == Z[lig + 2][col]))
-            {
-                verif1 = TRUE;
-                if(partie==1)
-                {
-                    printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
-                    // RESET
-                    Z[lig][col] = '_';
-                    if (test[lig + 1][col] == '0') {
-                        Z[lig + 1][col] = '_';
-                    }
-                    if (test[lig + 2][col] == '0') {
-                        Z[lig + 2][col] = '_';
-                    }
-                    cpt++;
-                }
-
-            }
-
-
-            }
-        }
-
-        if (lig > 1) {
-            // 2 INDICES EN HAUT
-            if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig - 1][col] == Z[lig - 2][col])) {
-                verif2 = TRUE;
-                if (partie == 1) {
-                    printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
-                    // RESET
-                    Z[lig][col] = '_';
-                    if (test[lig - 1][col] == '0') {
-                        Z[lig - 1][col] = '_';
-                    }
-                    if (test[lig - 2][col] == '0') {
-                        Z[lig - 2][col] = '_';
-                    }
-                    cpt++;
-                }
-            }
-        }
-
-        if ((lig > 0) && (lig < TL - 1)) {
-            // 1 INDICE A DROITE ET UN INDICE A GAUCHE
-            if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig][col] == Z[lig + 1][col])) {
-                verif3 = TRUE;
-                if (partie == 1) {
-
-                    printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
-
-                    // RESET
-                    Z[lig][col] = '_';
-                    print_matrix(test, TL);
-                    if (test[lig - 1][col] == '0') {
-                        Z[lig - 1][col] = '_';
-                    }
-                    if (test[lig + 1][col] == '0') {
-                        Z[lig + 1][col] = '_';
-                    }
-                }
-            }
-        }
-
-    if((verif1==TRUE) || (verif2==TRUE) ||(verif3==TRUE))
-    {
-        return TRUE;
-    }
-    return FALSE;
-}
-
-BOOL compare_game_with_solution(int line,int j,char** G,char** S)
-{
-    if (G[line][j]==S[line][j])
-    {
-        return TRUE;
-    }
-    return FALSE;
-}
-
-BOOL saisie_securisee(int size, char (**Z),int *lig_ptr,char *col_char_ptr){
-    int cpt,col,verif;
-    int lig;
-    char col_char;
-
-    printf("Saisir 0/0 pour arreter\n\n");
-    fflush(stdin);
-    print_matrix(Z, size);
-    printf("Saisir:");
-    /*
-    SAISIE SECURISEE
-        Verif --> vérifier si l'user saisi le bon type (char à la place d'un int par ex.
-    */
-    verif = scanf("%d/%c", &lig, &col_char);
-
-
-
-    if (size == 4) {
-        cpt = 0;
-        while (((lig > size) || (lig < 1)) || (col_char > 'D' || col_char < 'A') || verif == 0) {
-            if(lig == 0 && col_char == '0'){
-                break;
-            }
-            if (cpt % 2 == 1) {
-                Color_Text(4, 0);
-                printf("\n----\nRAPPEL: Ligne (1 - ... - 4)\nET\nColonne (A - ... - D)\n----\n");
-                Color_Text(15, 0);
-            }
-            printf("Indice incorrect. Resaisir:");
-            fflush(stdin);
-            verif = scanf("%d/%c", &lig, &col_char);
-            cpt++;
-        }
-    }
-    if (size == 8) {
-        cpt = 0;
-        while (((lig > size) || (lig < 1)) || (col_char > 'H' || col_char < 'A') || verif == 0) {
-            if(lig == 0 && col_char == '0'){
-                break;
-            }
-            if (cpt % 2 == 1) {
-                Color_Text(4, 0);
-                printf("\n----\nRAPPEL: Ligne (1 - ... - 8)\nET\nColonne (A - ... - H)\n----\n");
-                Color_Text(15, 0);
-            }
-            printf("Indice incorrect. Resaisir:");
-            fflush(stdin);
-            verif = scanf("%d/%c", &lig, &col_char);
-            cpt++;
-        }
-    }
-    if (size == 16) {
-        cpt = 0;
-        while (((lig > size) || (lig < 1)) || (col_char > 'P' || col_char < 'A') || verif == 0) {
-            if(lig == 0 && col_char == '0'){
-                break;
-            }
-
-            if (cpt % 2 == 1) {
-                Color_Text(4, 0);
-                printf("\n----\nRAPPEL: Ligne (1 - ... - 16)\nET\nColonne (A - ... - P)\n----\n");
-                Color_Text(15, 0);
-            }
-            printf("Indice incorrect. Resaisir:");
-            fflush(stdin);
-            verif = scanf("%d/%c", &lig, &col_char);
-            cpt++;
-        }
-    }
-    if(lig == 0 && col_char == '0'){
-        return TRUE; // L'utilisateur arrête la saisie
-    }
-    (*lig_ptr)=lig;
-    (*col_char_ptr)=col_char;
-    return FALSE;
-}
-
+// Fonction saisie sécurisée dans le mode "jouer"
 void saisie_securisee_jouer(int size, char** game_matrix,int *lig_ptr,char *col_char_ptr, char ** test) {
     int cpt, col, verif;
     int lig;
@@ -691,6 +268,225 @@ void saisie_securisee_jouer(int size, char** game_matrix,int *lig_ptr,char *col_
 
 }
 
+// Fonction qui permet de remettre à 0 une ligne de la grille jeu
+void reset_lig(char** Z,char** test,int lig,int dim)
+{
+    for(int j=0;j<dim;j++)
+    {
+        if(test[lig][j]=='0')
+        {
+            Z[lig][j]='_';
+        }
+    }
+}
+
+// Fonction qui permet de remettre à 0 une colonne de la grille jeu
+void reset_col(char** Z,char** test,int col,int dim)
+{
+    for(int i=0;i<dim;i++)
+    {
+        if(test[i][col]=='0')
+        {
+            Z[i][col]='_';
+        }
+    }
+}
+
+// Fonction qui permet de regarder si une grille jeu est pleine
+BOOL matrice_pleine(char** Z,int TL)
+{
+    for(int i=0; i<TL ; i++)
+    {
+        for(int j=0; j<TL ; j++)
+        {
+            if(Z[i][j]=='_')
+            {
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
+
+// Fonction qui copie une matrice 4x4
+void copy_matrix4(char** game_matrix,char solution[4][4],int dim){
+    for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            game_matrix[i][j]=solution[i][j];
+        }
+    }
+}
+
+// Fonction qui copie une matrice 8x8
+void copy_matrix8(char** game_matrix,char solution[8][8],int dim){
+    for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            game_matrix[i][j]=solution[i][j];
+        }
+    }
+}
+
+// Fonction qui copie une matrice 16x16
+void copy_matrix16(char** game_matrix,char solution[16][16],int dim){
+    for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            game_matrix[i][j]=solution[i][j];
+        }
+    }
+}
+
+// Fonction qui permet de voir si une ligne de la grille jeu est remplie entièrement afin de lancer les vérifications
+BOOL ligne_remplie(int lig,char** game_matrix,int dim)
+{
+    int cpt=0;
+
+    for(int j=0; j<dim; j++)
+    {
+        if(game_matrix[lig][j]=='_')
+        {
+            cpt++;
+        }
+    }
+
+    if(cpt==0)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+// Fonction qui permet de voir si une colonne de la grille jeu est remplie entièrement afin de lancer les vérifications
+BOOL colonne_remplie(int col,char** game_matrix,int dim)
+{
+    int cpt=0;
+
+    for(int i=0; i<dim; i++)
+    {
+        if(game_matrix[i][col]=='_')
+        {
+            cpt++;
+        }
+    }
+
+    if(cpt==0)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+// Fonction qui génère un indice aléatoire (Attention cela peut ralentir le programme à cause de time et clock))
+int Random_index(int size)
+{
+    int nb, random;
+    srand(clock());
+    random = rand();
+    nb = random % size;
+    return nb;
+
+}
+
+// Fonction qui convertie les colonnes (Input: 0 Output: A)
+int column_conversion(char y)
+{
+    if(y=='A'){
+        return 0;
+    }
+    if(y=='B'){
+        return 1;
+    }
+    if(y=='C'){
+        return 2;
+    }
+    if(y=='D'){
+        return 3;
+    }
+    if(y=='E'){
+        return 4;
+    }
+    if(y=='F'){
+        return 5;
+    }
+    if(y=='G'){
+        return 6;
+    }
+    if(y=='H'){
+        return 7;
+    }
+    if(y=='I'){
+        return 8;
+    }
+    if(y=='J'){
+        return 9;
+    }
+    if(y=='K'){
+        return 10;
+    }
+    if(y=='L'){
+        return 11;
+    }
+    if(y=='M'){
+        return 12;
+    }
+    if(y=='N'){
+        return 13;
+    }
+    if(y=='O'){
+        return 14;
+    }
+    if(y=='P'){
+        return 15;
+    }
+}
+
+// Fonction qui convertie les colonnes (Input: 0 Output: A)
+char conversion_column(int y)
+{
+    return y+65;
+}
+
+// Fonction qui regarde si une ligne est pleine
+BOOL ligne_complete(char** Z,int dim, int lig)
+{
+    BOOL complet = TRUE;
+    int j=0;
+    while(complet==TRUE && j<dim)
+    {
+        if(Z[lig][j]=='_')
+        {
+            complet=FALSE;
+        }
+        j++;
+    }
+    return complet;
+}
+
+// Fonction qui regarde si une colonne est pleine
+BOOL colonne_complete(char** Z,int dim, int col)
+{
+    BOOL complet = TRUE;
+    int i=0;
+    while(complet==TRUE && i<dim)
+    {
+        if(Z[i][col]=='_')
+        {
+            complet=FALSE;
+        }
+        i++;
+    }
+    return complet;
+}
+
+
+/// -- FONCTION MASQUE / JEU --
+
+// Fonction qui effectue le saisie manuel du masque par l'utilisateur
 void Mask_input(char (**Z),int size){
     int col;
     char col_char;
@@ -715,18 +511,9 @@ void Mask_input(char (**Z),int size){
 
 }
 
-int Random_index(int size)
-{
-    int nb, random;
-    srand(clock());
-    random = rand();
-    nb = random % size;
-    return nb;
-
-}
-
-// On importe une matrice masque initialisé à 1, une taille, une matrice test qui nous permet de stocker les indices déjà cachés par le programme ET une difficulté
+//FONCTION GENERER MASQUE
 void generate_mask(char(**masque), int size, char** test, char difficulte_choice){
+    // On importe une matrice masque initialisé à 1, une taille, une matrice test qui nous permet de stocker les indices déjà cachés par le programme ET une difficulté
     float nb_case; // NB de case caché
     float cpt; // Nb d'opération
     int cpt2;
@@ -819,36 +606,7 @@ void generate_mask(char(**masque), int size, char** test, char difficulte_choice
     }
 }
 
-BOOL ligne_complete(char** Z,int dim, int lig)
-{
-    BOOL complet = TRUE;
-    int j=0;
-    while(complet==TRUE && j<dim)
-    {
-        if(Z[lig][j]=='_')
-        {
-            complet=FALSE;
-        }
-        j++;
-    }
-    return complet;
-}
-
-BOOL colonne_complete(char** Z,int dim, int col)
-{
-    BOOL complet = TRUE;
-    int i=0;
-    while(complet==TRUE && i<dim)
-    {
-        if(Z[i][col]=='_')
-        {
-            complet=FALSE;
-        }
-        i++;
-    }
-    return complet;
-}
-
+// Fonction qui associe la grille solution au masque pour obtenir la GRILLE JEU
 void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
     if(dim==4) {
@@ -908,172 +666,438 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
 
 }
 
-void copy_matrix4(char** game_matrix,char solution[4][4],int dim){
-    for(int i=0;i<dim;i++){
-        for(int j=0;j<dim;j++){
-            game_matrix[i][j]=solution[i][j];
-        }
-    }
-}
 
-void copy_matrix8(char** game_matrix,char solution[8][8],int dim){
-    for(int i=0;i<dim;i++){
-        for(int j=0;j<dim;j++){
-            game_matrix[i][j]=solution[i][j];
-        }
-    }
-}
+/// -- FONCTION REGLE TAKUZU --
 
-void copy_matrix16(char** game_matrix,char solution[16][16],int dim){
-    for(int i=0;i<dim;i++){
-        for(int j=0;j<dim;j++){
-            game_matrix[i][j]=solution[i][j];
-        }
-    }
-}
-//Utilisé dans Mask_input
-int column_conversion(char y)
+// Permet de comparer le nombre de 0 et de 1 sur la meme ligne
+BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test,int partie)
 {
-    if(y=='A'){
-        return 0;
-    }
-    if(y=='B'){
-        return 1;
-    }
-    if(y=='C'){
-        return 2;
-    }
-    if(y=='D'){
-        return 3;
-    }
-    if(y=='E'){
-        return 4;
-    }
-    if(y=='F'){
-        return 5;
-    }
-    if(y=='G'){
-        return 6;
-    }
-    if(y=='H'){
-        return 7;
-    }
-    if(y=='I'){
-        return 8;
-    }
-    if(y=='J'){
-        return 9;
-    }
-    if(y=='K'){
-        return 10;
-    }
-    if(y=='L'){
-        return 11;
-    }
-    if(y=='M'){
-        return 12;
-    }
-    if(y=='N'){
-        return 13;
-    }
-    if(y=='O'){
-        return 14;
-    }
-    if(y=='P'){
-        return 15;
-    }
-}
+    char cpt;
+    int un=0;
+    int zero=0;
+    int taillesur2;
 
-char conversion_column(int y)
-{
-    return y+65;
-}
+    taillesur2 = (TL/2)+1;
 
-// Fonction qui permet de voir si une ligne de la grille jeu est remplie entièrement afin de lancer les vérifications
-BOOL ligne_remplie(int lig,char** game_matrix,int dim)
-{
-    int cpt=0;
 
-    for(int j=0; j<dim; j++)
+    for(int j=0;j<TL;j++)
     {
-        if(game_matrix[lig][j]=='_')
+        cpt=Z[lig][j];
+        if (cpt=='1')
         {
-            cpt++;
+            un=un+1;
+        }
+        if (cpt=='0')
+        {
+            zero=zero+1;
         }
     }
 
-    if(cpt==0)
+    if (zero >= taillesur2 || un >= taillesur2)
     {
-        return TRUE;
+        if (partie==1)
+        {
+            printf("\n -1 PT : LA LIGNE %d NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n",lig+1);
+            reset_lig(Z,test,lig,TL);
+        }
+        return FALSE; // Ne respecte pas la regle
     }
-    else
-    {
-        return FALSE;
-    }
+    return TRUE;
 }
 
-// Fonction qui permet de voir si une colonne de la grille jeu est remplie entièrement afin de lancer les vérifications
-BOOL colonne_remplie(int col,char** game_matrix,int dim)
+// Permet de comparer le nombre de 0 et de 1 sur la meme colonne
+BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test, int partie)
 {
-    int cpt=0;
+    char cpt;
+    int un=0;
+    int zero=0;
+    int taillesur2;
 
-    for(int i=0; i<dim; i++)
+    taillesur2 = (TL/2)+1;
+
+
+    for(int i=0;i<TL;i++)
     {
-        if(game_matrix[i][col]=='_')
+        cpt=Z[i][col];
+        if (cpt=='1')
         {
-            cpt++;
+            un=un+1;
+        }
+        if (cpt=='0')
+        {
+            zero=zero+1;
         }
     }
 
-    if(cpt==0)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
-}
 
-// Fonction qui permet de remettre à 0 une ligne de la grille jeu
-void reset_lig(char** Z,char** test,int lig,int dim)
-{
-    for(int j=0;j<dim;j++)
+    if (zero >= taillesur2 || un >= taillesur2)
     {
-        if(test[lig][j]=='0')
+        if (partie==1)
         {
-            Z[lig][j]='_';
+            printf("\n-1 PT :LA COLONNE %c NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n", conversion_column(col));
+            reset_col(Z,test,col,TL);
         }
+        return FALSE; // Ne respecte pas la regle
     }
+    return TRUE; // respecte la regle
 }
 
-// Fonction qui permet de remettre à 0 une colonne de la grille jeu
-void reset_col(char** Z,char** test,int col,int dim)
+// Fonction qui vérifie que 2 colonnes ne soient pas identiques
+BOOL compare_line(int TL ,char**Z,int lig,int col,char** test,int partie)
 {
-    for(int i=0;i<dim;i++)
-    {
-        if(test[i][col]=='0')
+    char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
+    int x;
+    int t;
+    BOOL verif=FALSE;
+
+
+    // T stock la ligne du tableau
+    if(ligne_remplie(lig,Z,TL)) {
+        for (int j=0; j < TL; j++)
         {
-            Z[i][col]='_';
+            T[j] = Z[lig][j];
         }
-    }
-}
 
-// Fonction qui permet de regarder si une grille jeu est pleine
-BOOL matrice_pleine(char** Z,int TL)
-{
-    for(int i=0; i<TL ; i++)
-    {
-        for(int j=0; j<TL ; j++)
+        // Verification ligne identique
+        t=0;
+        while (verif == FALSE && t < TL)
         {
-            if(Z[i][j]=='_')
+            if (lig != t)
             {
-                return FALSE;
+                x = 0;
+                verif = TRUE;
+                while ((verif == TRUE) && (x < TL))
+                {
+                    if (T[x] != Z[t][x])
+                    {
+                        verif = FALSE;
+                    }
+                    x++;
+                }
+
             }
+            t++;
+        }
+
+        // SI LIGNE REMPLIE
+        if (verif == TRUE) {
+            if (partie==1)
+            {
+                printf("\n-1 PT : LA LIGNE %d EST IDENTIQUE \n", t + 1);
+                reset_lig(Z, test, lig, TL);
+            }
+            return FALSE;
+        }
+        if (verif == FALSE) {
+            return TRUE;
         }
     }
     return TRUE;
 }
+
+// Fonction qui vérifie que 2 colonnes ne soient pas identiques
+BOOL compare_column(int TL ,char**Z,int lig,int col,char** test,int partie)
+{
+    char *T = (char *) malloc(TL * sizeof(char *)); // créer un tableau a dimension
+    int t;
+    int x;
+    BOOL verif=FALSE;
+
+
+    // Verification colonne identique
+
+    if(colonne_remplie(col,Z,TL)) {
+        for (int i=0; i< TL; i++)
+        {
+            T[i] = Z[i][col];
+        }
+
+        // Verification ligne identique
+        x=0;
+        while (verif == FALSE && x < TL)
+        {
+            if (col != x)
+            {
+                t = 0;
+                verif = TRUE;
+                while ((verif == TRUE) && (t < TL))
+                {
+                    if (T[t] != Z[t][x])
+                    {
+                        verif = FALSE;
+                    }
+                    t++;
+                }
+
+            }
+            x++;
+        }
+
+        // SI COLONNE REMPLIE
+        if (verif == TRUE)
+        {
+            if (partie==1)
+            {
+                printf("\n-1 PT :LA COLONNE %d EST IDENTIQUE \n", t + 1);
+                reset_col(Z, test, col, TL);
+            }
+            return FALSE;
+        }
+        if (verif == FALSE)
+        {
+            return TRUE;
+        }
+    }
+    return TRUE;
+
+}
+
+// Fonction qui vérifie la règle "3 indices de suite" sur les lignes
+BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int partie)
+{
+    BOOL verif1=FALSE,verif2=FALSE,verif3=FALSE;
+    int cpt=0;
+    /*
+     * TRUE => Identique
+     * FALSE => Pas identique
+     */
+
+    if(Z[lig][col]!='_') {
+        if (col < TL - 2) {
+            // 2 INDICES A DROITE
+            if ((Z[lig][col] == Z[lig][col + 1]) && (Z[lig][col + 1] == Z[lig][col + 2]))
+            {
+                verif1 = TRUE;
+                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig][col + 1] == '0') {
+                    Z[lig][col + 1] = '_';
+                }
+                if (test[lig][col + 2] == '0') {
+                    Z[lig][col + 2] = '_';
+                }
+            }
+        }
+
+        if (col > 1) {
+            // 2 INDICES A GAUCHE
+            if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col - 1] == Z[lig][col - 2])) {
+                verif2 = TRUE;
+                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig][col - 1] == '0') {
+                    Z[lig][col - 1] = '_';
+                }
+                if (test[lig][col - 2] == '0') {
+                    Z[lig][col - 2] = '_';
+                }
+                cpt++;
+            }
+
+        }
+
+        if ((col > 0) && (col < TL - 1)) {
+            // 1 INDICE A DROITE ET UN INDICE A GAUCHE
+            if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col] == Z[lig][col + 1])) {
+                verif3 = TRUE;
+                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig][col - 1] == '0') {
+                    Z[lig][col - 1] = '_';
+                }
+                if (test[lig][col + 1] == '0') {
+                    Z[lig][col + 1] = '_';
+                }
+                cpt++;
+            }
+        }
+    }
+    if((verif1==TRUE) || (verif2==TRUE) ||(verif3==TRUE))
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// Fonction qui vérifie la règle "3 indices de suite" sur les colonnes
+BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col,int partie)
+{
+    BOOL verif1=FALSE,verif2=FALSE,verif3=FALSE;
+    int cpt=0;
+    /*
+     * TRUE => Identique
+     * FALSE => Pas identique
+     */
+
+    if(Z[lig][col]!='_')
+    {
+        if (lig < TL - 2)
+        {
+            // 2 EN DESSOUS
+            if ((Z[lig][col] == Z[lig + 1][col]) && (Z[lig + 1][col] == Z[lig + 2][col]))
+            {
+                verif1 = TRUE;
+                if(partie==1)
+                {
+                    printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
+                    // RESET
+                    Z[lig][col] = '_';
+                    if (test[lig + 1][col] == '0') {
+                        Z[lig + 1][col] = '_';
+                    }
+                    if (test[lig + 2][col] == '0') {
+                        Z[lig + 2][col] = '_';
+                    }
+                    cpt++;
+                }
+
+            }
+
+
+        }
+    }
+
+    if (lig > 1) {
+        // 2 INDICES EN HAUT
+        if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig - 1][col] == Z[lig - 2][col])) {
+            verif2 = TRUE;
+            if (partie == 1) {
+                printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
+                // RESET
+                Z[lig][col] = '_';
+                if (test[lig - 1][col] == '0') {
+                    Z[lig - 1][col] = '_';
+                }
+                if (test[lig - 2][col] == '0') {
+                    Z[lig - 2][col] = '_';
+                }
+                cpt++;
+            }
+        }
+    }
+
+    if ((lig > 0) && (lig < TL - 1)) {
+        // 1 INDICE A DROITE ET UN INDICE A GAUCHE
+        if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig][col] == Z[lig + 1][col])) {
+            verif3 = TRUE;
+            if (partie == 1) {
+
+                printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
+
+                // RESET
+                Z[lig][col] = '_';
+                print_matrix(test, TL);
+                if (test[lig - 1][col] == '0') {
+                    Z[lig - 1][col] = '_';
+                }
+                if (test[lig + 1][col] == '0') {
+                    Z[lig + 1][col] = '_';
+                }
+            }
+        }
+    }
+
+    if((verif1==TRUE) || (verif2==TRUE) ||(verif3==TRUE))
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// Fonction qui compare la grille jeu avec la grille solution
+BOOL compare_game_with_solution(int line,int j,char** G,char** S)
+{
+    if (G[line][j]==S[line][j])
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
+
+// Fonction saisie sécurisée dans le mode "saisie masque"
+BOOL saisie_securisee(int size, char (**Z),int *lig_ptr,char *col_char_ptr){
+    int cpt,col,verif;
+    int lig;
+    char col_char;
+
+    printf("Saisir 0/0 pour arreter\n\n");
+    fflush(stdin);
+    print_matrix(Z, size);
+    printf("Saisir:");
+    /*
+    SAISIE SECURISEE
+        Verif --> vérifier si l'user saisi le bon type (char à la place d'un int par ex.
+    */
+    verif = scanf("%d/%c", &lig, &col_char);
+
+
+
+    if (size == 4) {
+        cpt = 0;
+        while (((lig > size) || (lig < 1)) || (col_char > 'D' || col_char < 'A') || verif == 0) {
+            if(lig == 0 && col_char == '0'){
+                break;
+            }
+            if (cpt % 2 == 1) {
+                Color_Text(4, 0);
+                printf("\n----\nRAPPEL: Ligne (1 - ... - 4)\nET\nColonne (A - ... - D)\n----\n");
+                Color_Text(15, 0);
+            }
+            printf("Indice incorrect. Resaisir:");
+            fflush(stdin);
+            verif = scanf("%d/%c", &lig, &col_char);
+            cpt++;
+        }
+    }
+    if (size == 8) {
+        cpt = 0;
+        while (((lig > size) || (lig < 1)) || (col_char > 'H' || col_char < 'A') || verif == 0) {
+            if(lig == 0 && col_char == '0'){
+                break;
+            }
+            if (cpt % 2 == 1) {
+                Color_Text(4, 0);
+                printf("\n----\nRAPPEL: Ligne (1 - ... - 8)\nET\nColonne (A - ... - H)\n----\n");
+                Color_Text(15, 0);
+            }
+            printf("Indice incorrect. Resaisir:");
+            fflush(stdin);
+            verif = scanf("%d/%c", &lig, &col_char);
+            cpt++;
+        }
+    }
+    if (size == 16) {
+        cpt = 0;
+        while (((lig > size) || (lig < 1)) || (col_char > 'P' || col_char < 'A') || verif == 0) {
+            if(lig == 0 && col_char == '0'){
+                break;
+            }
+
+            if (cpt % 2 == 1) {
+                Color_Text(4, 0);
+                printf("\n----\nRAPPEL: Ligne (1 - ... - 16)\nET\nColonne (A - ... - P)\n----\n");
+                Color_Text(15, 0);
+            }
+            printf("Indice incorrect. Resaisir:");
+            fflush(stdin);
+            verif = scanf("%d/%c", &lig, &col_char);
+            cpt++;
+        }
+    }
+    if(lig == 0 && col_char == '0'){
+        return TRUE; // L'utilisateur arrête la saisie
+    }
+    (*lig_ptr)=lig;
+    (*col_char_ptr)=col_char;
+    return FALSE;
+}
+
 
 
 /// -- FONCTIONS MENU --
@@ -1104,7 +1128,7 @@ void menu1(){//MENU PRINCIPAL
 
     ///PARTIE I
     if(choice=='1'){
-        menu_dimension();
+        menu_dimension1();
     }
 
     ///PARTIE II
@@ -1121,7 +1145,7 @@ void menu1(){//MENU PRINCIPAL
 }
 
 // MENU POUR CHOISIR LA DIMENSION
-void menu_dimension(){ //SOUS MENU 1_1
+void menu_dimension1(){ //SOUS MENU 1_1
     char choice;
     int cpt=0;
     int ** Z=NULL;
@@ -1148,16 +1172,16 @@ void menu_dimension(){ //SOUS MENU 1_1
 
     // GRILLE 4X4
     if(choice=='1'){
-        menu1_2(4);
+        menu1_1(4);
 
     }
     // GRILLE 8X8
     if(choice=='2'){
-        menu1_2(8);
+        menu1_1(8);
     }
     // GRILLE 16X16
     if(choice=='3'){
-        menu1_2(16);
+        menu1_1(16);
     }
 
     // RETOUR AU MENU1
@@ -1166,7 +1190,8 @@ void menu_dimension(){ //SOUS MENU 1_1
     }
 }
 
-void menu1_2(int dim){       //SOUS MENU 1_2
+// MENU PARTIE I
+void menu1_1(int dim){
     int cpt=0,vie=3;
     char choice,val;
     char **game_matrix;
@@ -1225,7 +1250,7 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         Color_Text(15,0);
         print_matrix(game_matrix,dim);
         printf("\n");
-        menu1_2(dim);
+        menu1_1(dim);
 
     }
 
@@ -1398,17 +1423,18 @@ void menu1_2(int dim){       //SOUS MENU 1_2
         else{
             printf("PERDU\n");
         }
-        menu1_2(dim);
+        menu1_1(dim);
     }
 
     // RETOUR AU MENU1_1
     if((choice=='r')||(choice=='R')){
-        menu1_1();
+        menu_dimension1();
     }
 
 
 }
 
+// MENU SAISIE DU MASQUE
 void menu_mask_input(char (**Z),int size){
     char choice;
     print_matrix(Z,size);
@@ -1427,13 +1453,14 @@ void menu_mask_input(char (**Z),int size){
         Mask_input(Z,size);
     }
     else{
-        menu1_2(size);
+        menu1_1(size);
     }
 }
 
+// MENU MASQUE
 void menu_1_2_1(int dim,char** masque){
     char choice;
-    printf("\n  -- SAISIE MASQUE --\n\n");
+    printf("\n  -- MASQUE & GRILLE JEU --\n\n");
     printf("1 - Saisir/Modifier le masque\n");
     printf("2 - Afficher le masque & la grille jeu\n");
     printf("3 - Reinitialiser le masque & la grille jeu\n");
@@ -1474,10 +1501,11 @@ void menu_1_2_1(int dim,char** masque){
         menu_1_2_1(dim,masque);
     }
     if(choice == 'R' || choice == 'r'){
-        menu1_2(dim);
+        menu1_1(dim);
     }
 }
 
+// MENU POUR CHOISIR LA DIFFICULTE (1 / 2 / 3)
 char menu_difficulte(){
     char difficulty_choice;
     printf("\n -- DIFFICULTE --\n\n");
@@ -1493,6 +1521,4 @@ char menu_difficulte(){
     }
     return difficulty_choice;
 }
-
-/// FIN FONCTIONS MENU
 

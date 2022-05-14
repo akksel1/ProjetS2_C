@@ -4,9 +4,9 @@
 
 int main()
 {
-    printf("Bienvenu %c\n",1);
+    printf("\n%17c-- BIENVENUE %c --\n\n",' ',1);
     char ** M=NULL;
-    menu1_2(4);
+    menu1_1(4);
 
     return 0;
 
