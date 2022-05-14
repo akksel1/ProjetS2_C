@@ -1522,3 +1522,91 @@ char menu_difficulte(){
     return difficulty_choice;
 }
 
+
+void partie_2(int dim)
+{
+    char **game_matrix;
+    char **masque;
+    int lig_ptr;
+    char col_char_ptr;
+    char **solution;
+    char (**hidden_index_matrix);
+    int TL;
+    int val;
+    BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col,correct,trois_indice,egal,comp;
+
+    TL=dim;
+
+    for (int i=0;i<TL;i++)
+    {
+        for (int j=0;j<TL;j++)
+        {
+            if (matrice_pleine(**game_matrix,TL)==FALSE) // verifier que la matrice n'est pas plein
+            {
+                if (ligne_remplie(i,** game_matrix,TL)==FALSE && colonne_remplie(j,** game_matrix,TL) == FALSE)// verifier que la colonne et la ligne de l'indice ne sont pas deja remplis
+                {
+
+
+                    /// fonction qui permet de verifier s'il indice selectionner n'est pas un masque
+                    /// une fonction rand entre 1-0
+
+
+
+                    // les Fonctions regles
+
+
+                    // Permet de vérifier s'il y a le meme nombre de 0  et de 1
+                    //  False -> Ne respecte pas la regle
+                    //  True ->Respecte la regle
+                    egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+                    egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+
+                    // Verifier s'il n'y pas trois 0 d'affilé de 1 en ligne et colonne
+                    //  False -> Respecte la regle
+                    //  True -> Ne respecte pas la regle
+                    trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
+                    trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
+
+                    // Verifier s'il n'y pas 2 ligne ou 2 colonne identique
+                    //  False -> Ne respecte pas la regle
+                    //  True -> Respecte la regle
+                    comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+                    comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
+
+                    if((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE)&& (trois_indice_lig== FALSE) && (trois_indice_col== FALSE) )
+                    {
+
+                     /// Si on peux colorer les indices qu'on a saisi dans la matrice
+                     /// Saisir l'indice random dans la matrice
+                    /// Printf a chaque indice saisie
+                    }
+                    else
+                    {
+                        // Si les fonctions regles return FALSE alors retourné l'inverse de 1 -> 0
+                        if (val==1)
+                        {
+                            val =0;
+                        }
+                        else
+                        {
+                            val=1;
+                        }
+                        ///on peux colorer les indices qu'on a saisi dans la matrice
+                        /// Saisir l'indice random dans la matrice
+                        /// Printf a chaque indice saisie
+
+                    }
+
+                }
+            }
+        }
+    }
+
+
+
+
+}
+
+
+
+
