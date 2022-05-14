@@ -1537,6 +1537,28 @@ void partie_2(int dim)
 
     TL=dim;
 
+    // matrice solution depend de la taille
+    // applique un masque
+    // on fait le programme
+
+    test = create_matrix(dim);
+    initialize_matrix0(dim,test);
+
+    masque = create_matrix(dim);
+    initialize_matrix1(dim,masque);
+    generate_mask(masque,dim,test,'3');
+
+
+    game_matrix=create_matrix(dim);
+    Game_gridd(masque,game_matrix,dim,1);
+
+    solution = create_matrix(dim);
+    Game_gridd(masque,solution,dim,2); // On crée la matrice Solution
+
+    hidden_index_matrix=masque; // Matrice où indices cachés sont représenté par un '0' <=> masque
+    print_matrix(game_matrix,dim,100,100);
+
+
     for (int i=0;i<TL;i++)
     {
         for (int j=0;j<TL;j++)
@@ -1546,65 +1568,79 @@ void partie_2(int dim)
                 if (ligne_remplie(i,** game_matrix,TL)==FALSE && colonne_remplie(j,** game_matrix,TL) == FALSE)// verifier que la colonne et la ligne de l'indice ne sont pas deja remplis
                 {
 
+                    /*
+                     * Fonction qui permet de verifier si l'indice est caché
+                     * 0 => caché
+                    */
 
-                    /// fonction qui permet de verifier s'il indice selectionner n'est pas un masque
-                    /// une fonction rand entre 1-0
-
-
-
-                    // les Fonctions regles
-
-
-                    // Permet de vérifier s'il y a le meme nombre de 0  et de 1
-                    //  False -> Ne respecte pas la regle
-                    //  True ->Respecte la regle
-                    egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-                    egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-
-                    // Verifier s'il n'y pas trois 0 d'affilé de 1 en ligne et colonne
-                    //  False -> Respecte la regle
-                    //  True -> Ne respecte pas la regle
-                    trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
-                    trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr));
-
-                    // Verifier s'il n'y pas 2 ligne ou 2 colonne identique
-                    //  False -> Ne respecte pas la regle
-                    //  True -> Respecte la regle
-                    comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-                    comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix);
-
-                    if((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE)&& (trois_indice_lig== FALSE) && (trois_indice_col== FALSE) )
+                    if(game_matrix[i][j]=='_')
                     {
+                        // Val aléatoire comprise entre 0 et 1
+                        val_int=Random_index(2);
 
-                     /// Si on peux colorer les indices qu'on a saisi dans la matrice
-                     /// Saisir l'indice random dans la matrice
-                    /// Printf a chaque indice saisie
-                    }
-                    else
-                    {
-                        // Si les fonctions regles return FALSE alors retourné l'inverse de 1 -> 0
-                        if (val==1)
+                        // Conversion val int en char
+                        if(val_int==0)
                         {
-                            val =0;
+                            val='0';
+                        }
+                        if(val_int==1)
+                        {
+                            val='1';
+                        }
+
+
+                        // Saisir l'indice random dans la matrice
+                        game_matrix[i][j]=val;
+                        // les Fonctions regles
+
+
+                        // Permet de vérifier s'il y a le meme nombre de 0  et de 1
+                        //  False -> Ne respecte pas la regle
+                        //  True ->Respecte la regle
+                        egal_lig=counter_number_line(dim,game_matrix,i,j,hidden_index_matrix,2);
+                        egal_col=counter_number_column(dim,game_matrix,i,j,hidden_index_matrix,2);
+
+                        // Verifier s'il n'y pas trois 0 d'affilé de 1 en ligne et colonne
+                        //  False -> Respecte la regle
+                        //  True -> Ne respecte pas la regle
+                        trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,i, j,2);
+                        trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,i, j,2);
+
+                        // Verifier s'il n'y pas 2 ligne ou 2 colonne identique
+                        //  False -> Ne respecte pas la regle
+                        //  True -> Respecte la regle
+                        comp_lig=compare_line(dim,game_matrix,i,j,hidden_index_matrix,2);
+                        comp_col=compare_column(dim ,game_matrix,i,j,hidden_index_matrix,2);
+
+                        if((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE)&& (trois_indice_lig== FALSE) && (trois_indice_col== FALSE))
+                        {
+                            printf(" COUP SUIVANT... \n");
+                            print_matrix(game_matrix,TL,i,j);
+                            Sleep(1000);
+                            printf("\n");
                         }
                         else
                         {
-                            val=1;
+                            // Si les fonctions regles return FALSE alors retourné l'inverse de 1 -> 0
+                            if (val=='1')
+                            {
+                                val ='0';
+                            }
+                            else
+                            {
+                                val='1';
+                            }
+                            game_matrix[i][j]=val;
+                            printf(" COUP SUIVANT... \n");
+                            Sleep(1000);
+                            print_matrix(game_matrix,TL,i,j);
+                            printf("\n");
                         }
-                        ///on peux colorer les indices qu'on a saisi dans la matrice
-                        /// Saisir l'indice random dans la matrice
-                        /// Printf a chaque indice saisie
-
                     }
-
                 }
             }
         }
     }
-
-
-
-
 }
 
 
