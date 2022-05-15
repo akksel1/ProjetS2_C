@@ -2,10 +2,10 @@
 // Created by louka on 06/04/2022.
 //
 #include "fonction.h"
-#include <conio.h>
 #include <stdio.h>
 #include <time.h>
 #include <windows.h>
+
 
 /// -- FONCTION UTILITE --
 
@@ -904,7 +904,6 @@ void Solve_game_gridd(int dim,char** game_matrix,char** solution,char** test, ch
     else{
         printf("\nPERDU\n");
     }
-    menu1_1(dim);
 }
 
 
@@ -1782,6 +1781,7 @@ void menu3(int dim)
     {
         printf("\n\n\n\nVEUILLEZ PATIENTER");
         solution=partie_3(dim,0);
+
         printf("\n\n\n\n");
         difficulte=menu_difficulte();
 
@@ -1799,7 +1799,9 @@ void menu3(int dim)
         print_matrix(game_matrix,dim,100,100,100);
 
         Solve_game_gridd(dim,game_matrix,solution,test,masque,difficulte);
-        printf("La solution était:\n");
+        Sleep(500);
+        printf("La solution etait:\n");
+        Sleep(500);
         print_matrix(solution,dim,100,100,100);
         menu3(dim);
     }
@@ -1807,7 +1809,7 @@ void menu3(int dim)
     {
         menu3(dim);
     }
-    if(choice == '4')
+    if((choice == 'R') || (choice=='r'))
     {
         menu_dimension3();
     }
@@ -2158,11 +2160,13 @@ char** partie_3(int dim,int choice){
                                 comp_col = compare_column(dim, game_matrix, i, j, hidden_index_matrix, 2);
 
                                 if ((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE) &&
-                                    (trois_indice_lig == FALSE) && (trois_indice_col == FALSE) && (choice==1)) {
-                                    printf(" COUP SUIVANT... \n");
-                                    print_matrix(game_matrix, TL, i, j,1);
-                                    //Sleep(1000);
-                                    printf("\n");
+                                    (trois_indice_lig == FALSE) && (trois_indice_col == FALSE) ) {
+                                    if(choice==1){
+                                        printf(" COUP SUIVANT... \n");
+                                        print_matrix(game_matrix, TL, i, j,1);
+                                        //Sleep(1000);
+                                        printf("\n");
+                                    }
                                 } else {
                                     // Si les fonctions regles return FALSE alors retourné l'inverse de 1 -> 0
                                     if (val == '1') {
@@ -2298,11 +2302,13 @@ char** partie_3(int dim,int choice){
                                 comp_col = compare_column(dim, game_matrix, i, j, hidden_index_matrix, 2);
 
                                 if ((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE) &&
-                                    (trois_indice_lig == FALSE) && (trois_indice_col == FALSE) && (choice==1)) {
-                                    printf(" COUP SUIVANT... \n");
-                                    print_matrix(game_matrix, TL, i, j,1);
-                                    //Sleep(1000);
-                                    printf("\n");
+                                    (trois_indice_lig == FALSE) && (trois_indice_col == FALSE)) {
+                                    if(choice==1){
+                                        printf(" COUP SUIVANT... \n");
+                                        print_matrix(game_matrix, TL, i, j,1);
+                                        //Sleep(1000);
+                                        printf("\n");
+                                    }
                                 } else {
                                     // Si les fonctions regles return FALSE alors retourné l'inverse de 1 -> 0
                                     if (val == '1') {
