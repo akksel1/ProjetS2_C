@@ -1766,7 +1766,7 @@ void menu3(int dim)
     printf("Saisir :\n");
     fflush(stdin);
     scanf("%c",&choice);
-    while((choice<'1') || (choice>'3') && (choice!='r') && (choice!='R'))
+    while((choice<'1') || (choice>'2') && (choice!='r') && (choice!='R'))
     {
         printf("Erreur. Resaisir:");
         scanf("%c",&choice);
