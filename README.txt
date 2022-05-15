@@ -64,7 +64,7 @@ Ensuite un menu s'ouvrira avec 3 possibilités, composé chacun de sous-menu:
 >> 3 - JOUER AVEC UNE GRILLE SOLUTION EN DUR
            Sous-menu
            -------------------------
-           Vous devais choisir une difficulté
+           Vous devez choisir une difficulté
            1 - DEBUTANT
            2 - MOYEN
            3 - EXPERT
@@ -103,7 +103,7 @@ Pour commencer vous devez choisir la dimension de la grille
      3 - GRILLE 16x16
 -------------------------
 
-Vous devais choisir une difficulté
+Vous devez choisir une difficulté
 -------------------------
 1 - DEBUTANT
 2 - MOYEN
@@ -137,7 +137,7 @@ VOICI LES DEUX FONCTIONNALITE QUE COMPOSE LA PARTIE III:
 >> 2 - JOUER MANUELEMENT AVEC GRILLE SOLUTION GENERER -> l'ordinateur va générer une grille solution pour que vous puissiez jouer dessus
           sous-menu
            -------------------------
-           Vous devais choisir une difficulté
+           Vous devez choisir une difficulté
            1 - DEBUTANT
            2 - MOYEN
            3 - EXPERT
