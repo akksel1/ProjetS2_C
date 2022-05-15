@@ -638,6 +638,11 @@ void generate_mask(char(**masque), int size, char** test, char difficulte_choice
 
 // Fonction qui associe la grille solution au masque pour obtenir la GRILLE JEU
 void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
+    /*
+     * CHOICE 1 => On applique le masque pour créer la grille jeu
+     * CHOICE 2 => On n'applique pas le masque pour créer la grille solution
+     */
+
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
     if(dim==4) {
         char solution[4][4] = {
@@ -663,7 +668,7 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
     }
     if(dim==16) {
         // /!\ CETTE GRILLE SOLUTION N'EST (potentiellement) NON VALIDE ! Veuillez changer celle-ci pour jouer avec ! Bon jeu ;) /!
-        /* char solution1[16][16] = {
+         char solution1[16][16] = {
 
                 {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
                 {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
@@ -682,28 +687,8 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
                 {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
                 {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'}
 
-        };*/
-
-         char solution1[16][16] = {
-
-                {'1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
-                {'0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'}
-
         };
+
         copy_matrix16(game_matrix,solution1,dim);
     }
     if(choice==1) {
@@ -1199,7 +1184,7 @@ void menu1(){//MENU PRINCIPAL
     printf("\n\t--  MENU PRINCIPAL --\n\n");
     printf("1 - PARTIE I\n");
     printf("2 - PARTIE II\n");
-    printf("2 - PARTIE III\n");
+    printf("3 - PARTIE III\n");
     printf("Q - QUITTER\n");
     do {
         if(cpt==0){
@@ -1227,10 +1212,10 @@ void menu1(){//MENU PRINCIPAL
 
     }
 
-    /*
-    if(choice=='3'){
 
-    }*/
+    if(choice=='3'){
+        menu_dimension3();
+    }
 
 }
 
@@ -1280,7 +1265,7 @@ void menu_dimension1(){ //SOUS MENU 1_1
     }
 }
 
-void menu_dimension2(){ //SOUS MENU 1_1
+void menu_dimension3(){ //SOUS MENU 1_1
     char choice;
     int cpt=0;
     int ** Z=NULL;
@@ -1665,20 +1650,43 @@ void menu3(int dim)
     printf("1 - GENERER UNE GRILLE SOLUTION\n"); // GENERER
     printf("2 - JOUER MANUELEMENT AVEC GRILLE SOLUTION GENEREE\n"); // IL PEUT JOUER AVEC UNE GRILLE SOLUTION ALEATOIRE CHOISIR LE MASQUE
     printf("3 - LAISSER SPARTACUS JOUER AVEC LA GRILLE SOLUTION GENEREE\n"); // SPARTACUS JOUE AVEC UNE GRILLE SOLUTION GENERER
+    printf("4 - RETOUR\n"); // SPARTACUS JOUE AVEC UNE GRILLE SOLUTION GENERER
+
     printf("Saisir :\n");
-    scanf("%c",choice);
+    scanf("%c",&choice);
+    while((choice<'1') || (choice>'3') && (choice!='r') && (choice!='R'))
+    {
+        printf("Erreur. Resaisir:");
+        scanf("%c",&choice);
+    }
+    if(choice == '1')
+    {
+        partie_3(dim);
+    }
+    /*if(choice == '2')
+    {
+
+    }
+    if(choice == '3')
+    {
+
+    }*/
+    if(choice == '4')
+    {
+        menu_dimension3();
+    }
 }
 
 
 
 
 
-
+// Spartacus qui résout automatiquement une grille de Takuzu
 void partie_2(int dim) {
     char **game_matrix;
     char **masque;
     int lig_ptr, TL, val_int;
-    char col_char_ptr, val;
+    char col_char_ptr, val,difficulte;
     char **solution;
     char (**hidden_index_matrix) = masque;
     char **test;
@@ -1686,17 +1694,18 @@ void partie_2(int dim) {
     BOOL verif = TRUE;
 
     TL = dim;
+    difficulte=menu_difficulte();
 
     // matrice solution depend de la taille
     // applique un masque
     // on fait le programme
 
-    /*test = create_matrix(dim);
+    test = create_matrix(dim);
     initialize_matrix0(dim, test);
 
     masque = create_matrix(dim);
     initialize_matrix1(dim, masque);
-    generate_mask(masque, dim, test, '3');
+    generate_mask(masque, dim, test, difficulte);
 
 
     game_matrix = create_matrix(dim);
@@ -1706,33 +1715,8 @@ void partie_2(int dim) {
     Game_gridd(masque, solution, dim, 2); // On crée la matrice Solution
 
     hidden_index_matrix = masque; // Matrice où indices cachés sont représenté par un '0' <=>
-     */
 
-    game_matrix= create_matrix(16);
-    char game_matrix1[16][16] = {
 
-            {'1', '0', '1', '0','0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_'},
-            {'0', '1', '1', '0','1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_'},
-            {'1', '0', '0', '1','1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_'},
-            {'0', '1', '0', '1','0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_'},
-            {'1', '0', '1', '0','0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_'},
-            {'0', '1', '1', '0','1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_'},
-            {'1', '0', '0', '1','1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_'},
-            {'0', '1', '0', '1','0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_'},
-            {'1', '0', '1', '0','0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_'},
-            {'0', '1', '1', '0','1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_'},
-            {'1', '0', '0', '1','1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_'},
-            {'0', '1', '0', '1','0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_'},
-            {'1', '0', '1', '0','0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_'},
-            {'0', '1', '1', '0','1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_'},
-            {'1', '0', '0', '1','1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_'},
-            {'0', '1', '0', '1','0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_'}
-
-    };
-    copy_matrix16(game_matrix,game_matrix1,16);
-
-    hidden_index_matrix = create_matrix(dim);
-    initialize_matrix1(dim,hidden_index_matrix);
     for(int i=0;i<TL;i++)
     {
         for(int j=0; j<TL; j++)
@@ -1823,53 +1807,10 @@ void partie_2(int dim) {
                 }
             }
         }
-        // DOUBLE VERIFICATION
-        for(int a=0;a<TL;a++)
-        {
-            for(int b=0;b<TL;b++)
-            {
-                if(hidden_index_matrix[a][b]=='0')
-                {
-                    egal_lig = counter_number_line(dim, game_matrix, a, b, hidden_index_matrix, 2);
-                    egal_col = counter_number_column(dim, game_matrix, a, b, hidden_index_matrix, 2);
-                    if(egal_lig == FALSE || egal_col == FALSE )
-                    {
-                        verif = FALSE;
-                        reset_col(game_matrix,hidden_index_matrix,b,dim);
-                        reset_lig(game_matrix,hidden_index_matrix,a,dim);
-                        //game_matrix[a][b]='_';
-                        continue;
-                    }
-
-                    trois_indice_lig = compare_indice_suivant_lig(dim, game_matrix, hidden_index_matrix, a, b,2);
-                    trois_indice_col = compare_indice_suivant_col(dim, game_matrix, hidden_index_matrix, a, b,2);
-                    if(trois_indice_col == TRUE || trois_indice_lig == TRUE)
-                    {
-                        verif = FALSE;
-                        reset_col(game_matrix,hidden_index_matrix,b,dim);
-                        reset_lig(game_matrix,hidden_index_matrix,a,dim);
-                        //game_matrix[a][b]='_';
-                        continue;
-                    }
-
-                    comp_lig = compare_line(dim, game_matrix, a, b, hidden_index_matrix, 2);
-                    comp_col = compare_column(dim, game_matrix, a, b, hidden_index_matrix, 2);
-                    if(comp_lig == FALSE || comp_col == FALSE)
-                    {
-                        verif = FALSE;
-                        reset_col(game_matrix,hidden_index_matrix,b,dim);
-                        reset_lig(game_matrix,hidden_index_matrix,a,dim);
-                        //game_matrix[a][b]='_';
-                        continue;
-                    }
-
-                }
-            }
-
-        }
     }while(matrice_pleine(game_matrix,dim)==FALSE);
 }
 
+// Génération d'une grille solution aléatoire
 void partie_3(int dim){
     char **game_matrix;
     char **masque;
