@@ -58,13 +58,16 @@ BOOL compare_game_with_solution(int,int,char**,char**);
 
 /// -- FONCTIONS PARTIES --
 void partie_2(int dim);
+void partie_3(int dim);
 
 /// -- FONCTIONS MENU --
 void menu1();
 void menu_dimension1();
+void menu_dimension2();
 void menu_mask_input(char**,int);
 void menu1_1(int);
 void menu_1_2_1(int,char**);
 char menu_difficulte();
+void menu3;
 
 #endif //PROJETS2_C_FONCTION_H

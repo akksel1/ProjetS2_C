@@ -6,7 +6,7 @@ int main()
 {
     printf("\n%17c-- BIENVENUE %c --\n\n",' ',1);
     char ** M=NULL;
-    partie_2(16 );
+    partie_3(8);
     return 0;
 
 }
