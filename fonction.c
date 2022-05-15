@@ -1761,8 +1761,7 @@ void menu3(int dim)
     printf("\n\n\n  -- MENU PARTIE III --\n\n");
     printf("1 - GENERER UNE GRILLE SOLUTION\n"); // GENERER
     printf("2 - JOUER MANUELEMENT AVEC GRILLE SOLUTION GENEREE\n"); // IL PEUT JOUER AVEC UNE GRILLE SOLUTION ALEATOIRE CHOISIR LE MASQUE
-    printf("3 - LAISSER SPARTACUS JOUER AVEC LA GRILLE SOLUTION GENEREE\n"); // SPARTACUS JOUE AVEC UNE GRILLE SOLUTION GENERER
-    printf("4 - RETOUR\n"); // SPARTACUS JOUE AVEC UNE GRILLE SOLUTION GENERER
+    printf("R - RETOUR\n"); // SPARTACUS JOUE AVEC UNE GRILLE SOLUTION GENERER
 
     printf("Saisir :\n");
     fflush(stdin);
@@ -1803,10 +1802,6 @@ void menu3(int dim)
         printf("La solution etait:\n");
         Sleep(500);
         print_matrix(solution,dim,100,100,100);
-        menu3(dim);
-    }
-    if(choice == '3')
-    {
         menu3(dim);
     }
     if((choice == 'R') || (choice=='r'))
