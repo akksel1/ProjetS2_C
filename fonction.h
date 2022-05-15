@@ -18,7 +18,7 @@
 
 /// -- FONCTION UTILITE --
 void Color_Text(int,int);
-void print_matrix(char**,int,int,int);
+void print_matrix(char**,int,int,int,int);
 void initialize_matrix0(int,char**);
 void initialize_matrix1(int,char**);
 char** create_matrix(int);
@@ -63,6 +63,7 @@ void partie_3(int dim);
 /// -- FONCTIONS MENU --
 void menu1();
 void menu_dimension1();
+void menu_dimension2();
 void menu_dimension3();
 void menu_mask_input(char**,int);
 void menu1_1(int);

@@ -1,11 +1,12 @@
 Bienvenue !
-Dans ce fichier vous retrouverez comment utiliser notre programme en vous expliquant les fonctions principales.
 
-Notre code est structuré sur 3 menus principaux : PARTIE I (l.1194), PARTIE II(l.), PARTIE III (l.)
+Dans ce fichier, vous retrouverez comment utiliser notre programme en vous expliquant les fonctions principales.
+
+Notre code est structuré sur 3 menus principaux : PARTIE I (l.1194), PARTIE II(l.1742), PARTIE III (l.1703)
 
 
 
- -- FONCTIONALITES DU PROGRAMME --
+ -- FONCTIONNALITÉS DU PROGRAMME --
 
     > Saisie d'un masque manuellement par l'utilisateur
 
@@ -15,7 +16,11 @@ Notre code est structuré sur 3 menus principaux : PARTIE I (l.1194), PARTIE II(
 
     > Afficher une grille jeu (en générant un masque)
 
-    > 
+    > Jouer avec une grille jeu (Grille solution initialisée en dur et masque aléatoire)
+
+    > Laisser le programme (Spartacus) résoudre une grille jeu (Grille solution initialisée en dur et masque aléatoire)
+
+    >
 
 
 
@@ -27,7 +32,7 @@ Notre code est structuré sur 3 menus principaux : PARTIE I (l.1194), PARTIE II(
 
 
     -- ANNEXE --
-Couleurs:
+Paramètre couleur de la fonction Color_text:
 0 : Noir
 1 : Bleu foncé
 2 : Vert foncé

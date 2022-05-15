@@ -28,7 +28,7 @@ void Color_Text(int Text_Color,int Back_color)
 }
 
 // Permet d'afficher la grille jeux
-void print_matrix(char (**Z),int TL,int lig, int col)
+void print_matrix(char (**Z),int TL,int lig, int col,int choice)
 {
     // Affichage d'une matrice 4x4
     if(TL==4) {
@@ -59,13 +59,22 @@ void print_matrix(char (**Z),int TL,int lig, int col)
             printf("  ");
         }
         for (int j = 0; j < TL; j++) {
-            if(lig==i && col==j){
+            // PRINT EN VIOLET LQ C'EST BON
+            if(lig==i && col==j && choice==1){
                 Color_Text(5, 0);
                 printf("%c  ", Z[i][j]);
                 Color_Text(15, 0);
             }
             else{
-                printf("%c  ", Z[i][j]);
+                // PRINT EN ROUGE LQ C'EST PAS BON
+                if(lig==i && col==j && choice==2) {
+                    Color_Text(4, 0);
+                    printf("%c  ", Z[i][j]);
+                    Color_Text(15, 0);
+                }
+                else {
+                    printf("%c  ", Z[i][j]);
+                }
             }
         }
         printf("\n");
@@ -172,7 +181,7 @@ void saisie_securisee_jouer(int size, char** game_matrix,int *lig_ptr,char *col_
     BOOL cache = FALSE;
 
     fflush(stdin);
-    print_matrix(game_matrix, size,100,100);
+    print_matrix(game_matrix, size,100,100,0);
     printf("Saisir l'indice:");
     /*
     SAISIE SECURISEE
@@ -389,7 +398,7 @@ BOOL colonne_remplie(int col,char** game_matrix,int dim)
     }
 }
 
-// Fonction qui génère un indice aléatoire (Attention cela peut ralentir le programme à cause de time et clock))
+// Fonction qui génère un indice aléatoire (Attention cela peut ralentir le programme à cause de clock))
 int Random_index(int size)
 {
     int nb, random;
@@ -1066,7 +1075,7 @@ BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col,int p
                     Color_Text(15, 0);
                     // RESET
                     Z[lig][col] = '_';
-                    print_matrix(test, TL, lig, col);
+                    print_matrix(test, TL, lig, col,1);
                     if (test[lig - 1][col] == '0') {
                         Z[lig - 1][col] = '_';
                     }
@@ -1103,7 +1112,7 @@ BOOL saisie_securisee(int size, char (**Z),int *lig_ptr,char *col_char_ptr){
 
     printf("Saisir 0/0 pour arreter\n\n");
     fflush(stdin);
-    print_matrix(Z, size,100,100);
+    print_matrix(Z, size,100,100,0);
     printf("Saisir:");
     /*
     SAISIE SECURISEE
@@ -1209,23 +1218,23 @@ void menu1(){//MENU PRINCIPAL
     ///PARTIE II
     if(choice=='2')
     {
-
+        menu_dimension2();
     }
 
-
+    ///PARTIE III
     if(choice=='3'){
         menu_dimension3();
     }
 
 }
 
-// MENU POUR CHOISIR LA DIMENSION
+// MENU POUR CHOISIR LA DIMENSION DANS LA PARTIE I
 void menu_dimension1(){ //SOUS MENU 1_1
     char choice;
     int cpt=0;
     int ** Z=NULL;
 
-    printf("\t--  DIMENSION DE LA GRILLE --\n");
+    printf("\n\n\t--  DIMENSION DE LA GRILLE --\n");
     printf("1 - GRILLE 4x4\n");
     printf("2 - GRILLE 8x8\n");
     printf("3 - GRILLE 16x16\n");
@@ -1265,12 +1274,60 @@ void menu_dimension1(){ //SOUS MENU 1_1
     }
 }
 
+// MENU POUR CHOISIR LA DIMENSION DANS LA PARTIE II
+void menu_dimension2(){ //SOUS MENU 1_1
+    char choice;
+    int cpt=0;
+    int ** Z=NULL;
+
+    printf("\n\n\t--  DIMENSION DE LA GRILLE --\n");
+    printf("1 - GRILLE 4x4\n");
+    printf("2 - GRILLE 8x8\n");
+    printf("3 - GRILLE 16x16\n");
+    printf("R - RETOUR\n");
+    do {
+        if(cpt==0){
+            //On vide le buffer sinon print 2 fois
+            fflush(stdin);
+            printf("\nSaisir votre choix:\n");
+            cpt++;
+        }
+        else{
+            //On vide le buffer sinon print 2 fois
+            fflush(stdin);
+            printf("Saisie incorrect. Resaisir:\n");
+        }
+        scanf("%c",&choice);
+    }while( ((choice>'3') || (choice<'1') ) && (choice!='r') && (choice!='R'));
+
+    // GRILLE 4X4
+    if(choice=='1'){
+        partie_2(4);
+
+    }
+    // GRILLE 8X8
+    if(choice=='2'){
+        partie_2(8);
+    }
+    // GRILLE 16X16
+    if(choice=='3'){
+        partie_2(16);
+    }
+
+    // RETOUR AU MENU1
+    if((choice=='r')||(choice=='R')){
+        menu1();
+    }
+}
+
+
+// MENU POUR CHOISIR LA DIMENSION DANS LA PARTIE III
 void menu_dimension3(){ //SOUS MENU 1_1
     char choice;
     int cpt=0;
     int ** Z=NULL;
 
-    printf("\t--  DIMENSION DE LA GRILLE --\n");
+    printf("\n\n\t--  DIMENSION DE LA GRILLE --\n");
     printf("1 - GRILLE 4x4\n");
     printf("2 - GRILLE 8x8\n");
     printf("3 - GRILLE 16x16\n");
@@ -1368,7 +1425,7 @@ void menu1_1(int dim){
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
-        print_matrix(game_matrix,dim,100,100);
+        print_matrix(game_matrix,dim,100,100,0);
         printf("\n");
         menu1_1(dim);
 
@@ -1557,7 +1614,7 @@ void menu1_1(int dim){
 // MENU SAISIE DU MASQUE
 void menu_mask_input(char (**Z),int size){
     char choice;
-    print_matrix(Z,size,100,100);
+    print_matrix(Z,size,100,100,0);
     printf("\n  -- SAISIE MASQUE --\n\n");
     printf("1 - Cacher des valeurs\n");
     printf("R - Retour\n");
@@ -1604,7 +1661,7 @@ void menu_1_2_1(int dim,char** masque){
         Color_Text(5,0);
         printf("\n   -- MASQUE --\n");
         Color_Text(15,0);
-        print_matrix(masque,dim,100,100);
+        print_matrix(masque,dim,100,100,0);
         printf("\n");
         char **game_matrix;
         game_matrix=create_matrix(dim);
@@ -1612,7 +1669,7 @@ void menu_1_2_1(int dim,char** masque){
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
-        print_matrix(game_matrix,dim,100,100);
+        print_matrix(game_matrix,dim,100,100,0);
         menu_1_2_1(dim,masque);
 
     }
@@ -1683,7 +1740,240 @@ void menu3(int dim)
 
 // Spartacus qui résout automatiquement une grille de Takuzu
 void partie_2(int dim) {
+    char choice,val;
     char **game_matrix;
+    char **masque;
+    char(**test);
+    char (**hidden_index_matrix);
+    char difficulte;
+    int lig=0,col=0,val_int,choice_int=0;
+    char col_char_ptr;
+    char **solution;
+    BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col,correct,trois_indice,egal,comp,testbool;
+
+    difficulte=menu_difficulte();
+
+    test = create_matrix(dim);
+    initialize_matrix0(dim,test);
+
+    masque = create_matrix(dim);
+    initialize_matrix1(dim,masque);
+    generate_mask(masque,dim,test,difficulte);
+
+
+    game_matrix=create_matrix(dim);
+    Game_gridd(masque,game_matrix,dim,1);
+
+    solution = create_matrix(dim);
+    Game_gridd(masque,solution,dim,2); // On crée la matrice Solution
+
+    hidden_index_matrix=masque; // Matrice où indices cachés sont représenté par un '0' <=> masque
+
+    Color_Text(5,0);
+    printf("   -- GRILLE JEU --\n");
+    Color_Text(15,0);
+    printf("\n");
+
+
+    do{
+        print_matrix(game_matrix,dim,lig,col,choice_int);
+        Sleep(1500);
+        for(int a=0;a<dim;a++)
+        {
+            for(int b=0;b<dim;b++)
+            {
+                if(game_matrix[a][b]=='_')
+                {
+                    col=b;
+                    break;
+                }
+            }
+            if(game_matrix[a][col]=='_')
+            {
+                lig=a;
+                break;
+            }
+        }
+        choice_int=1;
+
+        // Val aléatoire comprise entre 0 et 1
+        val_int = Random_index(2);
+        if(dim==4){
+            Color_Text(1,0);
+            printf("%20cSPARTACUS CHOISI: %d\n",' ',val_int);
+            Color_Text(15,0);
+        }
+        if(dim==8){
+            Color_Text(1,0);
+            printf("%35cSPARTACUS CHOISI: %d\n",' ',val_int);
+            Color_Text(15,0);
+        }
+        if(dim==16){
+            Color_Text(1,0);
+            printf("%58cSPARTACUS CHOISI: %d\n",' ',val_int);
+            Color_Text(15,0);
+        }
+
+        Sleep(1500);
+        // Conversion val int en char
+        if (val_int == 0) {
+            val = '0';
+        }
+        if (val_int == 1) {
+            val = '1';
+        }
+
+
+        // Affectation à la grille jeu
+        game_matrix[lig][col] = val;
+
+        correct=compare_game_with_solution(lig, col,game_matrix,solution);
+
+        if(correct == FALSE) //Pas égal a la grille solution mais teste de la validite du coup
+        {
+            egal_lig=counter_number_line(dim,game_matrix,lig,col,hidden_index_matrix,2);
+            egal_col=counter_number_column(dim,game_matrix,lig,col,hidden_index_matrix,2);
+            if((egal_lig == TRUE) && (egal_col == TRUE))
+            {
+                egal = TRUE; // NB 0 == NB 1 donc ok
+            }
+
+            if((egal_lig == FALSE) || (egal_col == FALSE))
+            {
+                // - 1 vie
+                choice_int=2;
+                egal = FALSE;
+            }
+
+
+            trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig, col,2);
+            trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig, col,2);
+            // FALSE => il n'y a pas trois fois de 1 ou de 0 de suite
+            if(trois_indice_lig == FALSE && trois_indice_col == FALSE)
+            {
+                trois_indice = FALSE;
+            }
+
+            if(trois_indice_lig == TRUE || trois_indice_col == TRUE)
+            {
+                // - 1 vie
+                choice_int=2;
+                trois_indice = TRUE;
+            }
+
+            if((egal==TRUE) && (trois_indice == FALSE)) // 2 règles sont respectées
+            {
+                if(ligne_remplie(lig,game_matrix,dim) == FALSE)
+                {
+                    game_matrix[lig][col]='_';
+                }
+                else
+                {
+                    comp_lig=compare_line(dim,game_matrix,lig,col,hidden_index_matrix,2);
+                    comp_col=compare_column(dim ,game_matrix,lig,col,hidden_index_matrix,2);
+
+                    // TRUE => Tout est bon
+                    if(comp_col == TRUE && comp_lig == TRUE)
+                    {
+                        comp = TRUE;
+                    }
+                    if(comp_col == FALSE || comp_lig == FALSE)
+                    {
+                        // - 1 vie
+                        choice_int=2;
+                        comp = FALSE;
+                    }
+
+                    if(comp==FALSE)
+                    {
+                        if(val=='0'){
+                            val='1';
+                        }
+                        else{
+                            val='0';
+                        }
+                        game_matrix[lig][col]=val;
+                        choice_int=2;
+                    }
+                }
+            }
+            else
+            {
+                if(val=='0'){
+                    val='1';
+                }
+                else{
+                    val='0';
+                }
+                game_matrix[lig][col]=val;
+                choice_int=2;
+            }
+
+        }
+        else// Respecte peut être les règles et respecte la matrice solution
+        {
+            egal_lig=counter_number_line(dim,game_matrix,lig,col,hidden_index_matrix,2);
+            egal_col=counter_number_column(dim,game_matrix,lig,col,hidden_index_matrix,2);
+
+            if ((egal_col==FALSE) || (egal_lig==FALSE))
+            {
+                egal=FALSE;
+                choice_int=2;
+            }
+            else{
+                egal=TRUE;
+            }
+
+
+            trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig, col,2);
+            trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig, col,2);
+
+            if ((trois_indice_col==TRUE) || (trois_indice_lig==TRUE))
+            {
+                trois_indice=TRUE;
+            }
+            else{
+                trois_indice=FALSE;
+            }
+
+            comp_lig=compare_line(dim,game_matrix,lig,col,hidden_index_matrix,2);
+            comp_col=compare_column(dim ,game_matrix,lig,col,hidden_index_matrix,2);
+
+            if ((comp_lig==FALSE) || (comp_col==FALSE))
+            {
+                comp=FALSE;
+            }
+            else{
+                comp=TRUE;
+            }
+
+            if((comp == FALSE)||(egal == FALSE)||(trois_indice==TRUE))
+            {
+                if(val=='0'){
+                    val='1';
+                }
+                else{
+                    val='0';
+                }
+                game_matrix[lig][col]=val;
+                choice_int=2;
+            }
+        }
+
+    }while((matrice_pleine(game_matrix,dim) == FALSE));
+    print_matrix(game_matrix,dim,lig,col,choice_int);
+    printf("BRAVO SPARTACUS\n");
+    Sleep(2500);
+    printf("\n\n\n");
+
+
+
+
+
+
+
+
+    /*char **game_matrix;
     char **masque;
     int lig_ptr, TL, val_int;
     char col_char_ptr, val,difficulte;
@@ -1742,7 +2032,7 @@ void partie_2(int dim) {
                         /*
                          * Fonction qui permet de verifier si l'indice est caché
                          * 0 => caché
-                        */
+
 
                         if (game_matrix[i][j] == '_') {
                             // Val aléatoire comprise entre 0 et 1
@@ -1808,6 +2098,8 @@ void partie_2(int dim) {
             }
         }
     }while(matrice_pleine(game_matrix,dim)==FALSE);
+*/
+    menu_dimension2();
 }
 
 // Génération d'une grille solution aléatoire
@@ -1860,7 +2152,7 @@ void partie_3(int dim){
                 }
             }
         }
-        print_matrix(game_matrix, dim, 100, 100);
+        print_matrix(game_matrix, dim, 100, 100,0);
 
 
 
@@ -1920,7 +2212,7 @@ void partie_3(int dim){
                                 if ((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE) &&
                                     (trois_indice_lig == FALSE) && (trois_indice_col == FALSE)) {
                                     printf(" COUP SUIVANT... \n");
-                                    print_matrix(game_matrix, TL, i, j);
+                                    print_matrix(game_matrix, TL, i, j,1);
                                     //Sleep(1000);
                                     printf("\n");
                                 } else {
@@ -1933,7 +2225,7 @@ void partie_3(int dim){
                                     game_matrix[i][j] = val;
                                     printf(" COUP SUIVANT... \n");
                                     //Sleep(1000);
-                                    print_matrix(game_matrix, TL, i, j);
+                                    print_matrix(game_matrix, TL, i, j,1);
                                     printf("\n");
                                 }
                             }
@@ -2058,7 +2350,7 @@ void partie_3(int dim){
                                 if ((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE) &&
                                     (trois_indice_lig == FALSE) && (trois_indice_col == FALSE)) {
                                     printf(" COUP SUIVANT... \n");
-                                    print_matrix(game_matrix, TL, i, j);
+                                    print_matrix(game_matrix, TL, i, j,1);
                                     //Sleep(1000);
                                     printf("\n");
                                 } else {
@@ -2071,7 +2363,7 @@ void partie_3(int dim){
                                     game_matrix[i][j] = val;
                                     printf(" COUP SUIVANT... \n");
                                     //Sleep(1000);
-                                    print_matrix(game_matrix, TL, i, j);
+                                    print_matrix(game_matrix, TL, i, j,1);
                                     printf("\n");
                                 }
                             }
@@ -2126,6 +2418,8 @@ void partie_3(int dim){
         }while(matrice_pleine(game_matrix,dim)==FALSE);
 
     }
+    free(game_matrix);
+    free(masque);
 }
 
 
