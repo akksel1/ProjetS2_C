@@ -26,21 +26,21 @@ Notre code est structuré sur 3 menus principaux : PARTIE I (l.1194), PARTIE II(
 
 
 
--- ANNEXE --
+    -- ANNEXE --
 Couleurs:
-    0 : Noir
-    1 : Bleu foncé
-    2 : Vert foncé
-    3 : Turquoise
-    4 : Rouge foncé
-    5 : Violet
-    6 : Vert caca d'oie
-    7 : Gris clair
-    8 : Gris foncé
-    9 : Bleu fluo
-    10 : Vert fluo
-    11 : Turquoise
-    12 : Rouge fluo
-    13 : Violet 2
-    14 : Jaune
-    15 : Blanc
+0 : Noir
+1 : Bleu foncé
+2 : Vert foncé
+3 : Turquoise
+4 : Rouge foncé
+5 : Violet
+6 : Vert caca d'oie
+7 : Gris clair
+8 : Gris foncé
+9 : Bleu fluo
+10 : Vert fluo
+11 : Turquoise
+12 : Rouge fluo
+13 : Violet 2
+14 : Jaune
+15 : Blanc
