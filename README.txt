@@ -3,7 +3,9 @@ Dans ce fichier vous retrouverez comment utiliser notre programme en vous expliq
 
 Notre code est structuré sur 3 menus principaux : PARTIE I (l.1194), PARTIE II(l.), PARTIE III (l.)
 
-* FONCTIONALITES DU PROGRAMME
+
+
+ -- FONCTIONALITES DU PROGRAMME --
 
     > Saisie d'un masque manuellement par l'utilisateur
 

@@ -641,7 +641,8 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
     }
     if(dim==16) {
         // /!\ CETTE GRILLE SOLUTION N'EST (potentiellement) NON VALIDE ! Veuillez changer celle-ci pour jouer avec ! Bon jeu ;) /!
-        char solution1[16][16] = {
+        /* char solution1[16][16] = {
+
                 {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
                 {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
                 {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
@@ -658,6 +659,28 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
                 {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
                 {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
                 {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'}
+
+        };*/
+
+         char solution1[16][16] = {
+
+                {'1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'1', '0', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'0', '1', '0', '1','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'1', '0', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'},
+                {'0', '1', '1', '0','_', '_', '_', '_','_', '_', '_', '_','_', '_', '_', '_'}
+
         };
         copy_matrix16(game_matrix,solution1,dim);
     }
@@ -706,6 +729,9 @@ BOOL counter_number_line(int TL,char**Z,int lig,int col,char** test,int partie)
         if (partie==1)
         {
             printf("\n -1 PT : LA LIGNE %d NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n",lig+1);
+            Color_Text(1,0);
+            printf("INDICE : ATTENTION IL N Y PAS LE MEME NOMBRE DE 1 ET DE 0 SUR LA LIGNE %d\n\n",lig+1);
+            Color_Text(15,0);
             reset_lig(Z,test,lig,TL);
         }
         return FALSE; // Ne respecte pas la regle
@@ -743,6 +769,9 @@ BOOL counter_number_column(int TL ,char**Z,int lig,int col,char** test, int part
         if (partie==1)
         {
             printf("\n-1 PT :LA COLONNE %c NE CONTIENT PAS LE MEME NOMBRE DE 0 QUE DE 1\n", conversion_column(col));
+            Color_Text(1,0);
+            printf("INDICE : ATTENTION IL N Y PAS LE MEME NOMBRE DE 1 ET DE 0 SUR LA COLONNE %c\n\n",conversion_column(col));
+            Color_Text(15,0);
             reset_col(Z,test,col,TL);
         }
         return FALSE; // Ne respecte pas la regle
@@ -792,6 +821,9 @@ BOOL compare_line(int TL ,char**Z,int lig,int col,char** test,int partie)
             if (partie==1)
             {
                 printf("\n-1 PT : LA LIGNE %d EST IDENTIQUE \n", t + 1);
+                Color_Text(1,0);
+                printf("INDICE : ATTENTION LA LIGNE %d EST IDENTIQUE A UNE AUTRE\n\n",t + 1);
+                Color_Text(15,0);
                 reset_lig(Z, test, lig, TL);
             }
             return FALSE;
@@ -847,6 +879,10 @@ BOOL compare_column(int TL ,char**Z,int lig,int col,char** test,int partie)
             if (partie==1)
             {
                 printf("\n-1 PT :LA COLONNE %d EST IDENTIQUE \n", t + 1);
+                Color_Text(1,0);
+                printf("INDICE : ATTENTION LA COLONNE %d EST IDENTIQUE A UNE AUTRE\n\n",t + 1);
+                Color_Text(15,0);
+
                 reset_col(Z, test, col, TL);
             }
             return FALSE;
@@ -878,6 +914,9 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int 
                 verif1 = TRUE;
                 if(partie==1) {
                     printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+                    Color_Text(1,0);
+                    printf("INDICE : ATTENTION IL Y A 3x %c DE SUITE\n\n",Z[lig][col]);
+                    Color_Text(15,0);
 
                     // RESET
                     Z[lig][col] = '_';
@@ -897,6 +936,9 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int 
                 verif2 = TRUE;
                 if (partie == 1) {
                     printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+                    Color_Text(1,0);
+                    printf("INDICE : ATTENTION  IL Y A 3x %c DE SUITE\n\n",Z[lig][col]);
+                    Color_Text(15,0);
 
                     // RESET
                     Z[lig][col] = '_';
@@ -919,6 +961,9 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int 
 
                 if (partie == 1) {
                     printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+                    Color_Text(1,0);
+                    printf("INDICE : ATTENTION IL Y A 3x %c DE SUITE\n\n",Z[lig][col]);
+                    Color_Text(15,0);
 
                     // RESET
                     Z[lig][col] = '_';
@@ -950,9 +995,7 @@ BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col,int p
      * FALSE => Pas identique
      */
 
-    if(Z[lig][col]!='_')
-    {
-        if (lig < TL - 2)
+        if (lig < TL - 2 && (Z[lig][col]!='_'))
         {
             // 2 EN DESSOUS
             if ((Z[lig][col] == Z[lig + 1][col]) && (Z[lig + 1][col] == Z[lig + 2][col]))
@@ -961,6 +1004,9 @@ BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col,int p
                 if(partie==1)
                 {
                     printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
+                    Color_Text(1,0);
+                    printf("INDICE : ATTENTION IL Y A 3x %c DE SUITE\n\n",Z[lig][col]);
+                    Color_Text(15,0);
                     // RESET
                     Z[lig][col] = '_';
                     if (test[lig + 1][col] == '0') {
@@ -976,43 +1022,47 @@ BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col,int p
 
 
         }
-    }
 
-    if (lig > 1) {
-        // 2 INDICES EN HAUT
-        if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig - 1][col] == Z[lig - 2][col])) {
-            verif2 = TRUE;
-            if (partie == 1) {
-                printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
-                // RESET
-                Z[lig][col] = '_';
-                if (test[lig - 1][col] == '0') {
-                    Z[lig - 1][col] = '_';
+        if ((lig > 1)&&(Z[lig][col]!='_')) {
+            // 2 INDICES EN HAUT
+            if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig - 1][col] == Z[lig - 2][col])) {
+                verif2 = TRUE;
+                if (partie == 1) {
+                    printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
+                    Color_Text(1,0);
+                    printf("INDICE : ATTENTION IL Y A 3x %c DE SUITE\n\n",Z[lig][col]);
+                    Color_Text(15,0);
+                    // RESET
+                    Z[lig][col] = '_';
+                    if (test[lig - 1][col] == '0') {
+                        Z[lig - 1][col] = '_';
+                    }
+                    if (test[lig - 2][col] == '0') {
+                        Z[lig - 2][col] = '_';
+                    }
+                    cpt++;
                 }
-                if (test[lig - 2][col] == '0') {
-                    Z[lig - 2][col] = '_';
-                }
-                cpt++;
             }
         }
-    }
 
-    if ((lig > 0) && (lig < TL - 1)) {
-        // 1 INDICE A DROITE ET UN INDICE A GAUCHE
-        if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig][col] == Z[lig + 1][col])) {
-            verif3 = TRUE;
-            if (partie == 1) {
-
-                printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col), Z[lig][col]);
-
-                // RESET
-                Z[lig][col] = '_';
-                print_matrix(test, TL,lig,col);
-                if (test[lig - 1][col] == '0') {
-                    Z[lig - 1][col] = '_';
-                }
-                if (test[lig + 1][col] == '0') {
-                    Z[lig + 1][col] = '_';
+        if ((lig > 0) && (lig < TL - 1) &&(Z[lig][col]!='_')) {
+            // 1 INDICE A DROITE ET UN INDICE A GAUCHE
+            if ((Z[lig][col] == Z[lig - 1][col]) && (Z[lig][col] == Z[lig + 1][col])) {
+                verif3 = TRUE;
+                if (partie == 1) {
+                    printf("\n-1 PT : LA COLONNE %c CONTIENT TROIS %c DE SUITE !\n", conversion_column(col),Z[lig][col]);
+                    Color_Text(1, 0);
+                    printf("INDICE: ATTENTION IL Y A 3x %c DE SUITE\n\n", Z[lig][col]);
+                    Color_Text(15, 0);
+                    // RESET
+                    Z[lig][col] = '_';
+                    print_matrix(test, TL, lig, col);
+                    if (test[lig - 1][col] == '0') {
+                        Z[lig - 1][col] = '_';
+                    }
+                    if (test[lig + 1][col] == '0') {
+                        Z[lig + 1][col] = '_';
+                    }
                 }
             }
         }
