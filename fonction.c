@@ -2164,7 +2164,9 @@ char** partie_3(int dim,int choice){
                                     if(choice==1){
                                         printf(" COUP SUIVANT... \n");
                                         print_matrix(game_matrix, TL, i, j,1);
-                                        //Sleep(1000);
+                                        if(dim==4){
+                                            Sleep(500);
+                                        }
                                         printf("\n");
                                     }
                                 } else {
@@ -2177,7 +2179,9 @@ char** partie_3(int dim,int choice){
                                     game_matrix[i][j] = val;
                                     if(choice==1){
                                         printf(" COUP SUIVANT... \n");
-                                        //Sleep(1000);
+                                        if(dim==4){
+                                            Sleep(500);
+                                        }
                                         print_matrix(game_matrix, TL, i, j,1);
                                         printf("\n");
                                     }
@@ -2306,7 +2310,9 @@ char** partie_3(int dim,int choice){
                                     if(choice==1){
                                         printf(" COUP SUIVANT... \n");
                                         print_matrix(game_matrix, TL, i, j,1);
-                                        //Sleep(1000);
+                                        if(dim==4){
+                                            Sleep(500);
+                                        }
                                         printf("\n");
                                     }
                                 } else {
@@ -2319,7 +2325,9 @@ char** partie_3(int dim,int choice){
                                     game_matrix[i][j] = val;
                                     if(choice==1){
                                         printf(" COUP SUIVANT... \n");
-                                        //Sleep(1000);
+                                        if(dim==4){
+                                            Sleep(500);
+                                        }
                                         print_matrix(game_matrix, TL, i, j,1);
                                         printf("\n");
                                     }
