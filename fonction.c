@@ -334,6 +334,17 @@ void copy_matrix4(char** game_matrix,char solution[4][4],int dim){
     }
 }
 
+// Copie une matrice b dans et colle dans une matrice a
+void copy_matrix_dyn(char** a,char** b,int dim)
+{
+    for(int i=0;i<dim;i++){
+        for(int j=0;j<dim;j++){
+            a[i][j]=b[i][j];
+        }
+    }
+}
+
+
 // Fonction qui copie une matrice 8x8
 void copy_matrix8(char** game_matrix,char solution[8][8],int dim){
     for(int i=0;i<dim;i++){
@@ -649,6 +660,7 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice,char** solu
     /*
      * CHOICE 1 => On applique le masque pour créer la grille jeu
      * CHOICE 2 => On n'applique pas le masque pour créer la grille solution
+     * PARTIE != 2 => Solution en dur
      */
 
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
@@ -663,7 +675,7 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice,char** solu
             copy_matrix4(game_matrix,solution,dim);
         }
         else{
-            game_matrix=solution_1;
+            copy_matrix_dyn(game_matrix,solution_1,dim);
         }
 
     }
@@ -684,7 +696,7 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice,char** solu
             copy_matrix8(game_matrix,solution2,dim);
         }
         else{
-            game_matrix=solution_1;
+            copy_matrix_dyn(game_matrix,solution_1,dim);
         }
 
     }
@@ -715,7 +727,7 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice,char** solu
              copy_matrix16(game_matrix,solution1,dim);
          }
          else{
-             game_matrix=solution_1;
+             copy_matrix_dyn(game_matrix,solution_1,dim);
          }
 
     }
@@ -887,10 +899,10 @@ void Solve_game_gridd(int dim,char** game_matrix,char** solution,char** test, ch
 
 
     if(vie>0){
-        printf("\n BRAVO VOUS AVEZ REUSSI ! %d\n",1);
+        printf("\nBRAVO VOUS AVEZ REUSSI !\n\n");
     }
     else{
-        printf("PERDU\n");
+        printf("\nPERDU\n");
     }
     menu1_1(dim);
 }
@@ -1763,12 +1775,13 @@ void menu3(int dim)
     }
     if(choice == '1')
     {
-        solution=partie_3(dim);
+        solution=partie_3(dim,1);
         menu3(dim);
     }
     if(choice == '2')
     {
-        solution=partie_3(dim);
+        printf("\n\n\n\nVEUILLEZ PATIENTER");
+        solution=partie_3(dim,0);
         printf("\n\n\n\n");
         difficulte=menu_difficulte();
 
@@ -1782,9 +1795,12 @@ void menu3(int dim)
 
         game_matrix=create_matrix(dim);
         Game_gridd(masque,game_matrix,dim,1,solution,2);
-        printf("yes");
+
+        print_matrix(game_matrix,dim,100,100,100);
 
         Solve_game_gridd(dim,game_matrix,solution,test,masque,difficulte);
+        printf("La solution était:\n");
+        print_matrix(solution,dim,100,100,100);
         menu3(dim);
     }
     if(choice == '3')
@@ -2034,7 +2050,7 @@ void partie_2(int dim) {
 }
 
 // Génération d'une grille solution aléatoire
-char** partie_3(int dim){
+char** partie_3(int dim,int choice){
     char **game_matrix;
     char **masque;
     int lig_ptr, TL, val_int;
@@ -2083,7 +2099,9 @@ char** partie_3(int dim){
                 }
             }
         }
-        print_matrix(game_matrix, dim, 100, 100,0);
+        if(choice==1){
+            print_matrix(game_matrix, dim, 100, 100,0);
+        }
 
 
 
@@ -2104,7 +2122,6 @@ char** partie_3(int dim){
                             if (game_matrix[i][j] == '_') {
                                 // Val aléatoire comprise entre 0 et 1
                                 val_int = Random_index(2);
-                                printf("val_int: %d\n", val_int);
 
                                 // Conversion val int en char
                                 if (val_int == 0) {
@@ -2141,7 +2158,7 @@ char** partie_3(int dim){
                                 comp_col = compare_column(dim, game_matrix, i, j, hidden_index_matrix, 2);
 
                                 if ((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE) &&
-                                    (trois_indice_lig == FALSE) && (trois_indice_col == FALSE)) {
+                                    (trois_indice_lig == FALSE) && (trois_indice_col == FALSE) && (choice==1)) {
                                     printf(" COUP SUIVANT... \n");
                                     print_matrix(game_matrix, TL, i, j,1);
                                     //Sleep(1000);
@@ -2154,10 +2171,12 @@ char** partie_3(int dim){
                                         val = '1';
                                     }
                                     game_matrix[i][j] = val;
-                                    printf(" COUP SUIVANT... \n");
-                                    //Sleep(1000);
-                                    print_matrix(game_matrix, TL, i, j,1);
-                                    printf("\n");
+                                    if(choice==1){
+                                        printf(" COUP SUIVANT... \n");
+                                        //Sleep(1000);
+                                        print_matrix(game_matrix, TL, i, j,1);
+                                        printf("\n");
+                                    }
                                 }
                             }
                         }
@@ -2279,7 +2298,7 @@ char** partie_3(int dim){
                                 comp_col = compare_column(dim, game_matrix, i, j, hidden_index_matrix, 2);
 
                                 if ((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE) &&
-                                    (trois_indice_lig == FALSE) && (trois_indice_col == FALSE)) {
+                                    (trois_indice_lig == FALSE) && (trois_indice_col == FALSE) && (choice==1)) {
                                     printf(" COUP SUIVANT... \n");
                                     print_matrix(game_matrix, TL, i, j,1);
                                     //Sleep(1000);
@@ -2292,10 +2311,12 @@ char** partie_3(int dim){
                                         val = '1';
                                     }
                                     game_matrix[i][j] = val;
-                                    printf(" COUP SUIVANT... \n");
-                                    //Sleep(1000);
-                                    print_matrix(game_matrix, TL, i, j,1);
-                                    printf("\n");
+                                    if(choice==1){
+                                        printf(" COUP SUIVANT... \n");
+                                        //Sleep(1000);
+                                        print_matrix(game_matrix, TL, i, j,1);
+                                        printf("\n");
+                                    }
                                 }
                             }
                         }

@@ -37,6 +37,7 @@ BOOL matrice_pleine(char**,int);
 void copy_matrix4(char**,char[4][4],int);
 void copy_matrix8(char**,char[8][8],int);
 void copy_matrix16(char**,char[16][16],int);
+void copy_matrix_dyn(char**,char**,int);
 
 
 /// -- FONCTION MASQUE / JEU --
@@ -70,7 +71,7 @@ void menu3(int);
 
 
 /// -- FONCTIONS PARTIES --
-void partie_2(int dim);
-char** partie_3(int dim);
+void partie_2(int);
+char** partie_3(int,int);
 
 #endif //PROJETS2_C_FONCTION_H
