@@ -344,7 +344,6 @@ void copy_matrix_dyn(char** a,char** b,int dim)
     }
 }
 
-
 // Fonction qui copie une matrice 8x8
 void copy_matrix8(char** game_matrix,char solution[8][8],int dim){
     for(int i=0;i<dim;i++){
@@ -514,7 +513,7 @@ BOOL colonne_complete(char** Z,int dim, int col)
 
 /// -- FONCTION MASQUE / JEU --
 
-// Fonction qui effectue le saisie manuel du masque par l'utilisateur
+// Fonction qui effectue la saisie manuelle du masque par l'utilisateur
 void Mask_input(char (**Z),int size){
     int col;
     char col_char;
@@ -744,7 +743,7 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice,char** solu
 
 }
 
-// Fonction qui permet de résoudre une grille jeu manuelement
+// Fonction qui permet de résoudre une grille jeu manuellement
 void Solve_game_gridd(int dim,char** game_matrix,char** solution,char** test, char** masque,char difficulte)
 {
     char col;
