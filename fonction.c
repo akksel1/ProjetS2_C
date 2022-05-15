@@ -1739,7 +1739,7 @@ char menu_difficulte(){
     printf("\n -- DIFFICULTE --\n\n");
     printf("1 - DEBUTANT\n");
     printf("2 - MOYEN\n");
-    printf("3 - EXPERT (veuillez prevoir 5min)\n");
+    printf("3 - EXPERT\n");
     printf("Saisir :");
     fflush(stdin);
     scanf("%c",&difficulty_choice);
