@@ -644,9 +644,8 @@ void generate_mask(char(**masque), int size, char** test, char difficulte_choice
     }
 }
 
-
 // Fonction qui associe la grille solution au masque pour obtenir la GRILLE JEU
-void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
+void Game_gridd(char **masque, char **game_matrix,int dim,int choice,char** solution_1,int partie){
     /*
      * CHOICE 1 => On applique le masque pour créer la grille jeu
      * CHOICE 2 => On n'applique pas le masque pour créer la grille solution
@@ -654,51 +653,71 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
 
     //INITIALISATION DE LA GRILLE SOLUTION EN DUR
     if(dim==4) {
-        char solution[4][4] = {
-                {'1', '0', '0', '1'},
-                {'1', '0', '1', '0'},
-                {'0', '1', '1', '0'},
-                {'0', '1', '0', '1'}
-        };
-        copy_matrix4(game_matrix,solution,dim);
+        if(partie!=2){
+            char solution[4][4] = {
+                    {'1', '0', '0', '1'},
+                    {'1', '0', '1', '0'},
+                    {'0', '1', '1', '0'},
+                    {'0', '1', '0', '1'}
+            };
+            copy_matrix4(game_matrix,solution,dim);
+        }
+        else{
+            game_matrix=solution_1;
+        }
+
     }
+
+
     if(dim==8) {
-        char solution2[8][8] = {
-                {'1', '1', '0', '1','0', '1', '0', '0'},
-                {'1', '0', '1', '0','1', '0', '0', '1'},
-                {'0', '1', '0', '1','0', '0', '1', '1'},
-                {'0', '1', '1', '0','0', '1', '1', '0'},
-                {'1', '0', '1', '0','1', '1', '0', '0'},
-                {'1', '0', '0', '1','1', '0', '0', '1'},
-                {'0', '1', '0', '1','0', '1', '1', '0'},
-                {'0', '0', '1', '0','1', '0', '1', '1'}
-        };
-        copy_matrix8(game_matrix,solution2,dim);
+        if(partie!=2){
+            char solution2[8][8] = {
+                    {'1', '1', '0', '1','0', '1', '0', '0'},
+                    {'1', '0', '1', '0','1', '0', '0', '1'},
+                    {'0', '1', '0', '1','0', '0', '1', '1'},
+                    {'0', '1', '1', '0','0', '1', '1', '0'},
+                    {'1', '0', '1', '0','1', '1', '0', '0'},
+                    {'1', '0', '0', '1','1', '0', '0', '1'},
+                    {'0', '1', '0', '1','0', '1', '1', '0'},
+                    {'0', '0', '1', '0','1', '0', '1', '1'}
+            };
+            copy_matrix8(game_matrix,solution2,dim);
+        }
+        else{
+            game_matrix=solution_1;
+        }
+
     }
     if(dim==16) {
         // /!\ CETTE GRILLE SOLUTION N'EST (potentiellement) NON VALIDE ! Veuillez changer celle-ci pour jouer avec ! Bon jeu ;) /!
-         char solution1[16][16] = {
+         if(partie!=2){
+             char solution1[16][16] = {
 
-                {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
-                {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
-                {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
-                {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
-                {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
-                {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
-                {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
-                {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
-                {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
-                {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
-                {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
-                {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
-                {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
-                {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
-                {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
-                {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'}
+                     {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
+                     {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
+                     {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
+                     {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
+                     {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
+                     {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
+                     {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
+                     {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
+                     {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
+                     {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
+                     {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
+                     {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'},
+                     {'1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1','1', '0', '0', '1'},
+                     {'1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0','1', '0', '1', '0'},
+                     {'0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0','0', '1', '1', '0'},
+                     {'0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1','0', '1', '0', '1'}
 
-        };
+             };
 
-        copy_matrix16(game_matrix,solution1,dim);
+             copy_matrix16(game_matrix,solution1,dim);
+         }
+         else{
+             game_matrix=solution_1;
+         }
+
     }
     if(choice==1) {
         for (int i = 0; i < dim; i++) {
@@ -712,6 +731,170 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice){
     }
 
 }
+
+// Fonction qui permet de résoudre une grille jeu manuelement
+void Solve_game_gridd(int dim,char** game_matrix,char** solution,char** test, char** masque,char difficulte)
+{
+    char col;
+    char**hidden_index_matrix;
+    int vie=3,lig,val;
+    BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col,correct,trois_indice,egal,comp;
+
+
+    hidden_index_matrix=masque; // Matrice où indices cachés sont représenté par un '0' <=> masque
+
+    Color_Text(5,0);
+    printf("   -- GRILLE JEU --\n");
+    Color_Text(15,0);
+    printf("\n");
+
+
+    do{
+        printf("Saisir LIGNE/COLONNE\n");
+        if(vie==3)
+        {
+            printf("%41cVIE\n",' ');
+            Color_Text(2,0);
+            printf("%40c%c %c %c\n",' ',3,3,3);
+            Color_Text(15,0);
+        }
+        if(vie==2)
+        {
+            printf("%40cVIE\n",' ');
+            Color_Text(14,0);
+            printf("%40c%c %c\n",' ',3,3);
+            Color_Text(15,0);
+        }
+        if(vie==1)
+        {
+            printf("%39cVIE\n",' ');
+            Color_Text(4,0);
+            printf("%40c%c\n",' ',3);
+            Color_Text(15,0);
+        }
+
+        saisie_securisee_jouer(dim, game_matrix, &lig, &col,hidden_index_matrix);
+        printf("Saisir 1 ou 0:");
+        fflush(stdin);
+        scanf("%c", &val);
+        while (val < '0' || val > '1') {
+            fflush(stdin);
+            printf("Erreur. Resaisir:");
+            scanf("%c", &val);
+        }
+        // Affectation à la grille jeu
+        game_matrix[lig-1][column_conversion(col)] = val;
+
+        correct=compare_game_with_solution(lig-1, column_conversion(col),game_matrix,solution);
+
+        if(correct == FALSE) //Pas égal a la grille solution mais teste de la validite du coup
+        {
+
+            egal_lig=counter_number_line(dim,game_matrix,lig-1,column_conversion(col),hidden_index_matrix,1);
+            egal_col=counter_number_column(dim,game_matrix,lig-1,column_conversion(col),hidden_index_matrix,1);
+            if((egal_lig == TRUE) && (egal_col == TRUE))
+            {
+                egal = TRUE; // NB 0 == NB 1 donc ok
+            }
+
+            if((egal_lig == FALSE) || (egal_col == FALSE))
+            {
+                egal = FALSE;
+                vie=vie-1;
+            }
+
+
+            trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig-1, column_conversion(col),1);
+            trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig-1, column_conversion(col),1);
+            // FALSE => il n'y a pas trois fois de 1 ou de 0 de suite
+            if(trois_indice_lig == FALSE && trois_indice_col == FALSE)
+            {
+                // - 1 vie
+                trois_indice = FALSE;
+            }
+
+            if(trois_indice_lig == TRUE || trois_indice_col == TRUE)
+            {
+                // - 1 vie
+                trois_indice = TRUE;
+                vie--;
+            }
+
+            if((egal==TRUE) && (trois_indice == FALSE)) // 2 règles sont respectées
+            {
+                if(ligne_remplie(lig-1,game_matrix,dim) == FALSE)
+                {
+                    printf("Coup valide mais incorrect...\n");
+                    game_matrix[lig-1][column_conversion(col)]='_';
+                }
+                else
+                {
+                    comp_lig=compare_line(dim,game_matrix,lig-1,column_conversion(col),hidden_index_matrix,1);
+                    comp_col=compare_column(dim ,game_matrix,lig-1,column_conversion(col),hidden_index_matrix,1);
+
+                    // TRUE => Tout est bon
+                    if(comp_col == TRUE && comp_lig == TRUE)
+                    {
+                        // - 1 vie
+                        comp = TRUE;
+                    }
+                    if(comp_col == FALSE || comp_lig == FALSE)
+                    {
+                        // - 1 vie
+                        comp = FALSE;
+                    }
+
+                    if(comp==TRUE)
+                    {
+                        printf("Coup valide mais incorrect...\n");
+                        game_matrix[lig-1][column_conversion(col)]='_';
+                    }
+                }
+            }
+
+        }
+        else// Respecte peut être les règles mais respecte la matrice solution
+        {
+            egal_lig=counter_number_line(dim,game_matrix,lig-1,column_conversion(col),hidden_index_matrix,1);
+            egal_col=counter_number_column(dim,game_matrix,lig-1,column_conversion(col),hidden_index_matrix,1);
+
+            if ((egal_col==FALSE) || (egal_lig==FALSE))
+            {
+                vie=vie-1;
+            }
+
+
+            trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig-1, column_conversion(col),1);
+            trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig-1, column_conversion(col),1);
+
+            if ((trois_indice_col==TRUE) || (trois_indice_lig==TRUE))
+            {
+                vie=vie-1;
+            }
+
+            comp_lig=compare_line(dim,game_matrix,lig-1,column_conversion(col),hidden_index_matrix,1);
+            comp_col=compare_column(dim ,game_matrix,lig-1,column_conversion(col),hidden_index_matrix,1);
+
+            if ((comp_lig==FALSE) || (comp_col==FALSE))
+            {
+                vie=vie-1;
+            }
+
+
+        }
+
+    }while((matrice_pleine(game_matrix,dim) == FALSE) && (vie>0));
+
+
+    if(vie>0){
+        printf("\n BRAVO VOUS AVEZ REUSSI ! %d\n",1);
+    }
+    else{
+        printf("PERDU\n");
+    }
+    menu1_1(dim);
+}
+
 
 
 /// -- FONCTION REGLE TAKUZU --
@@ -1320,7 +1503,6 @@ void menu_dimension2(){ //SOUS MENU 1_1
     }
 }
 
-
 // MENU POUR CHOISIR LA DIMENSION DANS LA PARTIE III
 void menu_dimension3(){ //SOUS MENU 1_1
     char choice;
@@ -1373,13 +1555,13 @@ void menu1_1(int dim){
     char choice,val;
     char **game_matrix;
     char **masque;
-    char(**test);
+    char(**test),**temp;
     char (**hidden_index_matrix);
     char difficulte;
     int lig_ptr;
     char col_char_ptr;
     char **solution;
-    BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col,correct,trois_indice,egal,comp;
+
 
     printf("\t--  RESOUDRE MANUELEMENT GRILLE %dx%d  --\n",dim,dim);
     printf("1 - SAISIR MANUELEMENT UN MASQUE\n");
@@ -1421,12 +1603,15 @@ void menu1_1(int dim){
         print_mask(masque,dim);
         printf("\n");
         game_matrix=create_matrix(dim);
-        Game_gridd(masque,game_matrix,dim,1);
+        Game_gridd(masque,game_matrix,dim,1,temp,0);
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
         print_matrix(game_matrix,dim,100,100,0);
         printf("\n");
+        free(test);
+        free(game_matrix);
+        free(masque);
         menu1_1(dim);
 
     }
@@ -1444,162 +1629,16 @@ void menu1_1(int dim){
 
 
         game_matrix=create_matrix(dim);
-        Game_gridd(masque,game_matrix,dim,1);
+        Game_gridd(masque,game_matrix,dim,1,temp,0);
 
         solution = create_matrix(dim);
-        Game_gridd(masque,solution,dim,2); // On crée la matrice Solution
+        Game_gridd(masque,solution,dim,2,temp,0); // On crée la matrice Solution
 
-        hidden_index_matrix=masque; // Matrice où indices cachés sont représenté par un '0' <=> masque
-
-        Color_Text(5,0);
-        printf("   -- GRILLE JEU --\n");
-        Color_Text(15,0);
-        printf("\n");
-
-
-        do{
-            printf("Saisir LIGNE/COLONNE\n");
-            if(vie==3)
-            {
-                printf("%41cVIE\n",' ');
-                Color_Text(2,0);
-                printf("%40c%c %c %c\n",' ',3,3,3);
-                Color_Text(15,0);
-            }
-            if(vie==2)
-            {
-                printf("%40cVIE\n",' ');
-                Color_Text(14,0);
-                printf("%40c%c %c\n",' ',3,3);
-                Color_Text(15,0);
-            }
-            if(vie==1)
-            {
-                printf("%39cVIE\n",' ');
-                Color_Text(4,0);
-                printf("%40c%c\n",' ',3);
-                Color_Text(15,0);
-            }
-            cpt = 0;
-            saisie_securisee_jouer(dim, game_matrix, &lig_ptr, &col_char_ptr,hidden_index_matrix);
-            printf("Saisir 1 ou 0:");
-            fflush(stdin);
-            scanf("%c", &val);
-            while (val < '0' || val > '1') {
-                fflush(stdin);
-                printf("Erreur. Resaisir:");
-                scanf("%c", &val);
-            }
-            // Affectation à la grille jeu
-            game_matrix[lig_ptr-1][column_conversion(col_char_ptr)] = val;
-
-            correct=compare_game_with_solution(lig_ptr-1, column_conversion(col_char_ptr),game_matrix,solution);
-
-            if(correct == FALSE) //Pas égal a la grille solution mais teste de la validite du coup
-            {
-
-                egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
-                egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
-                if((egal_lig == TRUE) && (egal_col == TRUE))
-                {
-                    egal = TRUE; // NB 0 == NB 1 donc ok
-                }
-
-                if((egal_lig == FALSE) || (egal_col == FALSE))
-                {
-                    egal = FALSE;
-                    vie=vie-1;
-                }
-
-
-                trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr),1);
-                trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr),1);
-                // FALSE => il n'y a pas trois fois de 1 ou de 0 de suite
-                if(trois_indice_lig == FALSE && trois_indice_col == FALSE)
-                {
-                    // - 1 vie
-                    trois_indice = FALSE;
-                }
-
-                if(trois_indice_lig == TRUE || trois_indice_col == TRUE)
-                {
-                    // - 1 vie
-                    trois_indice = TRUE;
-                    vie--;
-                }
-
-                if((egal==TRUE) && (trois_indice == FALSE)) // 2 règles sont respectées
-                {
-                    if(ligne_remplie(lig_ptr-1,game_matrix,dim) == FALSE)
-                    {
-                        printf("Coup valide mais incorrect...\n");
-                        game_matrix[lig_ptr-1][column_conversion(col_char_ptr)]='_';
-                    }
-                    else
-                    {
-                        comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
-                        comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
-
-                        // TRUE => Tout est bon
-                        if(comp_col == TRUE && comp_lig == TRUE)
-                        {
-                            // - 1 vie
-                            comp = TRUE;
-                        }
-                        if(comp_col == FALSE || comp_lig == FALSE)
-                        {
-                            // - 1 vie
-                            comp = FALSE;
-                        }
-
-                        if(comp==TRUE)
-                        {
-                            printf("Coup valide mais incorrect...\n");
-                            game_matrix[lig_ptr-1][column_conversion(col_char_ptr)]='_';
-                        }
-                    }
-                }
-
-            }
-            else// Respecte peut être les règles mais respecte la matrice solution
-            {
-                egal_lig=counter_number_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
-                egal_col=counter_number_column(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
-
-                if ((egal_col==FALSE) || (egal_lig==FALSE))
-                {
-                    vie=vie-1;
-                }
-
-
-                trois_indice_lig=compare_indice_suivant_lig(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr),1);
-                trois_indice_col=compare_indice_suivant_col(dim,game_matrix,hidden_index_matrix,lig_ptr-1, column_conversion(col_char_ptr),1);
-
-                if ((trois_indice_col==TRUE) || (trois_indice_lig==TRUE))
-                {
-                    vie=vie-1;
-                }
-
-                comp_lig=compare_line(dim,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
-                comp_col=compare_column(dim ,game_matrix,lig_ptr-1,column_conversion(col_char_ptr),hidden_index_matrix,1);
-
-                if ((comp_lig==FALSE) || (comp_col==FALSE))
-                {
-                    vie=vie-1;
-                }
-
-
-            }
-
-        }while((matrice_pleine(game_matrix,dim) == FALSE) && (vie>0));
-
-
-        if(vie>0){
-            printf("\n BRAVO VOUS AVEZ REUSSI ! %d\n",1);
-        }
-        else{
-            printf("PERDU\n");
-        }
+        Solve_game_gridd(dim,game_matrix,solution,test,masque,difficulte);
+        free(test);
+        free(game_matrix);
+        free(masque);
+        free(solution);
         menu1_1(dim);
     }
 
@@ -1637,6 +1676,8 @@ void menu_mask_input(char (**Z),int size){
 // MENU MASQUE
 void menu_1_2_1(int dim,char** masque){
     char choice;
+    char** solution;
+
     printf("\n  -- MASQUE & GRILLE JEU --\n\n");
     printf("1 - Saisir/Modifier le masque\n");
     printf("2 - Afficher le masque & la grille jeu\n");
@@ -1665,7 +1706,7 @@ void menu_1_2_1(int dim,char** masque){
         printf("\n");
         char **game_matrix;
         game_matrix=create_matrix(dim);
-        Game_gridd(masque,game_matrix,dim,1);
+        Game_gridd(masque,game_matrix,dim,1,solution,0);
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
@@ -1703,13 +1744,17 @@ char menu_difficulte(){
 void menu3(int dim)
 {
     int choice;
-    printf("\n  -- MENU PARTIE III --\n\n");
+    char difficulte;
+    char** masque,**game_matrix,**solution,**test;
+
+    printf("\n\n\n  -- MENU PARTIE III --\n\n");
     printf("1 - GENERER UNE GRILLE SOLUTION\n"); // GENERER
     printf("2 - JOUER MANUELEMENT AVEC GRILLE SOLUTION GENEREE\n"); // IL PEUT JOUER AVEC UNE GRILLE SOLUTION ALEATOIRE CHOISIR LE MASQUE
     printf("3 - LAISSER SPARTACUS JOUER AVEC LA GRILLE SOLUTION GENEREE\n"); // SPARTACUS JOUE AVEC UNE GRILLE SOLUTION GENERER
     printf("4 - RETOUR\n"); // SPARTACUS JOUE AVEC UNE GRILLE SOLUTION GENERER
 
     printf("Saisir :\n");
+    fflush(stdin);
     scanf("%c",&choice);
     while((choice<'1') || (choice>'3') && (choice!='r') && (choice!='R'))
     {
@@ -1718,16 +1763,34 @@ void menu3(int dim)
     }
     if(choice == '1')
     {
-        partie_3(dim);
+        solution=partie_3(dim);
+        menu3(dim);
     }
-    /*if(choice == '2')
+    if(choice == '2')
     {
+        solution=partie_3(dim);
+        printf("\n\n\n\n");
+        difficulte=menu_difficulte();
 
+        test = create_matrix(dim);
+        initialize_matrix0(dim,test);
+
+        masque = create_matrix(dim);
+        initialize_matrix1(dim,masque);
+        generate_mask(masque,dim,test,difficulte);
+        print_matrix(masque,dim,100,100,100);
+
+        game_matrix=create_matrix(dim);
+        Game_gridd(masque,game_matrix,dim,1,solution,2);
+        printf("yes");
+
+        Solve_game_gridd(dim,game_matrix,solution,test,masque,difficulte);
+        menu3(dim);
     }
     if(choice == '3')
     {
-
-    }*/
+        menu3(dim);
+    }
     if(choice == '4')
     {
         menu_dimension3();
@@ -1738,12 +1801,14 @@ void menu3(int dim)
 
 
 
+/// -- FONCTIONS PARTIES --
+
 // Spartacus qui résout automatiquement une grille de Takuzu
 void partie_2(int dim) {
     char choice,val;
     char **game_matrix;
     char **masque;
-    char(**test);
+    char(**test),**temp;
     char (**hidden_index_matrix);
     char difficulte;
     int lig=0,col=0,val_int,choice_int=0;
@@ -1762,10 +1827,10 @@ void partie_2(int dim) {
 
 
     game_matrix=create_matrix(dim);
-    Game_gridd(masque,game_matrix,dim,1);
+    Game_gridd(masque,game_matrix,dim,1,temp,0);
 
     solution = create_matrix(dim);
-    Game_gridd(masque,solution,dim,2); // On crée la matrice Solution
+    Game_gridd(masque,solution,dim,2,temp,0); // On crée la matrice Solution
 
     hidden_index_matrix=masque; // Matrice où indices cachés sont représenté par un '0' <=> masque
 
@@ -1965,152 +2030,18 @@ void partie_2(int dim) {
     printf("BRAVO SPARTACUS\n");
     Sleep(2500);
     printf("\n\n\n");
-
-
-
-
-
-
-
-
-    /*char **game_matrix;
-    char **masque;
-    int lig_ptr, TL, val_int;
-    char col_char_ptr, val,difficulte;
-    char **solution;
-    char (**hidden_index_matrix) = masque;
-    char **test;
-    BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col, correct, trois_indice, egal, comp;
-    BOOL verif = TRUE;
-
-    TL = dim;
-    difficulte=menu_difficulte();
-
-    // matrice solution depend de la taille
-    // applique un masque
-    // on fait le programme
-
-    test = create_matrix(dim);
-    initialize_matrix0(dim, test);
-
-    masque = create_matrix(dim);
-    initialize_matrix1(dim, masque);
-    generate_mask(masque, dim, test, difficulte);
-
-
-    game_matrix = create_matrix(dim);
-    Game_gridd(masque, game_matrix, dim, 1);
-
-    solution = create_matrix(dim);
-    Game_gridd(masque, solution, dim, 2); // On crée la matrice Solution
-
-    hidden_index_matrix = masque; // Matrice où indices cachés sont représenté par un '0' <=>
-
-
-    for(int i=0;i<TL;i++)
-    {
-        for(int j=0; j<TL; j++)
-        {
-            if(game_matrix[i][j]=='_'){
-                hidden_index_matrix[i][j]='0';
-            }
-        }
-    }
-    print_matrix(game_matrix, dim, 100, 100);
-
-
-
-    do {
-        for (int i = 0; i < TL; i++) {
-            for (int j = 0; j < TL; j++) {
-                if (matrice_pleine(game_matrix, TL) == FALSE) // verifier que la matrice n'est pas plein
-                {
-                    if (ligne_remplie(i, game_matrix, TL) == FALSE && colonne_remplie(j, game_matrix, TL) ==
-                                                                      FALSE)// verifier que la colonne et la ligne de l'indice ne sont pas deja remplis
-                    {
-
-                        /*
-                         * Fonction qui permet de verifier si l'indice est caché
-                         * 0 => caché
-
-
-                        if (game_matrix[i][j] == '_') {
-                            // Val aléatoire comprise entre 0 et 1
-                            val_int = Random_index(2);
-                            printf("val_int: %d\n", val_int);
-
-                            // Conversion val int en char
-                            if (val_int == 0) {
-                                val = '0';
-                            }
-                            if (val_int == 1) {
-                                val = '1';
-                            }
-
-
-                            // Saisir l'indice random dans la matrice
-                            game_matrix[i][j] = val;
-                            // les Fonctions regles
-
-
-                            // Permet de vérifier s'il y a le meme nombre de 0  et de 1
-                            //  False -> Ne respecte pas la regle
-                            //  True ->Respecte la regle
-                            egal_lig = counter_number_line(dim, game_matrix, i, j, hidden_index_matrix, 2);
-                            egal_col = counter_number_column(dim, game_matrix, i, j, hidden_index_matrix, 2);
-
-                            // Verifier s'il n'y pas trois 0 d'affilé de 1 en ligne et colonne
-                            //  False -> Respecte la regle
-                            //  True -> Ne respecte pas la regle
-                            trois_indice_lig = compare_indice_suivant_lig(dim, game_matrix, hidden_index_matrix, i, j,
-                                                                          2);
-                            trois_indice_col = compare_indice_suivant_col(dim, game_matrix, hidden_index_matrix, i, j,
-                                                                          2);
-
-                            // Verifier s'il n'y pas 2 ligne ou 2 colonne identique
-                            //  False -> Ne respecte pas la regle
-                            //  True -> Respecte la regle
-                            comp_lig = compare_line(dim, game_matrix, i, j, hidden_index_matrix, 2);
-                            comp_col = compare_column(dim, game_matrix, i, j, hidden_index_matrix, 2);
-
-                            if ((egal_lig == TRUE) && (egal_col == TRUE) && (comp_lig == TRUE) && (comp_col == TRUE) &&
-                                (trois_indice_lig == FALSE) && (trois_indice_col == FALSE)) {
-                                printf(" COUP SUIVANT... \n");
-                                print_matrix(game_matrix, TL, i, j);
-                                //Sleep(1000);
-                                printf("\n");
-                            } else {
-                                // Si les fonctions regles return FALSE alors retourné l'inverse de 1 -> 0
-                                if (val == '1') {
-                                    val = '0';
-                                } else {
-                                    val = '1';
-                                }
-                                game_matrix[i][j] = val;
-                                printf(" COUP SUIVANT... \n");
-                                //Sleep(1000);
-                                print_matrix(game_matrix, TL, i, j);
-                                printf("\n");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }while(matrice_pleine(game_matrix,dim)==FALSE);
-*/
     menu_dimension2();
 }
 
 // Génération d'une grille solution aléatoire
-void partie_3(int dim){
+char** partie_3(int dim){
     char **game_matrix;
     char **masque;
     int lig_ptr, TL, val_int;
     char col_char_ptr, val;
     char **solution;
     char (**hidden_index_matrix) = masque;
-    char **test;
+    char **test,**temp;
     BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col, correct, trois_indice, egal, comp;
     BOOL verif = TRUE;
 
@@ -2289,10 +2220,10 @@ void partie_3(int dim){
 
 
         game_matrix = create_matrix(dim);
-        Game_gridd(masque, game_matrix, dim, 1);
+        Game_gridd(masque, game_matrix, dim, 1,temp,0);
 
         solution = create_matrix(dim);
-        Game_gridd(masque, solution, dim, 2); // On crée la matrice Solution
+        Game_gridd(masque, solution, dim, 2,temp,0); // On crée la matrice Solution
 
         hidden_index_matrix = masque; // Matrice où indices cachés sont représenté par un '0' <=>
         do {
@@ -2418,8 +2349,9 @@ void partie_3(int dim){
         }while(matrice_pleine(game_matrix,dim)==FALSE);
 
     }
-    free(game_matrix);
     free(masque);
+    return game_matrix;
+
 }
 
 

@@ -41,9 +41,9 @@ void copy_matrix16(char**,char[16][16],int);
 
 /// -- FONCTION MASQUE / JEU --
 void Mask_input(char**,int);
-void Game_gridd(char**, char**,int,int);
 void generate_mask(char** , int , char** , char);
-
+void Game_gridd(char**, char**,int,int,char**,int);
+void Solve_game_gridd(int,char**,char**,char**,char**,char);
 
 
 /// -- FONCTION REGLE TAKUZU --
@@ -56,9 +56,6 @@ BOOL compare_indice_suivant_col(int,char**,char**,int,int,int);
 BOOL compare_game_with_solution(int,int,char**,char**);
 
 
-/// -- FONCTIONS PARTIES --
-void partie_2(int dim);
-void partie_3(int dim);
 
 /// -- FONCTIONS MENU --
 void menu1();
@@ -70,5 +67,10 @@ void menu1_1(int);
 void menu_1_2_1(int,char**);
 char menu_difficulte();
 void menu3(int);
+
+
+/// -- FONCTIONS PARTIES --
+void partie_2(int dim);
+char** partie_3(int dim);
 
 #endif //PROJETS2_C_FONCTION_H
