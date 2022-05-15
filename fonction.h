@@ -18,7 +18,7 @@
 
 /// -- FONCTION UTILITE --
 void Color_Text(int,int);
-void print_matrix(char**,int);
+void print_matrix(char**,int,int,int);
 void initialize_matrix0(int,char**);
 void initialize_matrix1(int,char**);
 char** create_matrix(int);
@@ -55,6 +55,9 @@ BOOL compare_indice_suivant_lig(int,char**,char**,int,int,int);
 BOOL compare_indice_suivant_col(int,char**,char**,int,int,int);
 BOOL compare_game_with_solution(int,int,char**,char**);
 
+
+/// -- FONCTIONS PARTIES --
+void partie_2(int dim);
 
 /// -- FONCTIONS MENU --
 void menu1();

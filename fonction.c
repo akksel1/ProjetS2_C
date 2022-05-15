@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include <time.h>
+#include <windows.h>
 
 /// -- FONCTION UTILITE --
 
@@ -27,7 +28,7 @@ void Color_Text(int Text_Color,int Back_color)
 }
 
 // Permet d'afficher la grille jeux
-void print_matrix(char (**Z),int TL)
+void print_matrix(char (**Z),int TL,int lig, int col)
 {
     // Affichage d'une matrice 4x4
     if(TL==4) {
@@ -58,7 +59,14 @@ void print_matrix(char (**Z),int TL)
             printf("  ");
         }
         for (int j = 0; j < TL; j++) {
-            printf("%c  ", Z[i][j]);
+            if(lig==i && col==j){
+                Color_Text(5, 0);
+                printf("%c  ", Z[i][j]);
+                Color_Text(15, 0);
+            }
+            else{
+                printf("%c  ", Z[i][j]);
+            }
         }
         printf("\n");
     }
@@ -164,7 +172,7 @@ void saisie_securisee_jouer(int size, char** game_matrix,int *lig_ptr,char *col_
     BOOL cache = FALSE;
 
     fflush(stdin);
-    print_matrix(game_matrix, size);
+    print_matrix(game_matrix, size,100,100);
     printf("Saisir l'indice:");
     /*
     SAISIE SECURISEE
@@ -868,15 +876,17 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int 
             if ((Z[lig][col] == Z[lig][col + 1]) && (Z[lig][col + 1] == Z[lig][col + 2]))
             {
                 verif1 = TRUE;
-                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+                if(partie==1) {
+                    printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
 
-                // RESET
-                Z[lig][col] = '_';
-                if (test[lig][col + 1] == '0') {
-                    Z[lig][col + 1] = '_';
-                }
-                if (test[lig][col + 2] == '0') {
-                    Z[lig][col + 2] = '_';
+                    // RESET
+                    Z[lig][col] = '_';
+                    if (test[lig][col + 1] == '0') {
+                        Z[lig][col + 1] = '_';
+                    }
+                    if (test[lig][col + 2] == '0') {
+                        Z[lig][col + 2] = '_';
+                    }
                 }
             }
         }
@@ -885,17 +895,19 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int 
             // 2 INDICES A GAUCHE
             if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col - 1] == Z[lig][col - 2])) {
                 verif2 = TRUE;
-                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+                if (partie == 1) {
+                    printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
 
-                // RESET
-                Z[lig][col] = '_';
-                if (test[lig][col - 1] == '0') {
-                    Z[lig][col - 1] = '_';
+                    // RESET
+                    Z[lig][col] = '_';
+                    if (test[lig][col - 1] == '0') {
+                        Z[lig][col - 1] = '_';
+                    }
+                    if (test[lig][col - 2] == '0') {
+                        Z[lig][col - 2] = '_';
+                    }
+                    cpt++;
                 }
-                if (test[lig][col - 2] == '0') {
-                    Z[lig][col - 2] = '_';
-                }
-                cpt++;
             }
 
         }
@@ -904,17 +916,20 @@ BOOL compare_indice_suivant_lig(int TL,char**Z,char** test,int lig,int col, int 
             // 1 INDICE A DROITE ET UN INDICE A GAUCHE
             if ((Z[lig][col] == Z[lig][col - 1]) && (Z[lig][col] == Z[lig][col + 1])) {
                 verif3 = TRUE;
-                printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
 
-                // RESET
-                Z[lig][col] = '_';
-                if (test[lig][col - 1] == '0') {
-                    Z[lig][col - 1] = '_';
+                if (partie == 1) {
+                    printf("\n-1 PT : LA LIGNE %d CONTIENT TROIS %c DE SUITE !\n", lig + 1, Z[lig][col]);
+
+                    // RESET
+                    Z[lig][col] = '_';
+                    if (test[lig][col - 1] == '0') {
+                        Z[lig][col - 1] = '_';
+                    }
+                    if (test[lig][col + 1] == '0') {
+                        Z[lig][col + 1] = '_';
+                    }
+                    cpt++;
                 }
-                if (test[lig][col + 1] == '0') {
-                    Z[lig][col + 1] = '_';
-                }
-                cpt++;
             }
         }
     }
@@ -992,7 +1007,7 @@ BOOL compare_indice_suivant_col(int TL,char**Z,char** test,int lig,int col,int p
 
                 // RESET
                 Z[lig][col] = '_';
-                print_matrix(test, TL);
+                print_matrix(test, TL,lig,col);
                 if (test[lig - 1][col] == '0') {
                     Z[lig - 1][col] = '_';
                 }
@@ -1028,7 +1043,7 @@ BOOL saisie_securisee(int size, char (**Z),int *lig_ptr,char *col_char_ptr){
 
     printf("Saisir 0/0 pour arreter\n\n");
     fflush(stdin);
-    print_matrix(Z, size);
+    print_matrix(Z, size,100,100);
     printf("Saisir:");
     /*
     SAISIE SECURISEE
@@ -1248,7 +1263,7 @@ void menu1_1(int dim){
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
-        print_matrix(game_matrix,dim);
+        print_matrix(game_matrix,dim,100,100);
         printf("\n");
         menu1_1(dim);
 
@@ -1437,7 +1452,7 @@ void menu1_1(int dim){
 // MENU SAISIE DU MASQUE
 void menu_mask_input(char (**Z),int size){
     char choice;
-    print_matrix(Z,size);
+    print_matrix(Z,size,100,100);
     printf("\n  -- SAISIE MASQUE --\n\n");
     printf("1 - Cacher des valeurs\n");
     printf("R - Retour\n");
@@ -1484,7 +1499,7 @@ void menu_1_2_1(int dim,char** masque){
         Color_Text(5,0);
         printf("\n   -- MASQUE --\n");
         Color_Text(15,0);
-        print_matrix(masque,dim);
+        print_matrix(masque,dim,100,100);
         printf("\n");
         char **game_matrix;
         game_matrix=create_matrix(dim);
@@ -1492,7 +1507,7 @@ void menu_1_2_1(int dim,char** masque){
         Color_Text(5,0);
         printf("   -- GRILLE JEU --\n");
         Color_Text(15,0);
-        print_matrix(game_matrix,dim);
+        print_matrix(game_matrix,dim,100,100);
         menu_1_2_1(dim,masque);
 
     }
@@ -1527,12 +1542,11 @@ void partie_2(int dim)
 {
     char **game_matrix;
     char **masque;
-    int lig_ptr;
-    char col_char_ptr;
+    int lig_ptr,TL,val_int;
+    char col_char_ptr,val;
     char **solution;
-    char (**hidden_index_matrix);
-    int TL;
-    int val;
+    char (**hidden_index_matrix) = masque;
+    char** test;
     BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col,correct,trois_indice,egal,comp;
 
     TL=dim;
@@ -1563,9 +1577,9 @@ void partie_2(int dim)
     {
         for (int j=0;j<TL;j++)
         {
-            if (matrice_pleine(**game_matrix,TL)==FALSE) // verifier que la matrice n'est pas plein
+            if (matrice_pleine(game_matrix,TL)==FALSE) // verifier que la matrice n'est pas plein
             {
-                if (ligne_remplie(i,** game_matrix,TL)==FALSE && colonne_remplie(j,** game_matrix,TL) == FALSE)// verifier que la colonne et la ligne de l'indice ne sont pas deja remplis
+                if (ligne_remplie(i,game_matrix,TL)==FALSE && colonne_remplie(j,game_matrix,TL) == FALSE)// verifier que la colonne et la ligne de l'indice ne sont pas deja remplis
                 {
 
                     /*
