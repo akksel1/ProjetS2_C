@@ -196,7 +196,7 @@ il vous reste plus qu'à remplacer la matrice bonne chance <3
 
 
 ********************************************
-Programme créé Alex Stoltz et Louka Milan
+Programme créé Axel Stoltz et Louka Milan
 
 
 

@@ -5,11 +5,8 @@
 #ifndef PROJETS2_C_FONCTION_H
 #define PROJETS2_C_FONCTION_H
 #define BOOL int
-#define TL1 4
-
 #define TRUE 1
 #define FALSE 0
-#define TP 32
 #include <stdlib.h>
 #include <stdio.h>
 #include <windows.h>

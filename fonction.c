@@ -743,9 +743,9 @@ void Game_gridd(char **masque, char **game_matrix,int dim,int choice,char** solu
 // Fonction qui permet de résoudre une grille jeu manuellement
 void Solve_game_gridd(int dim,char** game_matrix,char** solution,char** test, char** masque,char difficulte)
 {
-    char col;
+    char col,val;
     char**hidden_index_matrix;
-    int vie=3,lig,val;
+    int vie=3,lig;
     BOOL egal_lig, egal_col, comp_lig, comp_col, trois_indice_lig, trois_indice_col,correct,trois_indice,egal,comp;
 
 
@@ -784,11 +784,11 @@ void Solve_game_gridd(int dim,char** game_matrix,char** solution,char** test, ch
         saisie_securisee_jouer(dim, game_matrix, &lig, &col,hidden_index_matrix);
         printf("Saisir 1 ou 0:");
         fflush(stdin);
-        scanf("%c", &val);
-        while (val < '0' || val > '1') {
+        scanf("%c",&val);
+        while ((val < '0') || (val > '1')) {
             fflush(stdin);
             printf("Erreur. Resaisir:");
-            scanf("%c", &val);
+            scanf("%c",&val);
         }
         // Affectation à la grille jeu
         game_matrix[lig-1][column_conversion(col)] = val;
@@ -1796,6 +1796,8 @@ void menu3(int dim)
     if(choice == '1')
     {
         solution=partie_3(dim,1);
+        printf("\nC'EST PRET ! :)\n\n");
+        Sleep(1500);
         menu3(dim);
     }
     if(choice == '2')

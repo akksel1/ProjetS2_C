@@ -3,7 +3,7 @@
 
 int main()
 {
-    printf("\n%17c-- BIENVENUE %c --\n\n",' ',1);
+    printf("\n\n\n%10c   BIENVENUE %c  \n\n",' ',1);
     menu1();
     return 0;
 }
